@@ -29,7 +29,7 @@ def coverage(session):
 
 
 @nox.session()
-def style(session):
+def lint(session):
     """
     Formats project with black and isort, then runs flake8 and mypy linting.
     """
