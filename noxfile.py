@@ -18,13 +18,23 @@ def test(session):
 
 
 @nox.session()
+def coverage(session):
+    """
+    Test coverage analysis.
+    """
+    session.install("coverage")
+
+    session.run("coverage", "report", "--fail-under=96", "--show-missing")
+    session.run("coverage", "erase")
+
+
+@nox.session()
 def style(session):
     """
     Formats project with black and isort, then runs flake8 and mypy linting.
     """
 
     session.install("black", "isort", "flake8", "mypy")
-    session.install(".")
     session.run("isort", ".")
     session.run("black", ".")
     session.run("flake8", ".")

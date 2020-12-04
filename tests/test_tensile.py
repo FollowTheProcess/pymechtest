@@ -62,16 +62,8 @@ paths_and_specimen_ids = [
 @pytest.mark.parametrize("filepath, specimen_id", paths_and_specimen_ids)
 def test_get_specimen_id(filepath, specimen_id):
 
-    obj = Tensile(
-        folder="doesnt/matter",
-        stress_col="Tensile stress",
-        strain_col="Tensile strain (Strain 1)",
-        id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
+    obj = Tensile._test_long()
+
     assert obj._get_specimen_id(filepath) == specimen_id
 
 
@@ -105,16 +97,7 @@ paths_and_moduli_trans = [
 @pytest.mark.parametrize("filepath, modulus", paths_and_moduli_long)
 def test_calc_modulus_long(filepath, modulus):
 
-    long_obj = Tensile(
-        folder=LONG_DATA,
-        stress_col="Tensile stress",
-        strain_col="Tensile strain (Strain 1)",
-        id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
+    long_obj = Tensile._test_long()
 
     assert_almost_equal(long_obj._calc_modulus(long_obj._load(filepath)), modulus)
 
@@ -122,16 +105,7 @@ def test_calc_modulus_long(filepath, modulus):
 @pytest.mark.parametrize("filepath, modulus", paths_and_moduli_trans)
 def test_calc_modulus_trans(filepath, modulus):
 
-    trans_obj = Tensile(
-        folder=TRANS_DATA,
-        stress_col="Tensile stress",
-        strain_col="Tensile strain (Strain 1)",
-        id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-        strain1=0.005,
-        strain2=0.015,
-        expect_yield=True,
-    )
+    trans_obj = Tensile._test_trans()
 
     assert_almost_equal(trans_obj._calc_modulus(trans_obj._load(filepath)), modulus)
 
@@ -166,16 +140,7 @@ paths_and_df_shapes_trans = [
 @pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_long)
 def test_load_long(filepath, df_shape):
 
-    long_obj = Tensile(
-        folder=LONG_DATA,
-        stress_col="Tensile stress",
-        strain_col="Tensile strain (Strain 1)",
-        id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
+    long_obj = Tensile._test_long()
 
     assert long_obj._load(filepath).shape == df_shape
 
@@ -183,16 +148,7 @@ def test_load_long(filepath, df_shape):
 @pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_trans)
 def test_load_trans(filepath, df_shape):
 
-    trans_obj = Tensile(
-        folder=TRANS_DATA,
-        stress_col="Tensile stress",
-        strain_col="Tensile strain (Strain 1)",
-        id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-        strain1=0.005,
-        strain2=0.015,
-        expect_yield=True,
-    )
+    trans_obj = Tensile._test_trans()
 
     assert trans_obj._load(filepath).shape == df_shape
 
@@ -271,3 +227,25 @@ def test_specimen_id_column_trans():
         "009",
         "010",
     ]
+
+
+paths_and_yield_strengths = [
+    (TRANS_DATA.joinpath("Specimen_RawData_10.csv"), 83.3453),
+    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), 89.108),
+    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), 85.1674),
+    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), 88.398),
+    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), 86.4215),
+    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), 89.6358),
+    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), 77.2231),
+    (TRANS_DATA.joinpath("Specimen_RawData_7.csv"), 86.8556),
+    (TRANS_DATA.joinpath("Specimen_RawData_8.csv"), 90.1102),
+    (TRANS_DATA.joinpath("Specimen_RawData_9.csv"), 89.7818),
+]
+
+
+@pytest.mark.parametrize("filepath, yield_strength", paths_and_yield_strengths)
+def test_calc_yield_strength(filepath, yield_strength):
+
+    obj = Tensile._test_trans()
+
+    assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength)
