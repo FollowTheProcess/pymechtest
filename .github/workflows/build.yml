@@ -19,11 +19,8 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-          pip install pytest pytest-cov
-          if [ ${{ matrix.python-version }} = 3.6 ]; then
-            pip install dataclasses
-          fi
+          pip install nox
           pip install .
-      - name: Test with pytest
+      - name: Run Tests
         run: |
-          pytest --cov=pymechtest tests/
+          nox --non-interactive --session "test-${{ matrix.python-version }}"
