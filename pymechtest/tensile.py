@@ -11,7 +11,7 @@ import csv
 import itertools
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Union
+from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -151,16 +151,20 @@ class Tensile:
 
         return df
 
-    def _calc_modulus(self, df: pd.DataFrame) -> float:
+    def _calc_slope(self, df: pd.DataFrame) -> Tuple[float, float]:
         """
-        Modulus calculation method. Uses numpy to rapidly calculate the elastic modulus
-        from a single specimen's data using strain1 and strain2 as the upper and lower limits.
+        Calculates the slope and the intercept of the linear portion
+        of the stress-strain curve.
+
+        Uses numpy to rapidly calculate the slope and intercept
+        from a single specimen's data using strain1 and strain2
+        as the upper and lower limits.
 
         Args:
             df (pd.DataFrame): DataFrame for the specimen.
 
         Returns:
-            float: Elastic modulus (in GPa).
+            Tuple[float, float]: slope, intercept.
         """
         # Grab stress and strain data between strain1 and strain2
         # Elastic portion of the stress-strain curve
@@ -177,12 +181,61 @@ class Tensile:
         A = np.vstack([x, np.ones(len(x))]).T
 
         # As in y = mx + c
-        m, c = np.linalg.lstsq(A, y, rcond=None)[0]
+        slope, intercept = np.linalg.lstsq(A, y, rcond=None)[0]
 
-        # If stress is in MPa and strain is in % this will always work
-        modulus = 0.1 * m
+        return slope, intercept
 
-        return modulus
+    def _calc_modulus(self, df: pd.DataFrame) -> float:
+        """
+        Uses the calc slope method to get elastic modulus in GPa.
+
+        Args:
+            df (pd.DataFrame): Input df passed to _calc_slope.
+
+        Returns:
+            float: Elastic Modulus in GPa.
+        """
+        # If stress is MPa and strain is in % this will always work
+        return 0.1 * self._calc_slope(df)[0]
+
+    def _calc_yield(self, df: pd.DataFrame, offset: float = 0.2) -> float:
+        """
+        Calculates the % offset yield strength for a specimen who's data is contained
+        in 'df'.
+
+        Args:
+            df (pd.DataFrame): DataFrame containing single specimens' data.
+            offset (float, optional): Strain offset to apply (%). Defaults to 0.2.
+
+        Returns:
+            float: Offset yield strength in MPa
+        """
+
+        # Internal correctness check, should never be called on a Tensile(expect_yield=False)
+        assert self.expect_yield
+
+        slope, intercept = self._calc_slope(df)
+
+        # Avoids pandas view/copy warning
+        offset_df = df.copy()
+
+        # Apply the offset to determine offset stress at each row
+        # Offset stress vs strain is straight line of gradient = modulus
+        # Yield is where this line intersects the original curve
+        offset_df["offset_stress"] = slope * (df[self.strain_col] - offset) + intercept
+
+        # Diff between offset stress and actual
+        # Intersect is where this is = 0
+        offset_df["offset_delta"] = (
+            offset_df["offset_stress"] - offset_df[self.stress_col]
+        )
+
+        # Find actual stress value of the intersect
+        yield_index = offset_df["offset_delta"].abs().idxmin()
+
+        yield_strength = offset_df.iloc[yield_index][self.stress_col]
+
+        return yield_strength
 
     def load_all(self) -> pd.DataFrame:
         """
