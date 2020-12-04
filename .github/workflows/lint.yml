@@ -1,0 +1,30 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+          pip install black flake8 isort mypy
+          pip install .
+      - name: Format with black & isort
+        run: |
+          isort .
+          black .
+      - name: Lint with flake8
+        run: |
+          flake8 .
+      - name: Typecheck with mypy
+        run: |
+          mypy .

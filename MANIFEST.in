@@ -1,0 +1,4 @@
+include LICENSE
+recursive-include pymechtest
+include pymechtest/_version.py
+include versioneer.py
