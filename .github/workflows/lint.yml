@@ -17,14 +17,8 @@ jobs:
           python3 -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
           pip install black flake8 isort mypy
+          pip install nox
           pip install .
-      - name: Format with black & isort
+      - name: Run Linting
         run: |
-          isort .
-          black .
-      - name: Lint with flake8
-        run: |
-          flake8 .
-      - name: Typecheck with mypy
-        run: |
-          mypy .
+          nox --non-interactive --session "lint"

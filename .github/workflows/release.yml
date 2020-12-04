@@ -6,20 +6,20 @@ on:
 
 jobs:
   deploy:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: "3.9"
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel twine
-      - name: Build and publish
-        env:
-          TWINE_USERNAME: $PYPI_USERNAME
-          TWINE_PASSWORD: $PYPI_PASSWORD
-        run: |
-          python3 setup.py sdist bdist_wheel
-          twine upload dist/*
+      - name: Build sdist and wheel
+        run: python3 setup.py sdist bdist_wheel
+      - name: Release to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_PASSWORD }}

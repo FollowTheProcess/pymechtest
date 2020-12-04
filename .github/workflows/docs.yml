@@ -15,8 +15,10 @@ jobs:
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          pip install .
           pip install sphinx sphinx-rtd-theme recommonmark
+          pip install nox
+          pip install .
+
       - name: Build Sphinx Docs
         run: |
-          sphinx-build -b html docs/ docs/_build/html
+          nox --non-interactive --session "docs"
