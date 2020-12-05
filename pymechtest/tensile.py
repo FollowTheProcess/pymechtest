@@ -7,6 +7,7 @@ Created: 29/11/2020
 
 from __future__ import annotations
 
+import collections
 import csv
 import itertools
 from dataclasses import dataclass
@@ -15,13 +16,6 @@ from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
-
-# Data for testing & development only
-LONG_DATA = Path(__file__).parents[1].resolve().joinpath("data/Long")
-TRANS_DATA = Path(__file__).parents[1].resolve().joinpath("data/Trans")
-
-LONG_FILE = [f for f in LONG_DATA.rglob("*.csv")][0]
-TRANS_FILE = [f for f in TRANS_DATA.rglob("*.csv")][0]
 
 
 @dataclass
@@ -78,7 +72,7 @@ class Tensile:
             Tensile: Tensile object: longitudinal
         """
         return Tensile(
-            folder=LONG_DATA,
+            folder=Path(__file__).parents[1].resolve().joinpath("data/Long"),
             stress_col="Tensile stress",
             strain_col="Tensile strain (Strain 1)",
             id_row=3,
@@ -97,7 +91,7 @@ class Tensile:
             Tensile: Tensile object: transverse
         """
         return Tensile(
-            folder=TRANS_DATA,
+            folder=Path(__file__).parents[1].resolve().joinpath("data/Trans"),
             stress_col="Tensile stress",
             strain_col="Tensile strain (Strain 1)",
             id_row=3,
@@ -266,7 +260,9 @@ class Tensile:
 
             vals.append(yield_strength)
 
-        data_dict = {col: val for (col, val) in zip(cols, vals)}
+        data_dict = collections.OrderedDict(
+            {col: val for (col, val) in zip(cols, vals)}
+        )
 
         return pd.Series(data=data_dict)
 
@@ -285,7 +281,7 @@ class Tensile:
         fp = Path(self.folder).resolve()
 
         df = (
-            (pd.concat([self._load(f) for f in fp.rglob("*.csv")]))
+            (pd.concat([self._load(f) for f in sorted(fp.rglob("*.csv"))]))
             .assign(spec_id=lambda x: pd.Categorical(x["Specimen ID"]))
             .drop(columns=["Specimen ID"])
             .rename(columns={"spec_id": "Specimen ID"})
@@ -316,7 +312,7 @@ class Tensile:
 
         rows = [
             self._extract_values(df)
-            for df in [self._load(f) for f in fp.rglob("*.csv")]
+            for df in [self._load(f) for f in sorted(fp.rglob("*.csv"))]
         ]
 
         # .T transposes to that it's the expected dataframe format
