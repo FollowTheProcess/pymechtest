@@ -5,10 +5,13 @@ Author: Tom Fleet
 Created: 28/11/2020
 """
 
+from collections import OrderedDict
 from pathlib import Path
 
+import pandas as pd
 import pytest
 from numpy.testing import assert_almost_equal
+from pandas.testing import assert_frame_equal, assert_series_equal
 
 from pymechtest import Tensile
 
@@ -249,3 +252,354 @@ def test_calc_yield_strength(filepath, yield_strength):
     obj = Tensile._test_trans()
 
     assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength)
+
+
+paths = [f for f in TRANS_DATA.rglob("*.csv")] + [f for f in LONG_DATA.rglob("*.csv")]
+
+
+@pytest.mark.parametrize("filepath", paths)
+def test_calc_yield_raises_attribute_error_if_yield_false(filepath):
+
+    # _test_long means expect_yield = False
+    obj = Tensile._test_long()
+
+    # Trans specimens data (no yield expected)
+    df = obj._load(fp=filepath)
+
+    with pytest.raises(AttributeError):
+        obj._calc_yield(df)
+
+
+paths_and_extract_values_series_long = [
+    (
+        LONG_DATA.joinpath("Specimen_RawData_1.csv"),
+        pd.Series(
+            data={"Specimen ID": "0038", "UTS": 739.3342, "Modulus": 214.73703704359207}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_10.csv"),
+        pd.Series(
+            data={"Specimen ID": "0039", "UTS": 805.4785, "Modulus": 227.92695631351344}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_2.csv"),
+        pd.Series(
+            data={"Specimen ID": "0031", "UTS": 720.6285, "Modulus": 222.72607703734684}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_3.csv"),
+        pd.Series(
+            data={"Specimen ID": "0040", "UTS": 806.6938, "Modulus": 226.24042185043274}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_4.csv"),
+        pd.Series(
+            data={"Specimen ID": "0032", "UTS": 782.9673, "Modulus": 227.20719368480655}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_5.csv"),
+        pd.Series(
+            data={"Specimen ID": "0033", "UTS": 764.4656, "Modulus": 237.49691564169657}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_6.csv"),
+        pd.Series(
+            data={"Specimen ID": "0034", "UTS": 784.4911, "Modulus": 229.99812783980784}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_7.csv"),
+        pd.Series(
+            data={"Specimen ID": "0036", "UTS": 784.1665, "Modulus": 210.5774902227845}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_8.csv"),
+        pd.Series(
+            data={"Specimen ID": "0035", "UTS": 809.7581, "Modulus": 201.59969738297002}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_9.csv"),
+        pd.Series(
+            data={"Specimen ID": "0037", "UTS": 778.8885, "Modulus": 222.34006012040436}
+        ),
+    ),
+]
+
+paths_and_extract_values_series_trans = [
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_10.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "010",
+                "UTS": 180.2974,
+                "Modulus": 171.04161005434793,
+                "Yield Strength": 83.3453,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_1.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "009",
+                "UTS": 188.4382,
+                "Modulus": 177.04030085330862,
+                "Yield Strength": 89.108,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_2.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "008",
+                "UTS": 183.7281,
+                "Modulus": 190.00716803363935,
+                "Yield Strength": 85.1674,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_3.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "007",
+                "UTS": 151.3554,
+                "Modulus": 174.266659531658,
+                "Yield Strength": 88.398,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_4.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "006",
+                "UTS": 180.8582,
+                "Modulus": 154.94934554636595,
+                "Yield Strength": 86.4215,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_5.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "005",
+                "UTS": 184.7623,
+                "Modulus": 178.20932823593682,
+                "Yield Strength": 89.6358,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_6.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "004",
+                "UTS": 190.4115,
+                "Modulus": 152.57936457584347,
+                "Yield Strength": 77.2231,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_7.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "003",
+                "UTS": 194.3136,
+                "Modulus": 145.2465016821223,
+                "Yield Strength": 86.8556,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_8.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "002",
+                "UTS": 191.4301,
+                "Modulus": 186.87429547855706,
+                "Yield Strength": 90.1102,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_9.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "001",
+                "UTS": 168.0556,
+                "Modulus": 182.94653227297943,
+                "Yield Strength": 89.7818,
+            }
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "filepath, extracted_series", paths_and_extract_values_series_long
+)
+def test_extract_values_long(filepath, extracted_series):
+
+    obj = Tensile._test_long()
+
+    assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
+
+
+@pytest.mark.parametrize(
+    "filepath, extracted_series", paths_and_extract_values_series_trans
+)
+def test_extract_values_trans(filepath, extracted_series):
+
+    obj = Tensile._test_trans()
+
+    assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
+
+
+def test_summarise_long():
+
+    obj = Tensile._test_long()
+
+    truth_dict = OrderedDict(
+        {
+            "Specimen ID": [
+                "0034",
+                "0036",
+                "0033",
+                "0032",
+                "0038",
+                "0040",
+                "0031",
+                "0037",
+                "0035",
+                "0039",
+            ],
+            "UTS": [
+                784.4911,
+                784.1665,
+                764.4656,
+                782.9673,
+                739.3342,
+                806.6938,
+                720.6285,
+                778.8885,
+                809.7581,
+                805.4785,
+            ],
+            "Modulus": [
+                229.99812783980784,
+                210.5774902227845,
+                237.49691564169657,
+                227.20719368480655,
+                214.73703704359207,
+                226.24042185043274,
+                222.72607703734684,
+                222.34006012040436,
+                201.59969738297002,
+                227.92695631351344,
+            ],
+        }
+    )
+
+    test_df = (
+        obj.summarise()
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
+    truth_df = (
+        pd.DataFrame(truth_dict)
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
+
+    assert_frame_equal(test_df, truth_df)
+
+
+def test_summarise_trans():
+
+    obj = Tensile._test_trans()
+
+    truth_dict = OrderedDict(
+        {
+            "Specimen ID": [
+                "004",
+                "003",
+                "005",
+                "006",
+                "009",
+                "007",
+                "008",
+                "001",
+                "002",
+                "010",
+            ],
+            "UTS": [
+                190.4115,
+                194.3136,
+                184.7623,
+                180.8582,
+                188.4382,
+                151.3554,
+                183.7281,
+                168.0556,
+                191.4301,
+                180.2974,
+            ],
+            "Modulus": [
+                152.57936457584347,
+                145.2465016821223,
+                178.20932823593682,
+                154.94934554636595,
+                177.04030085330862,
+                174.266659531658,
+                190.00716803363935,
+                182.94653227297943,
+                186.87429547855706,
+                171.04161005434793,
+            ],
+            "Yield Strength": [
+                77.2231,
+                86.8556,
+                89.6358,
+                86.4215,
+                89.108,
+                88.398,
+                85.1674,
+                89.7818,
+                90.1102,
+                83.3453,
+            ],
+        }
+    )
+
+    test_df = (
+        obj.summarise()
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
+    truth_df = (
+        pd.DataFrame(truth_dict)
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
+
+    assert_frame_equal(test_df, truth_df)
