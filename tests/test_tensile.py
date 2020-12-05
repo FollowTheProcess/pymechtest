@@ -11,6 +11,7 @@ import pandas as pd
 import pytest
 from numpy.testing import assert_almost_equal
 from pandas.testing import assert_frame_equal, assert_series_equal
+from collections import OrderedDict
 
 from pymechtest import Tensile
 
@@ -470,7 +471,7 @@ def test_summarise_long():
 
     obj = Tensile._test_long()
 
-    truth_df = pd.DataFrame(
+    truth_dict = OrderedDict(
         {
             "Specimen ID": [
                 "0034",
@@ -512,7 +513,7 @@ def test_summarise_long():
     )
 
     test_df = obj.summarise().convert_dtypes()
-    truth_df = truth_df.convert_dtypes()
+    truth_df = pd.DataFrame(truth_dict).convert_dtypes()
 
     assert_frame_equal(test_df, truth_df)
 
@@ -521,7 +522,7 @@ def test_summarise_trans():
 
     obj = Tensile._test_trans()
 
-    truth_df = pd.DataFrame(
+    truth_dict = OrderedDict(
         {
             "Specimen ID": [
                 "004",
@@ -575,6 +576,6 @@ def test_summarise_trans():
     )
 
     test_df = obj.summarise().convert_dtypes()
-    truth_df = truth_df.convert_dtypes()
+    truth_df = pd.DataFrame(truth_dict).convert_dtypes()
 
     assert_frame_equal(test_df, truth_df)
