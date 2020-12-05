@@ -3,7 +3,7 @@ name: Lint
 on: [push, pull_request]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +15,6 @@ jobs:
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt
           pip install black flake8 isort mypy
           pip install nox
           pip install .
