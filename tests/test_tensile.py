@@ -5,7 +5,7 @@ Author: Tom Fleet
 Created: 28/11/2020
 """
 
-from collections import OrderedDict
+import collections
 from pathlib import Path
 
 import pandas as pd
@@ -471,7 +471,7 @@ def test_summarise_long():
 
     obj = Tensile._test_long()
 
-    truth_dict = OrderedDict(
+    truth_dict = collections.OrderedDict(
         {
             "Specimen ID": [
                 "0034",
@@ -534,7 +534,7 @@ def test_summarise_trans():
 
     obj = Tensile._test_trans()
 
-    truth_dict = OrderedDict(
+    truth_dict = collections.OrderedDict(
         {
             "Specimen ID": [
                 "004",
