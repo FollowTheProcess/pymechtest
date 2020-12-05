@@ -511,7 +511,7 @@ def test_summarise_long():
         }
     )
 
-    assert_frame_equal(obj.summarise(), truth_df.convert_dtypes())
+    assert_frame_equal(obj.summarise().sort_index(), truth_df.convert_dtypes())
 
 
 def test_summarise_trans():
@@ -571,4 +571,4 @@ def test_summarise_trans():
         }
     )
 
-    assert_frame_equal(obj.summarise(), truth_df.convert_dtypes())
+    assert_frame_equal(obj.summarise().sort_index(), truth_df.convert_dtypes())
