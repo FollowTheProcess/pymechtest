@@ -511,10 +511,10 @@ def test_summarise_long():
         }
     )
 
-    assert_frame_equal(
-        obj.summarise().sort_values(by="Specimen ID").reset_index().convert_dtypes(),
-        truth_df.sort_values(by="Specimen ID").reset_index().convert_dtypes(),
-    )
+    test_df = obj.summarise().sort_index().sort_values("Specimen ID").convert_dtypes()
+    truth_df = truth_df.sort_index().sort_values("Specimen ID").convert_dtypes()
+
+    assert_frame_equal(test_df, truth_df)
 
 
 def test_summarise_trans():
@@ -574,7 +574,7 @@ def test_summarise_trans():
         }
     )
 
-    assert_frame_equal(
-        obj.summarise().sort_values(by="Specimen ID").reset_index().convert_dtypes(),
-        truth_df.sort_values(by="Specimen ID").reset_index().convert_dtypes(),
-    )
+    test_df = obj.summarise().sort_index().sort_values("Specimen ID").convert_dtypes()
+    truth_df = truth_df.sort_index().sort_values("Specimen ID").convert_dtypes()
+
+    assert_frame_equal(test_df, truth_df)
