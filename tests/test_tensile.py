@@ -19,9 +19,6 @@ from pymechtest import Tensile
 LONG_DATA = Path(__file__).parents[1].resolve().joinpath("data/Long")
 TRANS_DATA = Path(__file__).parents[1].resolve().joinpath("data/Trans")
 
-LONG_FILE = [f for f in LONG_DATA.rglob("*.csv")][0]
-TRANS_FILE = [f for f in TRANS_DATA.rglob("*.csv")][0]
-
 
 def test_tensile_init():
 
@@ -601,5 +598,88 @@ def test_summarise_trans():
         .drop(columns=["index"])
         .convert_dtypes()
     )
+
+    assert_frame_equal(test_df, truth_df)
+
+
+def test_stats_long():
+
+    obj = Tensile._test_long()
+
+    truth_df = pd.DataFrame.from_dict(
+        {
+            "UTS": {
+                "count": 10.0,
+                "mean": 777.68721,
+                "std": 29.176355245508496,
+                "cov%": 3.7516825364157005,
+                "min": 720.6285,
+                "25%": 768.071325,
+                "50%": 783.5669,
+                "75%": 800.23165,
+                "max": 809.7581,
+            },
+            "Modulus": {
+                "count": 10.0,
+                "mean": 222.0849977137355,
+                "std": 10.457940035367969,
+                "cov%": 4.708980860043554,
+                "min": 201.59969738297002,
+                "25%": 216.63779281279514,
+                "50%": 224.4832494438898,
+                "75%": 227.7470156563367,
+                "max": 237.49691564169657,
+            },
+        }
+    )
+
+    test_df = obj.stats()
+
+    assert_frame_equal(test_df, truth_df)
+
+
+def test_stats_trans():
+
+    obj = Tensile._test_trans()
+
+    truth_df = pd.DataFrame.from_dict(
+        {
+            "UTS": {
+                "count": 10.0,
+                "mean": 181.36503999999996,
+                "std": 12.897374951964279,
+                "cov%": 7.111279523310713,
+                "min": 151.3554,
+                "25%": 180.4376,
+                "50%": 184.2452,
+                "75%": 189.91817500000002,
+                "max": 194.3136,
+            },
+            "Modulus": {
+                "count": 10.0,
+                "mean": 171.3161106264759,
+                "std": 15.327189004438782,
+                "cov%": 8.946729498112978,
+                "min": 145.2465016821223,
+                "25%": 158.97241167336142,
+                "50%": 175.6534801924833,
+                "75%": 181.76223126371877,
+                "max": 190.00716803363935,
+            },
+            "Yield Strength": {
+                "count": 10.0,
+                "mean": 86.60467,
+                "std": 3.970067854178035,
+                "cov%": 4.584126761499161,
+                "min": 77.2231,
+                "25%": 85.480925,
+                "50%": 87.6268,
+                "75%": 89.50385,
+                "max": 90.1102,
+            },
+        }
+    )
+
+    test_df = obj.stats()
 
     assert_frame_equal(test_df, truth_df)
