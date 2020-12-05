@@ -7,8 +7,10 @@ Created: 28/11/2020
 
 from pathlib import Path
 
+import pandas as pd
 import pytest
 from numpy.testing import assert_almost_equal
+from pandas.testing import assert_frame_equal, assert_series_equal
 
 from pymechtest import Tensile
 
@@ -249,3 +251,324 @@ def test_calc_yield_strength(filepath, yield_strength):
     obj = Tensile._test_trans()
 
     assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength)
+
+
+paths = [f for f in TRANS_DATA.rglob("*.csv")] + [f for f in LONG_DATA.rglob("*.csv")]
+
+
+@pytest.mark.parametrize("filepath", paths)
+def test_calc_yield_raises_attribute_error_if_yield_false(filepath):
+
+    # _test_long means expect_yield = False
+    obj = Tensile._test_long()
+
+    # Trans specimens data (no yield expected)
+    df = obj._load(fp=filepath)
+
+    with pytest.raises(AttributeError):
+        obj._calc_yield(df)
+
+
+paths_and_extract_values_series_long = [
+    (
+        LONG_DATA.joinpath("Specimen_RawData_1.csv"),
+        pd.Series(
+            data={"Specimen ID": "0038", "UTS": 739.3342, "Modulus": 214.73703704359207}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_10.csv"),
+        pd.Series(
+            data={"Specimen ID": "0039", "UTS": 805.4785, "Modulus": 227.92695631351344}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_2.csv"),
+        pd.Series(
+            data={"Specimen ID": "0031", "UTS": 720.6285, "Modulus": 222.72607703734684}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_3.csv"),
+        pd.Series(
+            data={"Specimen ID": "0040", "UTS": 806.6938, "Modulus": 226.24042185043274}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_4.csv"),
+        pd.Series(
+            data={"Specimen ID": "0032", "UTS": 782.9673, "Modulus": 227.20719368480655}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_5.csv"),
+        pd.Series(
+            data={"Specimen ID": "0033", "UTS": 764.4656, "Modulus": 237.49691564169657}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_6.csv"),
+        pd.Series(
+            data={"Specimen ID": "0034", "UTS": 784.4911, "Modulus": 229.99812783980784}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_7.csv"),
+        pd.Series(
+            data={"Specimen ID": "0036", "UTS": 784.1665, "Modulus": 210.5774902227845}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_8.csv"),
+        pd.Series(
+            data={"Specimen ID": "0035", "UTS": 809.7581, "Modulus": 201.59969738297002}
+        ),
+    ),
+    (
+        LONG_DATA.joinpath("Specimen_RawData_9.csv"),
+        pd.Series(
+            data={"Specimen ID": "0037", "UTS": 778.8885, "Modulus": 222.34006012040436}
+        ),
+    ),
+]
+
+paths_and_extract_values_series_trans = [
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_10.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "010",
+                "UTS": 180.2974,
+                "Modulus": 171.04161005434793,
+                "Yield Strength": 83.3453,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_1.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "009",
+                "UTS": 188.4382,
+                "Modulus": 177.04030085330862,
+                "Yield Strength": 89.108,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_2.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "008",
+                "UTS": 183.7281,
+                "Modulus": 190.00716803363935,
+                "Yield Strength": 85.1674,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_3.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "007",
+                "UTS": 151.3554,
+                "Modulus": 174.266659531658,
+                "Yield Strength": 88.398,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_4.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "006",
+                "UTS": 180.8582,
+                "Modulus": 154.94934554636595,
+                "Yield Strength": 86.4215,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_5.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "005",
+                "UTS": 184.7623,
+                "Modulus": 178.20932823593682,
+                "Yield Strength": 89.6358,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_6.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "004",
+                "UTS": 190.4115,
+                "Modulus": 152.57936457584347,
+                "Yield Strength": 77.2231,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_7.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "003",
+                "UTS": 194.3136,
+                "Modulus": 145.2465016821223,
+                "Yield Strength": 86.8556,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_8.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "002",
+                "UTS": 191.4301,
+                "Modulus": 186.87429547855706,
+                "Yield Strength": 90.1102,
+            }
+        ),
+    ),
+    (
+        TRANS_DATA.joinpath("Specimen_RawData_9.csv"),
+        pd.Series(
+            data={
+                "Specimen ID": "001",
+                "UTS": 168.0556,
+                "Modulus": 182.94653227297943,
+                "Yield Strength": 89.7818,
+            }
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "filepath, extracted_series", paths_and_extract_values_series_long
+)
+def test_extract_values_long(filepath, extracted_series):
+
+    obj = Tensile._test_long()
+
+    assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
+
+
+@pytest.mark.parametrize(
+    "filepath, extracted_series", paths_and_extract_values_series_trans
+)
+def test_extract_values_trans(filepath, extracted_series):
+
+    obj = Tensile._test_trans()
+
+    assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
+
+
+def test_summarise_long():
+
+    obj = Tensile._test_long()
+
+    truth_df = pd.DataFrame.from_dict(
+        {
+            "Specimen ID": {
+                0: "0034",
+                1: "0036",
+                2: "0033",
+                3: "0032",
+                4: "0038",
+                5: "0040",
+                6: "0031",
+                7: "0037",
+                8: "0035",
+                9: "0039",
+            },
+            "UTS": {
+                0: 784.4911,
+                1: 784.1665,
+                2: 764.4656,
+                3: 782.9673,
+                4: 739.3342,
+                5: 806.6938,
+                6: 720.6285,
+                7: 778.8885,
+                8: 809.7581,
+                9: 805.4785,
+            },
+            "Modulus": {
+                0: 229.99812783980784,
+                1: 210.5774902227845,
+                2: 237.49691564169657,
+                3: 227.20719368480655,
+                4: 214.73703704359207,
+                5: 226.24042185043274,
+                6: 222.72607703734684,
+                7: 222.34006012040436,
+                8: 201.59969738297002,
+                9: 227.92695631351344,
+            },
+        }
+    )
+
+    assert_frame_equal(obj.summarise(), truth_df.convert_dtypes())
+
+
+def test_summarise_trans():
+
+    obj = Tensile._test_trans()
+
+    truth_df = pd.DataFrame.from_dict(
+        {
+            "Specimen ID": {
+                0: "004",
+                1: "003",
+                2: "005",
+                3: "006",
+                4: "009",
+                5: "007",
+                6: "008",
+                7: "001",
+                8: "002",
+                9: "010",
+            },
+            "UTS": {
+                0: 190.4115,
+                1: 194.3136,
+                2: 184.7623,
+                3: 180.8582,
+                4: 188.4382,
+                5: 151.3554,
+                6: 183.7281,
+                7: 168.0556,
+                8: 191.4301,
+                9: 180.2974,
+            },
+            "Modulus": {
+                0: 152.57936457584347,
+                1: 145.2465016821223,
+                2: 178.20932823593682,
+                3: 154.94934554636595,
+                4: 177.04030085330862,
+                5: 174.266659531658,
+                6: 190.00716803363935,
+                7: 182.94653227297943,
+                8: 186.87429547855706,
+                9: 171.04161005434793,
+            },
+            "Yield Strength": {
+                0: 77.2231,
+                1: 86.8556,
+                2: 89.6358,
+                3: 86.4215,
+                4: 89.108,
+                5: 88.398,
+                6: 85.1674,
+                7: 89.7818,
+                8: 90.1102,
+                9: 83.3453,
+            },
+        }
+    )
+
+    assert_frame_equal(obj.summarise(), truth_df.convert_dtypes())

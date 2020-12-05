@@ -30,33 +30,34 @@ class Tensile:
     Base Tensile data class representing a group of data from Tensile tests.
 
     Args:
-        folder (Union[Path, str]): String or 'pathlike' folder containing the data csv files.
+        folder (Union[Path, str]): String or 'pathlike' folder containing the
+            data csv files.
 
         stress_col (str): Name of the column containing stress data. Must be in MPa.
 
         strain_col (str): Name of the column containing strain data. Must be in %.
 
-        id_row (int): Row number of the specimen ID. Most test machines export a headed csv
-            file with some metadata like date, test method name etc, specimen ID should be
-            contained in this section.
+        id_row (int): Row number of the specimen ID. Most test machines export a
+            headed csv file with some metadata like date, test method name etc,
+            specimen ID should be contained in this section.
 
             Pass the row number of the line containing this information.
 
-        skip_rows (Union[int, List[int]]): Rows to skip during loading of the csv file.
-            Typically there is some metadata at the top, skip this and load only the data
-            by passing skip_rows.
+        skip_rows (Union[int, List[int]]): Rows to skip during loading of the csv.
+            Typically there is some metadata at the top, skip this and load
+            only the data by passing skip_rows.
 
             Follows pandas skiprows syntax so can be an integer or a list of integers.
 
-            Don't worry about conflict between skipping rows and the id_row, grabbing the
-            specimen ID is handled seperately.
+            Don't worry about conflict between skipping rows and the id_row,
+            grabbing the specimen ID is handled seperately.
 
         strain1 (float): Lower strain bound for modulus calculation. Must be in %.
 
         strain2 (float): Upper strain bound for modulus calculation. Must be in %.
 
-        expect_yield (bool): Whether the specimens are expected to be elastic to failure (False)
-            or they are expected to have a yield strength (True).
+        expect_yield (bool): Whether the specimens are expected to be elastic to
+            failure (False) or they are expected to have a yield strength (True).
     """
 
     folder: Union[Path, str]
@@ -145,10 +146,6 @@ class Tensile:
         df = pd.read_csv(fp, skiprows=self.skip_rows, thousands=",")
         df["Specimen ID"] = self._get_specimen_id(fp)
 
-        # Reorder the column for OCD reasons
-        col = df.pop("Specimen ID")
-        df.insert(0, "Specimen ID", col)
-
         return df
 
     def _calc_slope(self, df: pd.DataFrame) -> Tuple[float, float]:
@@ -211,8 +208,11 @@ class Tensile:
             float: Offset yield strength in MPa
         """
 
-        # Internal correctness check, should never be called on a Tensile(expect_yield=False)
-        assert self.expect_yield
+        if not self.expect_yield:
+            raise AttributeError(
+                f"""Cannot calculate yield strength when expect_yield is False.
+                expect_yield = {self.expect_yield}"""
+            )
 
         slope, intercept = self._calc_slope(df)
 
@@ -237,6 +237,39 @@ class Tensile:
 
         return yield_strength
 
+    def _extract_values(self, df: pd.DataFrame) -> pd.Series:
+        """
+        Extracts key test values from a specimens' data.
+
+        Uses a pd.Series to make summarising in a dataframe later
+        much easier.
+
+        Args:
+            df (pd.DataFrame): Specimens' data
+
+        Returns:
+            pd.Series: Series of key test values.
+        """
+
+        cols = ["Specimen ID", "UTS", "Modulus"]
+
+        # Only one specimen in df here so specimen ID is constant for each
+        spec_id = df["Specimen ID"].iloc[0]
+        uts = df[self.stress_col].max()
+        modulus = self._calc_modulus(df)
+
+        vals = [spec_id, uts, modulus]
+
+        if self.expect_yield:
+            cols.append("Yield Strength")
+            yield_strength = self._calc_yield(df)
+
+            vals.append(yield_strength)
+
+        data_dict = {col: val for (col, val) in zip(cols, vals)}
+
+        return pd.Series(data=data_dict)
+
     def load_all(self) -> pd.DataFrame:
         """
         Loads all the found files in 'folder' into a dataframe.
@@ -251,9 +284,40 @@ class Tensile:
         # Cast to Path so can glob even if user passed str
         fp = Path(self.folder).resolve()
 
-        df = pd.concat([self._load(f) for f in fp.rglob("*.csv")])
+        df = (
+            (pd.concat([self._load(f) for f in fp.rglob("*.csv")]))
+            .assign(spec_id=lambda x: pd.Categorical(x["Specimen ID"]))
+            .drop(columns=["Specimen ID"])
+            .rename(columns={"spec_id": "Specimen ID"})
+        )
 
-        # Cast to categorical for memory saving
-        df["Specimen ID"] = df["Specimen ID"].astype("category")
+        # Reorder the columns for OCD reasons
+        col = df.pop("Specimen ID")
+        df.insert(0, "Specimen ID", col)
+
+        # So we can avoid having to load data repeatedly
+        self._loaded_all = True
+        self._df = df
 
         return df
+
+    def summarise(self) -> pd.DataFrame:
+        """
+        High level summary method, generates a dataframe containing key
+        test values such as UTS, Modulus etc. for all the data in the
+        target folder.
+
+        Returns:
+            pd.DataFrame: Dataframe containing test summary values for each
+                specimen.
+        """
+
+        fp = Path(self.folder).resolve()
+
+        rows = [
+            self._extract_values(df)
+            for df in [self._load(f) for f in fp.rglob("*.csv")]
+        ]
+
+        # .T transposes to that it's the expected dataframe format
+        return (pd.concat(rows, axis=1, ignore_index=True).T).convert_dtypes()

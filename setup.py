@@ -30,7 +30,8 @@ setup(
     name="pymechtest",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description="Python package to automate the boring bits of mechanical test data analysis!",
+    description="""Python package to automate the boring bits of mechanical
+    test data analysis!""",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/FollowTheProcess/pymechtest",
