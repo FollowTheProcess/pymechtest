@@ -5,13 +5,13 @@ Author: Tom Fleet
 Created: 28/11/2020
 """
 
+from collections import OrderedDict
 from pathlib import Path
 
 import pandas as pd
 import pytest
 from numpy.testing import assert_almost_equal
 from pandas.testing import assert_frame_equal, assert_series_equal
-from collections import OrderedDict
 
 from pymechtest import Tensile
 
@@ -512,8 +512,20 @@ def test_summarise_long():
         }
     )
 
-    test_df = obj.summarise().convert_dtypes()
-    truth_df = pd.DataFrame(truth_dict).convert_dtypes()
+    test_df = (
+        obj.summarise()
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
+    truth_df = (
+        pd.DataFrame(truth_dict)
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
 
     assert_frame_equal(test_df, truth_df)
 
@@ -575,7 +587,19 @@ def test_summarise_trans():
         }
     )
 
-    test_df = obj.summarise().convert_dtypes()
-    truth_df = pd.DataFrame(truth_dict).convert_dtypes()
+    test_df = (
+        obj.summarise()
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
+    truth_df = (
+        pd.DataFrame(truth_dict)
+        .sort_values("Specimen ID")
+        .reset_index()
+        .drop(columns=["index"])
+        .convert_dtypes()
+    )
 
     assert_frame_equal(test_df, truth_df)
