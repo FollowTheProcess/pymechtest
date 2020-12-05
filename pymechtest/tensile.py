@@ -317,3 +317,25 @@ class Tensile:
 
         # .T transposes to that it's the expected dataframe format
         return (pd.concat(rows, axis=1, ignore_index=True).T).convert_dtypes()
+
+    def stats(self) -> pd.DataFrame:
+        """
+        Returns a table of summary statistics e.g. mean, std, cov etc.
+        for the data in folder.
+
+        Uses pandas df.describe() to do the bulk of the work, just adds in
+        cov for good measure.
+
+        Returns:
+            pd.DataFrame: Summary statistics.
+        """
+
+        df = self.summarise().describe()
+
+        df.loc["cov%"] = df.loc["std"] / df.loc["mean"] * 100
+
+        # Reorganise so cov is close to std
+        new_index = ["count", "mean", "std", "cov%", "min", "25%", "50%", "75%", "max"]
+        df = df.reindex(new_index)
+
+        return df
