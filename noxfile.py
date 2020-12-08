@@ -10,8 +10,9 @@ def test(session):
     """
     Runs the test suite against all supported python versions.
     """
-    session.install("pytest", "pytest-cov")
+    session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(".")
+    session.install("pytest", "pytest-cov")
     # Posargs allows passing of tests directly
     tests = session.posargs or ["tests/"]
     session.run("pytest", "--cov=pymechtest", *tests)
@@ -22,8 +23,8 @@ def coverage(session):
     """
     Test coverage analysis.
     """
+    session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install("coverage")
-
     session.run("coverage", "report", "--fail-under=96", "--show-missing")
     session.run("coverage", "erase")
 
@@ -33,7 +34,7 @@ def lint(session):
     """
     Formats project with black and isort, then runs flake8 and mypy linting.
     """
-
+    session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install("black", "isort", "flake8", "mypy")
     session.run("isort", ".")
     session.run("black", ".")
@@ -58,6 +59,7 @@ def docs(session):
 
     # Clean any pre-built docs
     session.run("rm", "-rf", build_dir, external=True)
+    session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(
         "sphinx",
         "sphinx-autobuild",
