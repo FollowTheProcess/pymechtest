@@ -43,6 +43,71 @@ def test_tensile_init():
     assert obj.expect_yield is False
 
 
+def test_tensile_repr():
+
+    obj = Tensile(
+        folder="made/up/directory",
+        stress_col="Tensile stress",
+        strain_col="Tensile strain (Strain 1)",
+        id_row=3,
+        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
+        strain1=0.05,
+        strain2=0.15,
+        expect_yield=False,
+    )
+
+    assert (
+        obj.__repr__() == "Tensile(folder=made/up/directory, "
+        "stress_col='Tensile stress', "
+        "strain_col='Tensile strain (Strain 1)', "
+        "id_row=3, skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10], "
+        "strain1=0.05, strain2=0.15, expect_yield=False)"
+    )
+
+
+def test_tensile_eq():
+
+    obj = Tensile(
+        folder="made/up/directory",
+        stress_col="Tensile stress",
+        strain_col="Tensile strain (Strain 1)",
+        id_row=3,
+        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
+        strain1=0.05,
+        strain2=0.15,
+        expect_yield=False,
+    )
+
+    same = Tensile(
+        folder="made/up/directory",
+        stress_col="Tensile stress",
+        strain_col="Tensile strain (Strain 1)",
+        id_row=3,
+        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
+        strain1=0.05,
+        strain2=0.15,
+        expect_yield=False,
+    )
+
+    diff = Tensile(
+        folder="different/made/up/directory",
+        stress_col="Different stress col",
+        strain_col="This doesn't match either",
+        id_row=6,
+        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
+        strain1=0.025,
+        strain2=0.3,
+        expect_yield=True,
+    )
+
+    # Random different class, in this case a pathlib.Path
+    different_class = Path(__file__)
+
+    assert obj.__eq__(same) is True
+    assert obj.__eq__(diff) is False
+    assert obj.__eq__(different_class) is NotImplemented
+
+
 paths_and_specimen_ids = [
     (LONG_DATA.joinpath("Specimen_RawData_1.csv"), "0038"),
     (LONG_DATA.joinpath("Specimen_RawData_2.csv"), "0031"),

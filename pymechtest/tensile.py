@@ -10,58 +10,98 @@ from __future__ import annotations
 import collections
 import csv
 import itertools
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
 
+# TODO 08 Dec 2020: Create a BaseMechanicalTest with most of this in
+# Then its easier to implement shear, compression, flexure etc.
 
-@dataclass
+
 class Tensile:
-    """
-    Base Tensile data class representing a group of data from Tensile tests.
+    def __init__(
+        self,
+        folder: Union[Path, str],
+        stress_col: str,
+        strain_col: str,
+        id_row: int,
+        skip_rows: Union[int, List[int]],
+        strain1: float,
+        strain2: float,
+        expect_yield: bool,
+    ) -> None:
+        """
+        Base Tensile data class representing a group of data from Tensile tests.
 
-    Args:
-        folder (Union[Path, str]): String or 'pathlike' folder containing the
-            data csv files.
+        Args:
+            folder (Union[Path, str]): String or Path-like folder containing Tensile
+                test data.
+            stress_col (str): Name of the column containing stress data.
+            strain_col (str): Name of the column containing strain data.
+            id_row (int): Row number of the specimen ID. Most test machines export a
+                headed csv file with some metadata like date, test method name etc,
+                specimen ID should be contained in this section.
+            skip_rows (Union[int, List[int]]): Rows to skip during loading of the csv.
+                Typically there is some metadata at the top, skip this and load
+                only the data by passing skip_rows.
 
-        stress_col (str): Name of the column containing stress data. Must be in MPa.
+                Follows pandas skiprows syntax so can be an integer or a list
+                of integers.
 
-        strain_col (str): Name of the column containing strain data. Must be in %.
+                Don't worry about conflict between skipping rows and the id_row,
+                grabbing the specimen ID is handled seperately.
+            strain1 (float): Lower strain bound for modulus calculation. Must be in %.
+            strain2 (float): Upper strain bound for modulus calculation. Must be in %.
+            expect_yield (bool): Whether the specimens are expected to be elastic to
+                failure (False) or they are expected to have a yield strength (True).
+        """
 
-        id_row (int): Row number of the specimen ID. Most test machines export a
-            headed csv file with some metadata like date, test method name etc,
-            specimen ID should be contained in this section.
+        self.folder = folder
+        self.stress_col = stress_col
+        self.strain_col = strain_col
+        self.id_row = id_row
+        self.skip_rows = skip_rows
+        self.strain1 = strain1
+        self.strain2 = strain2
+        self.expect_yield = expect_yield
 
-            Pass the row number of the line containing this information.
+    def __repr__(self) -> str:
+        return (
+            self.__class__.__qualname__ + f"(folder={self.folder}, "
+            f"stress_col={self.stress_col!r}, "
+            f"strain_col={self.strain_col!r}, "
+            f"id_row={self.id_row!r}, "
+            f"skip_rows={self.skip_rows!r}, "
+            f"strain1={self.strain1!r}, "
+            f"strain2={self.strain2!r}, "
+            f"expect_yield={self.expect_yield!r})"
+        )
 
-        skip_rows (Union[int, List[int]]): Rows to skip during loading of the csv.
-            Typically there is some metadata at the top, skip this and load
-            only the data by passing skip_rows.
+    def __eq__(self, other) -> bool:
+        if other.__class__ is self.__class__:
 
-            Follows pandas skiprows syntax so can be an integer or a list of integers.
-
-            Don't worry about conflict between skipping rows and the id_row,
-            grabbing the specimen ID is handled seperately.
-
-        strain1 (float): Lower strain bound for modulus calculation. Must be in %.
-
-        strain2 (float): Upper strain bound for modulus calculation. Must be in %.
-
-        expect_yield (bool): Whether the specimens are expected to be elastic to
-            failure (False) or they are expected to have a yield strength (True).
-    """
-
-    folder: Union[Path, str]
-    stress_col: str
-    strain_col: str
-    id_row: int
-    skip_rows: Union[int, List[int]]
-    strain1: float
-    strain2: float
-    expect_yield: bool
+            return (
+                self.folder,
+                self.stress_col,
+                self.strain_col,
+                self.id_row,
+                self.skip_rows,
+                self.strain1,
+                self.strain2,
+                self.expect_yield,
+            ) == (
+                other.folder,
+                other.stress_col,
+                other.strain_col,
+                other.id_row,
+                other.skip_rows,
+                other.strain1,
+                other.strain2,
+                other.expect_yield,
+            )
+        return NotImplemented
 
     @classmethod
     def _test_long(cls) -> Tensile:
