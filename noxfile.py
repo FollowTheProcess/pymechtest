@@ -1,8 +1,18 @@
+"""
+Nox configuration file for the project
+
+Author: Tom Fleet
+Created: 08/12/2020
+"""
+
 from pathlib import Path
 
 import nox
 
 PROJECT_ROOT = Path(__file__).parent.resolve()
+
+# nox defaults to virtualenv which is now deprecated
+nox.options.default_venv_backend = "venv"
 
 
 @nox.session(python=["3.7", "3.8", "3.9"])
