@@ -336,61 +336,101 @@ paths_and_extract_values_series_long = [
     (
         LONG_DATA.joinpath("Specimen_RawData_1.csv"),
         pd.Series(
-            data={"Specimen ID": "0038", "UTS": 739.3342, "Modulus": 214.73703704359207}
+            data={
+                "Specimen ID": "0038",
+                "Strength": 739.3342,
+                "Modulus": 214.73703704359207,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_10.csv"),
         pd.Series(
-            data={"Specimen ID": "0039", "UTS": 805.4785, "Modulus": 227.92695631351344}
+            data={
+                "Specimen ID": "0039",
+                "Strength": 805.4785,
+                "Modulus": 227.92695631351344,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_2.csv"),
         pd.Series(
-            data={"Specimen ID": "0031", "UTS": 720.6285, "Modulus": 222.72607703734684}
+            data={
+                "Specimen ID": "0031",
+                "Strength": 720.6285,
+                "Modulus": 222.72607703734684,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_3.csv"),
         pd.Series(
-            data={"Specimen ID": "0040", "UTS": 806.6938, "Modulus": 226.24042185043274}
+            data={
+                "Specimen ID": "0040",
+                "Strength": 806.6938,
+                "Modulus": 226.24042185043274,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_4.csv"),
         pd.Series(
-            data={"Specimen ID": "0032", "UTS": 782.9673, "Modulus": 227.20719368480655}
+            data={
+                "Specimen ID": "0032",
+                "Strength": 782.9673,
+                "Modulus": 227.20719368480655,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_5.csv"),
         pd.Series(
-            data={"Specimen ID": "0033", "UTS": 764.4656, "Modulus": 237.49691564169657}
+            data={
+                "Specimen ID": "0033",
+                "Strength": 764.4656,
+                "Modulus": 237.49691564169657,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_6.csv"),
         pd.Series(
-            data={"Specimen ID": "0034", "UTS": 784.4911, "Modulus": 229.99812783980784}
+            data={
+                "Specimen ID": "0034",
+                "Strength": 784.4911,
+                "Modulus": 229.99812783980784,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_7.csv"),
         pd.Series(
-            data={"Specimen ID": "0036", "UTS": 784.1665, "Modulus": 210.5774902227845}
+            data={
+                "Specimen ID": "0036",
+                "Strength": 784.1665,
+                "Modulus": 210.5774902227845,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_8.csv"),
         pd.Series(
-            data={"Specimen ID": "0035", "UTS": 809.7581, "Modulus": 201.59969738297002}
+            data={
+                "Specimen ID": "0035",
+                "Strength": 809.7581,
+                "Modulus": 201.59969738297002,
+            }
         ),
     ),
     (
         LONG_DATA.joinpath("Specimen_RawData_9.csv"),
         pd.Series(
-            data={"Specimen ID": "0037", "UTS": 778.8885, "Modulus": 222.34006012040436}
+            data={
+                "Specimen ID": "0037",
+                "Strength": 778.8885,
+                "Modulus": 222.34006012040436,
+            }
         ),
     ),
 ]
@@ -401,7 +441,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "010",
-                "UTS": 180.2974,
+                "Strength": 180.2974,
                 "Modulus": 171.04161005434793,
                 "Yield Strength": 83.3453,
             }
@@ -412,7 +452,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "009",
-                "UTS": 188.4382,
+                "Strength": 188.4382,
                 "Modulus": 177.04030085330862,
                 "Yield Strength": 89.108,
             }
@@ -423,7 +463,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "008",
-                "UTS": 183.7281,
+                "Strength": 183.7281,
                 "Modulus": 190.00716803363935,
                 "Yield Strength": 85.1674,
             }
@@ -434,7 +474,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "007",
-                "UTS": 151.3554,
+                "Strength": 151.3554,
                 "Modulus": 174.266659531658,
                 "Yield Strength": 88.398,
             }
@@ -445,7 +485,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "006",
-                "UTS": 180.8582,
+                "Strength": 180.8582,
                 "Modulus": 154.94934554636595,
                 "Yield Strength": 86.4215,
             }
@@ -456,7 +496,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "005",
-                "UTS": 184.7623,
+                "Strength": 184.7623,
                 "Modulus": 178.20932823593682,
                 "Yield Strength": 89.6358,
             }
@@ -467,7 +507,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "004",
-                "UTS": 190.4115,
+                "Strength": 190.4115,
                 "Modulus": 152.57936457584347,
                 "Yield Strength": 77.2231,
             }
@@ -478,7 +518,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "003",
-                "UTS": 194.3136,
+                "Strength": 194.3136,
                 "Modulus": 145.2465016821223,
                 "Yield Strength": 86.8556,
             }
@@ -489,7 +529,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "002",
-                "UTS": 191.4301,
+                "Strength": 191.4301,
                 "Modulus": 186.87429547855706,
                 "Yield Strength": 90.1102,
             }
@@ -500,7 +540,7 @@ paths_and_extract_values_series_trans = [
         pd.Series(
             data={
                 "Specimen ID": "001",
-                "UTS": 168.0556,
+                "Strength": 168.0556,
                 "Modulus": 182.94653227297943,
                 "Yield Strength": 89.7818,
             }
@@ -547,7 +587,7 @@ def test_summarise_long():
                 "0035",
                 "0039",
             ],
-            "UTS": [
+            "Strength": [
                 784.4911,
                 784.1665,
                 764.4656,
@@ -610,7 +650,7 @@ def test_summarise_trans():
                 "002",
                 "010",
             ],
-            "UTS": [
+            "Strength": [
                 190.4115,
                 194.3136,
                 184.7623,
@@ -673,7 +713,7 @@ def test_stats_long():
 
     truth_df = pd.DataFrame.from_dict(
         {
-            "UTS": {
+            "Strength": {
                 "count": 10.0,
                 "mean": 777.68721,
                 "std": 29.176355245508496,
@@ -709,7 +749,7 @@ def test_stats_trans():
 
     truth_df = pd.DataFrame.from_dict(
         {
-            "UTS": {
+            "Strength": {
                 "count": 10.0,
                 "mean": 181.36503999999996,
                 "std": 12.897374951964279,
