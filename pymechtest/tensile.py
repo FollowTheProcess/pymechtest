@@ -18,9 +18,6 @@ import altair_data_server
 import numpy as np
 import pandas as pd
 
-# TODO 08 Dec 2020: Create a BaseMechanicalTest with most of this in
-# Then its easier to implement shear, compression, flexure etc.
-
 
 class Tensile:
     def __init__(
@@ -400,7 +397,7 @@ class Tensile:
         Returns:
             alt.Chart: Stress-strain plot.
         """
-
+        # Altair will warn if over 5,000 rows. This is cleanest solution.
         alt.data_transformers.enable("data_server")
 
         df = self.load_all()
