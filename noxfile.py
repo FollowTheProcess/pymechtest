@@ -35,7 +35,7 @@ def coverage(session):
     """
     session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install("coverage")
-    session.run("coverage", "report", "--fail-under=96", "--show-missing")
+    session.run("coverage", "report", "--show-missing")
     session.run("coverage", "erase")
 
 

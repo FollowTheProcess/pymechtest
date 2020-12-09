@@ -13,10 +13,10 @@ import itertools
 from pathlib import Path
 from typing import List, Tuple, Union
 
-import numpy as np
-import pandas as pd
 import altair as alt
 import altair_data_server
+import numpy as np
+import pandas as pd
 
 # TODO 08 Dec 2020: Create a BaseMechanicalTest with most of this in
 # Then its easier to implement shear, compression, flexure etc.
