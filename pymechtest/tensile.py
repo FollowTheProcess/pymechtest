@@ -15,6 +15,8 @@ from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
+import altair as alt
+import altair_data_server
 
 # TODO 08 Dec 2020: Create a BaseMechanicalTest with most of this in
 # Then its easier to implement shear, compression, flexure etc.
@@ -379,3 +381,38 @@ class Tensile:
         df = df.reindex(new_index)
 
         return df
+
+    def plot_curves(
+        self, title: str = "Stress-Strain Curves", height: int = 500, width: int = 750
+    ) -> alt.Chart:
+        """
+        Generates a nice looking stress-strain plot for every specimen in your sample.
+
+        Uses Altair in the backend so any plot can be easily exported as png, svg etc.
+        Or hosted on a web page if you're really fancy!
+
+        Args:
+            title (str, optional): Title for the plot.
+                Defaults to "Stress-Strain Curves".
+            height (int, optional): Height of the plot. Defaults to 500.
+            width (int, optional): Width of the plot. Defaults to 750.
+
+        Returns:
+            alt.Chart: Stress-strain plot.
+        """
+
+        alt.data_transformers.enable("data_server")
+
+        df = self.load_all()
+
+        chart = (
+            alt.Chart(data=df, title=title, height=height, width=width)
+            .mark_line(size=1)
+            .encode(
+                x=alt.X(f"{self.strain_col}:Q", title="Strain (%)"),
+                y=alt.Y(f"{self.stress_col}:Q", title="Stress (MPa)"),
+                color=alt.Color("Specimen ID:N", title="Specimen ID"),
+            )
+        )
+
+        return chart
