@@ -1,0 +1,33 @@
+site_name: pymechtest
+repo_url: https://github.com/FollowTheProcess/pymechtest
+site_url: https://followtheprocess.github.io/pymechtest/
+site_description: Python package to automate the boring bits of mechanical test data analysis!
+site_author: Tom Fleet
+use_directory_urls: false
+nav:
+  - Home:
+      - Index: index.md
+plugins:
+  - mkdocstrings:
+      watch:
+        - pymechtest
+  - search
+theme:
+  name: material
+  font:
+    text: Ubuntu
+    code: Ubuntu Mono
+  feature:
+    tabs: true
+  palette:
+    primary: indigo
+    accent: blue
+markdown_extensions:
+  - codehilite
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.highlight:
+      use_pygments: true
+  - toc:
+      permalink: true

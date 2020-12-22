@@ -56,32 +56,9 @@ def lint(session):
 def docs(session):
     """
     Builds the project documentation.
-
-    By default just builds (fail on sphinx warning).
-
-    If '-- serve' is passed, will use sphinx-autobuild and open a browser.
     """
-    build_dir = str(PROJECT_ROOT.joinpath("docs/_build/html"))
-    source_dir = str(PROJECT_ROOT.joinpath("docs/"))
-
-    # Key: -b = build, html = Build type, -W = Fail on warning
-    sphinx_args = ["-b", "html", "-W", source_dir, build_dir]
-
-    # Clean any pre-built docs
-    session.run("rm", "-rf", build_dir, external=True)
     session.install("--upgrade", "pip", "setuptools", "wheel")
-    session.install(
-        "sphinx",
-        "sphinx-autobuild",
-        "sphinx-rtd-theme",
-        "recommonmark",
-    )
+    session.install("mkdocs", "mkdocs-material", "mkdocstrings")
     session.install(".")
 
-    if "serve" in session.posargs:
-        sphinx_cmd = "sphinx-autobuild"
-        sphinx_args.insert(0, "--open-browser")
-    else:
-        sphinx_cmd = "sphinx-build"
-
-    session.run(sphinx_cmd, *sphinx_args)
+    session.run("mkdocs", "build", "--clean")
