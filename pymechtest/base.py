@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import List, Tuple, Union
 
 import altair as alt
-import altair_data_server
+import altair_data_server  # noqa: F401
 import numpy as np
 import pandas as pd
 
@@ -35,11 +35,15 @@ class BaseMechanicalTest:
         Args:
             folder (Union[Path, str]): String or Path-like folder containing
                 test data.
+
             stress_col (str): Name of the column containing stress data.
+
             strain_col (str): Name of the column containing strain data.
+
             id_row (int): Row number of the specimen ID. Most test machines export a
                 headed csv file with some metadata like date, test method name etc,
                 specimen ID should be contained in this section.
+
             skip_rows (Union[int, List[int]]): Rows to skip during loading of the csv.
                 Typically there is some metadata at the top, skip this and load
                 only the data by passing skip_rows.
@@ -49,8 +53,11 @@ class BaseMechanicalTest:
 
                 Don't worry about conflict between skipping rows and the id_row,
                 grabbing the specimen ID is handled seperately.
+
             strain1 (float): Lower strain bound for modulus calculation. Must be in %.
+
             strain2 (float): Upper strain bound for modulus calculation. Must be in %.
+
             expect_yield (bool): Whether the specimens are expected to be elastic to
                 failure (False) or they are expected to have a yield strength (True).
         """
@@ -66,7 +73,7 @@ class BaseMechanicalTest:
 
     def __repr__(self) -> str:
         return (
-            self.__class__.__qualname__ + f"(folder={self.folder}, "
+            self.__class__.__qualname__ + f"(folder={self.folder!r}, "
             f"stress_col={self.stress_col!r}, "
             f"strain_col={self.strain_col!r}, "
             f"id_row={self.id_row!r}, "
@@ -171,6 +178,7 @@ class BaseMechanicalTest:
 
         Args:
             df (pd.DataFrame): DataFrame containing single specimens' data.
+
             offset (float, optional): Strain offset to apply (%). Defaults to 0.2.
 
         Returns:
@@ -314,3 +322,52 @@ class BaseMechanicalTest:
         df = df.reindex(new_index)
 
         return df
+
+    def plot_curves(
+        self,
+        title: str = "Stress-Strain Curves",
+        x_label: str = "Strain (%)",
+        y_label: str = "Stress (MPa)",
+        height: int = 500,
+        width: int = 750,
+    ) -> alt.Chart:
+        """
+        Creates a nice looking stress strain plot of all the specimens using altair.
+
+        Args:
+            title (str, optional): Title for the plot.
+                Defaults to "Stress-Strain Curves".
+
+            x_label (str, optional): Label for x-axis.
+                Defaults to "Strain (%)".
+
+            y_label (str, optional): Label for y-axis.
+                Defaults to "Stress (MPa)".
+
+            height (int, optional): Height of the plot.
+                Defaults to 500.
+
+            width (int, optional): Width of the plot.
+                Defaults to 750.
+
+        Returns:
+            alt.Chart: Stress strain plot.
+        """
+
+        # Altair will warn if over 5,000 rows in a notebook. This is cleanest solution.
+        alt.data_transformers.enable("data_server")
+
+        df = self.load_all()
+
+        chart = (
+            alt.Chart(data=df)
+            .mark_line(size=1)
+            .encode(
+                x=alt.X(f"{self.strain_col}:Q", title=x_label),
+                y=alt.Y(f"{self.stress_col}:Q", title=y_label),
+                color=alt.Color("Specimen ID:N", title="Specimen ID"),
+            )
+            .properties(title=title, height=height, width=width)
+        )
+
+        return chart
