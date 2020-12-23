@@ -1,11 +1,14 @@
 name: Release
-on: [push, pull_request]
+
+on:
+  push:
+    tags:
+      - "*"
 
 jobs:
-  deploy:
+  release:
     needs: Build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.9
