@@ -57,7 +57,7 @@ def test_tensile_repr():
     )
 
     assert (
-        obj.__repr__() == "Tensile(folder=made/up/directory, "
+        obj.__repr__() == "Tensile(folder='made/up/directory', "
         "stress_col='Tensile stress', "
         "strain_col='Tensile strain (Strain 1)', "
         "id_row=3, skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10], "
