@@ -51,7 +51,7 @@ setup(
         "Topic :: Scientific/Engineering",
         "Typing :: Typed",
     ],
-    packages=find_packages(exclude=["tests", "docs"]),
+    packages=find_packages(exclude=["tests", "docs", "data", "site"]),
     python_requires=">=3.7",
     install_requires=get_install_requirements("requirements.txt"),
     extras_require={"dev": get_install_requirements("requirements_dev.txt")},

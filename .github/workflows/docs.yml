@@ -15,7 +15,6 @@ jobs:
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          pip install mkdocs mkdocs-material mkdocstrings
           pip install nox
           pip install .
 

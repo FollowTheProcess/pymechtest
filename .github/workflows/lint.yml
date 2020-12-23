@@ -15,7 +15,6 @@ jobs:
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          pip install black flake8 isort mypy
           pip install nox
           pip install .
       - name: Run Linting
