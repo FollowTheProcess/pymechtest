@@ -16,8 +16,8 @@ from pandas.testing import assert_frame_equal, assert_series_equal
 from pymechtest import Tensile
 
 # Data for testing & development only
-LONG_DATA = Path(__file__).parents[1].resolve().joinpath("data/Long")
-TRANS_DATA = Path(__file__).parents[1].resolve().joinpath("data/Trans")
+LONG_DATA = Path(__file__).parent.resolve().joinpath("data/Long")
+TRANS_DATA = Path(__file__).parent.resolve().joinpath("data/Trans")
 
 
 def test_tensile_init():
@@ -125,9 +125,9 @@ paths_and_specimen_ids = [
 
 
 @pytest.mark.parametrize("filepath, specimen_id", paths_and_specimen_ids)
-def test_get_specimen_id(filepath, specimen_id):
+def test_get_specimen_id(tensile_long, filepath, specimen_id):
 
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     assert obj._get_specimen_id(filepath) == specimen_id
 
@@ -160,17 +160,17 @@ paths_and_moduli_trans = [
 
 
 @pytest.mark.parametrize("filepath, modulus", paths_and_moduli_long)
-def test_calc_modulus_long(filepath, modulus):
+def test_calc_modulus_long(tensile_long, filepath, modulus):
 
-    long_obj = Tensile._test_long()
+    long_obj = tensile_long
 
     assert_almost_equal(long_obj._calc_modulus(long_obj._load(filepath)), modulus)
 
 
 @pytest.mark.parametrize("filepath, modulus", paths_and_moduli_trans)
-def test_calc_modulus_trans(filepath, modulus):
+def test_calc_modulus_trans(tensile_trans, filepath, modulus):
 
-    trans_obj = Tensile._test_trans()
+    trans_obj = tensile_trans
 
     assert_almost_equal(trans_obj._calc_modulus(trans_obj._load(filepath)), modulus)
 
@@ -203,24 +203,24 @@ paths_and_df_shapes_trans = [
 
 
 @pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_long)
-def test_load_long(filepath, df_shape):
+def test_load_long(tensile_long, filepath, df_shape):
 
-    long_obj = Tensile._test_long()
+    long_obj = tensile_long
 
     assert long_obj._load(filepath).shape == df_shape
 
 
 @pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_trans)
-def test_load_trans(filepath, df_shape):
+def test_load_trans(tensile_trans, filepath, df_shape):
 
-    trans_obj = Tensile._test_trans()
+    trans_obj = tensile_trans
 
     assert trans_obj._load(filepath).shape == df_shape
 
 
-def test_load_all_long():
+def test_load_all_long(tensile_long):
 
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     df = obj.load_all()
 
@@ -235,9 +235,9 @@ def test_load_all_long():
     ]
 
 
-def test_load_all_trans():
+def test_load_all_trans(tensile_trans):
 
-    obj = Tensile._test_trans()
+    obj = tensile_trans
 
     df = obj.load_all()
 
@@ -252,9 +252,9 @@ def test_load_all_trans():
     ]
 
 
-def test_specimen_id_column_long():
+def test_specimen_id_column_long(tensile_long):
 
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     df = obj.load_all()
 
@@ -273,9 +273,9 @@ def test_specimen_id_column_long():
     ]
 
 
-def test_specimen_id_column_trans():
+def test_specimen_id_column_trans(tensile_trans):
 
-    obj = Tensile._test_trans()
+    obj = tensile_trans
 
     df = obj.load_all()
 
@@ -309,9 +309,9 @@ paths_and_yield_strengths = [
 
 
 @pytest.mark.parametrize("filepath, yield_strength", paths_and_yield_strengths)
-def test_calc_yield_strength(filepath, yield_strength):
+def test_calc_yield_strength(tensile_trans, filepath, yield_strength):
 
-    obj = Tensile._test_trans()
+    obj = tensile_trans
 
     assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength)
 
@@ -320,10 +320,10 @@ paths = [f for f in TRANS_DATA.rglob("*.csv")] + [f for f in LONG_DATA.rglob("*.
 
 
 @pytest.mark.parametrize("filepath", paths)
-def test_calc_yield_raises_attribute_error_if_yield_false(filepath):
+def test_calc_yield_raises_attribute_error_if_yield_false(tensile_long, filepath):
 
     # _test_long means expect_yield = False
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     # Trans specimens data (no yield expected)
     df = obj._load(fp=filepath)
@@ -552,9 +552,9 @@ paths_and_extract_values_series_trans = [
 @pytest.mark.parametrize(
     "filepath, extracted_series", paths_and_extract_values_series_long
 )
-def test_extract_values_long(filepath, extracted_series):
+def test_extract_values_long(tensile_long, filepath, extracted_series):
 
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
 
@@ -562,16 +562,16 @@ def test_extract_values_long(filepath, extracted_series):
 @pytest.mark.parametrize(
     "filepath, extracted_series", paths_and_extract_values_series_trans
 )
-def test_extract_values_trans(filepath, extracted_series):
+def test_extract_values_trans(tensile_trans, filepath, extracted_series):
 
-    obj = Tensile._test_trans()
+    obj = tensile_trans
 
     assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
 
 
-def test_summarise_long():
+def test_summarise_long(tensile_long):
 
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     truth_dict = collections.OrderedDict(
         {
@@ -632,9 +632,9 @@ def test_summarise_long():
     assert_frame_equal(test_df, truth_df)
 
 
-def test_summarise_trans():
+def test_summarise_trans(tensile_trans):
 
-    obj = Tensile._test_trans()
+    obj = tensile_trans
 
     truth_dict = collections.OrderedDict(
         {
@@ -707,9 +707,9 @@ def test_summarise_trans():
     assert_frame_equal(test_df, truth_df)
 
 
-def test_stats_long():
+def test_stats_long(tensile_long):
 
-    obj = Tensile._test_long()
+    obj = tensile_long
 
     truth_df = pd.DataFrame.from_dict(
         {
@@ -743,9 +743,9 @@ def test_stats_long():
     assert_frame_equal(test_df, truth_df)
 
 
-def test_stats_trans():
+def test_stats_trans(tensile_trans):
 
-    obj = Tensile._test_trans()
+    obj = tensile_trans
 
     truth_df = pd.DataFrame.from_dict(
         {
