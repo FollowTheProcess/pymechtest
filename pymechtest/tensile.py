@@ -5,8 +5,6 @@ Author: Tom Fleet
 Created: 29/11/2020
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import List, Union
 
@@ -95,41 +93,3 @@ class Tensile(BaseMechanicalTest):
                 other.expect_yield,
             )
         return NotImplemented
-
-    @classmethod
-    def _test_long(cls) -> Tensile:
-        """
-        Development method to make life easier.
-
-        Returns:
-            Tensile: Tensile object: longitudinal
-        """
-        return Tensile(
-            folder=Path(__file__).parents[1].resolve().joinpath("data/Long"),
-            stress_col="Tensile stress",
-            strain_col="Tensile strain (Strain 1)",
-            id_row=3,
-            skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-            strain1=0.05,
-            strain2=0.15,
-            expect_yield=False,
-        )
-
-    @classmethod
-    def _test_trans(cls) -> Tensile:
-        """
-        Development method to make life easier.
-
-        Returns:
-            Tensile: Tensile object: transverse
-        """
-        return Tensile(
-            folder=Path(__file__).parents[1].resolve().joinpath("data/Trans"),
-            stress_col="Tensile stress",
-            strain_col="Tensile strain (Strain 1)",
-            id_row=3,
-            skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
-            strain1=0.005,
-            strain2=0.015,
-            expect_yield=True,
-        )
