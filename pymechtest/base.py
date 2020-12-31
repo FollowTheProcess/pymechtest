@@ -9,12 +9,13 @@ import collections
 import csv
 import itertools
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 import altair as alt
 import altair_data_server  # noqa: F401
 import numpy as np
 import pandas as pd
+from altair_saver import save
 
 
 class BaseMechanicalTest:
@@ -113,7 +114,8 @@ class BaseMechanicalTest:
         Method to load individual data csv file into a pandas DataFrame.
 
         Args:
-            fp (Path): csv file to load.
+            fp (Path): csv file to load. Exclusively pathlib.Path as files
+                are discovered with an rglob in load_all.
 
         Returns:
             pd.DataFrame: DataFrame containing single sample's data.
@@ -326,6 +328,7 @@ class BaseMechanicalTest:
     def plot_curves(
         self,
         title: str = "Stress-Strain Curves",
+        save_path: Optional[Union[str, Path]] = None,
         x_label: str = "Strain (%)",
         y_label: str = "Stress (MPa)",
         height: int = 500,
@@ -337,6 +340,10 @@ class BaseMechanicalTest:
         Args:
             title (str, optional): Title for the plot.
                 Defaults to "Stress-Strain Curves".
+
+            save_path (Union[str, Path], optional): str or Pathlike path to save
+                a png of the plot. Requires chrome and selenium. If not passed, plot
+                is simply returned and not saved.
 
             x_label (str, optional): Label for x-axis.
                 Defaults to "Strain (%)".
@@ -369,5 +376,16 @@ class BaseMechanicalTest:
             )
             .properties(title=title, height=height, width=width)
         )
+
+        if save_path:
+            fp = Path(save_path).resolve()
+            save(
+                chart,
+                fp=str(fp),
+                fmt="png",
+                scale_factor=6.0,
+                method="selenium",
+                webdriver="chrome",
+            )
 
         return chart
