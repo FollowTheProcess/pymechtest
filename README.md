@@ -4,7 +4,6 @@
 [![PyPI](https://img.shields.io/pypi/v/pymechtest.svg)](https://pypi.python.org/pypi/pymechtest)
 ![Code Style](https://img.shields.io/badge/code%20style-black-black)
 [![github actions](https://github.com/FollowTheProcess/pymechtest/workflows/Build/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ABuild)
-[![PyUp](https://pyup.io/repos/github/FollowTheProcess/pymechtest/shield.svg)](https://pyup.io/repos/github/FollowTheProcess/pymechtest/)
 
 Python package to automate the boring bits of mechanical test data analysis!
 
