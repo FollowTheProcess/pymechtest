@@ -57,39 +57,12 @@ class Compression(BaseMechanicalTest):
         """
 
         super().__init__(
-            folder,
-            stress_col,
-            strain_col,
-            id_row,
-            skip_rows,
-            strain1,
-            strain2,
-            expect_yield,
+            folder=folder,
+            stress_col=stress_col,
+            strain_col=strain_col,
+            id_row=id_row,
+            skip_rows=skip_rows,
+            strain1=strain1,
+            strain2=strain2,
+            expect_yield=expect_yield,
         )
-
-    def __repr__(self) -> str:
-        return super().__repr__()
-
-    def __eq__(self, other) -> bool:
-        if other.__class__ is self.__class__:
-
-            return (
-                self.folder,
-                self.stress_col,
-                self.strain_col,
-                self.id_row,
-                self.skip_rows,
-                self.strain1,
-                self.strain2,
-                self.expect_yield,
-            ) == (
-                other.folder,
-                other.stress_col,
-                other.strain_col,
-                other.id_row,
-                other.skip_rows,
-                other.strain1,
-                other.strain2,
-                other.expect_yield,
-            )
-        return NotImplemented
