@@ -8,6 +8,7 @@ Created: 28/11/2020
 import collections
 from pathlib import Path
 
+import altair as alt
 import pandas as pd
 import pytest
 from numpy.testing import assert_almost_equal
@@ -788,3 +789,22 @@ def test_stats_trans(tensile_trans):
     test_df = obj.stats()
 
     assert_frame_equal(test_df, truth_df)
+
+
+def test_tensile_plot_curves_long(tensile_long):
+
+    obj = tensile_long
+
+    plot = obj.plot_curves()
+
+    # Not sure what else to do for plots?
+    assert isinstance(plot, alt.Chart)
+
+
+def test_tensile_plot_curves_trans(tensile_trans):
+
+    obj = tensile_trans
+
+    plot = obj.plot_curves()
+
+    assert isinstance(plot, alt.Chart)

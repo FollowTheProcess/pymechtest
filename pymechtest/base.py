@@ -84,6 +84,30 @@ class BaseMechanicalTest:
             f"expect_yield={self.expect_yield!r})"
         )
 
+    def __eq__(self, other) -> bool:
+        if other.__class__ is self.__class__:
+
+            return (
+                self.folder,
+                self.stress_col,
+                self.strain_col,
+                self.id_row,
+                self.skip_rows,
+                self.strain1,
+                self.strain2,
+                self.expect_yield,
+            ) == (
+                other.folder,
+                other.stress_col,
+                other.strain_col,
+                other.id_row,
+                other.skip_rows,
+                other.strain1,
+                other.strain2,
+                other.expect_yield,
+            )
+        return NotImplemented
+
     def _get_specimen_id(self, fp: Union[Path, str]) -> str:
         """
         Uses arg: self.id_row to grab the Specimen ID from a csv file.
