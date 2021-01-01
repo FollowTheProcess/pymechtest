@@ -327,15 +327,18 @@ class BaseMechanicalTest:
 
     def plot_curves(
         self,
-        title: str = "Stress-Strain Curves",
+        title: Optional[str] = None,
         save_path: Optional[Union[str, Path]] = None,
-        x_label: str = "Strain (%)",
-        y_label: str = "Stress (MPa)",
+        x_label: Optional[str] = None,
+        y_label: Optional[str] = None,
         height: int = 500,
         width: int = 750,
     ) -> alt.Chart:
         """
         Creates a nice looking stress strain plot of all the specimens using altair.
+
+        Will use the class name to fill in axis labels if not passed, e.g
+        'Tensile' Strain
 
         Args:
             title (str, optional): Title for the plot.
@@ -346,10 +349,10 @@ class BaseMechanicalTest:
                 is simply returned and not saved.
 
             x_label (str, optional): Label for x-axis.
-                Defaults to "Strain (%)".
+                Defaults to "{class name}Strain (%)".
 
             y_label (str, optional): Label for y-axis.
-                Defaults to "Stress (MPa)".
+                Defaults to "{class name}Stress (MPa)".
 
             height (int, optional): Height of the plot.
                 Defaults to 500.
@@ -363,6 +366,15 @@ class BaseMechanicalTest:
 
         # Altair will warn if over 5,000 rows in a notebook. This is cleanest solution.
         alt.data_transformers.enable("data_server")
+
+        if not x_label:
+            x_label = f"{self.__class__.__qualname__} Strain (%)"
+
+        if not y_label:
+            y_label = f"{self.__class__.__qualname__} Stress (MPa)"
+
+        if not title:
+            title = f"{self.__class__.__qualname__} Stress Strain Curves"
 
         df = self.load_all()
 
