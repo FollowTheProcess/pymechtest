@@ -5,7 +5,11 @@ Author: Tom Fleet
 Created: 31/12/2020
 """
 
+from pathlib import Path
+
 import pytest
+
+from pymechtest import Tensile
 
 
 @pytest.fixture
@@ -14,9 +18,6 @@ def tensile_long():
     Equivalent to calling Tensile pointing at the
     longitudinal test data.
     """
-    from pathlib import Path
-
-    from pymechtest import Tensile
 
     return Tensile(
         folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Long"),
@@ -36,9 +37,6 @@ def tensile_trans():
     Equivalent to calling Tensile pointing at the
     transverse test data.
     """
-    from pathlib import Path
-
-    from pymechtest import Tensile
 
     return Tensile(
         folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Trans"),
