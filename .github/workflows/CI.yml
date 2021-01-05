@@ -42,7 +42,8 @@ jobs:
           activate-environment: test
       - name: Install Dependencies
         run: |
-          conda init --all
+          conda init bash
+          source ~/.bashrc
           conda activate test
           conda install pip setuptools wheel
           conda install -c conda-forge nox
