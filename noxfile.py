@@ -8,9 +8,6 @@ import nox
 
 PROJECT_ROOT = Path(__file__).parent.resolve()
 
-# Nox defaults to virtualenv which is now deprecated
-nox.options.default_venv_backend = "venv"
-
 
 @nox.session(python=["3.7", "3.8", "3.9"])
 def test(session):
@@ -20,6 +17,27 @@ def test(session):
     session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(".[test]")
     # Posargs allows passing of tests directly
+    tests = session.posargs or ["tests/"]
+    session.run("pytest", "--cov=pymechtest", *tests)
+
+
+@nox.session(python=["3.7", "3.8", "3.9"], venv_backend="conda")
+def test_conda(session):
+    """
+    Runs the test suite against all support python version
+    in a conda virtual environment.
+    """
+    session.conda_install(
+        "pandas>=1.1.4",
+        "numpy>=1.19.4",
+        "openpyxl>=3.0.5",
+        "altair>=4.1.0",
+        "altair_data_server>=0.4.1",
+        "altair_saver>=0.5.0",
+        "pytest>=6.1.2",
+        "pytest-cov>=2.10.1",
+    )
+    session.install(".", "--no-deps")
     tests = session.posargs or ["tests/"]
     session.run("pytest", "--cov=pymechtest", *tests)
 
