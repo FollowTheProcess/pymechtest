@@ -42,11 +42,12 @@ jobs:
           activate-environment: test
       - name: Install Dependencies
         run: |
+          conda activate test
           conda install pip setuptools wheel
           conda install -c conda-forge nox
 
       - name: Run Tests
-        run: nox --non-interactive --session "test-conda-${{ matrix.python-version }}"
+        run: nox --non-interactive --session "test_conda-${{ matrix.python-version }}"
 
   lint:
     runs-on: ubuntu-latest
