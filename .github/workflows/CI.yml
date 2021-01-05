@@ -1,6 +1,11 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    # Runs at 10AM on the 1st of every month
+    - cron: "0 10 1 * *"
 
 jobs:
   build:
