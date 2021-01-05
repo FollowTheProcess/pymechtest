@@ -45,13 +45,17 @@ jobs:
           activate-environment: test
       - name: Conda info
         run: conda info
+      - name: Configure channels
+        run: |
+          conda config --append channels conda-forge
+          conda config --set channel_priority strict
       - name: Conda list
         run: conda list
       - name: Install Dependencies
         run: |
           conda activate test
           conda install pip setuptools wheel
-          conda install -c conda-forge nox
+          conda install nox
 
       - name: Run Tests
         run: nox --non-interactive --session "test_conda-${{ matrix.python-version }}"
