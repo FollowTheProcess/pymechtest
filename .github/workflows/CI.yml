@@ -25,6 +25,41 @@ jobs:
       - name: Run Tests
         run: nox --non-interactive --session "test-${{ matrix.python-version }}"
 
+  conda-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          activate-environment: test
+      - name: Conda info
+        run: conda info
+      - name: Configure channels
+        run: |
+          conda config --append channels conda-forge
+          conda config --set channel_priority strict
+      - name: Conda list
+        run: conda list
+      - name: Install Dependencies
+        run: |
+          conda activate test
+          conda install pip setuptools wheel
+          conda install nox
+
+      - name: Run Tests
+        run: nox --non-interactive --session "test_conda-${{ matrix.python-version }}"
+
   lint:
     runs-on: ubuntu-latest
 
@@ -62,7 +97,7 @@ jobs:
         run: nox --non-interactive --session "docs"
 
   deploy:
-    needs: [build, lint, docs]
+    needs: [build, conda-build, lint, docs]
     runs-on: ubuntu-latest
 
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')

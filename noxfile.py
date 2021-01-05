@@ -2,14 +2,19 @@
 Nox configuration file for the project.
 """
 
+import os
 from pathlib import Path
 
 import nox
 
 PROJECT_ROOT = Path(__file__).parent.resolve()
 
-# Nox defaults to virtualenv which is now deprecated
-nox.options.default_venv_backend = "venv"
+# GitHub actions has a CI env variable that is always True
+ON_CI = os.getenv("CI")
+
+# Local conda test takes ages!
+if not ON_CI:
+    nox.options.sessions = ["test", "coverage", "lint", "docs"]
 
 
 @nox.session(python=["3.7", "3.8", "3.9"])
@@ -20,6 +25,28 @@ def test(session):
     session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(".[test]")
     # Posargs allows passing of tests directly
+    tests = session.posargs or ["tests/"]
+    session.run("pytest", "--cov=pymechtest", *tests)
+
+
+# Conda with python 3.9 doesn't quite work yet
+@nox.session(python=["3.7", "3.8"], venv_backend="conda")
+def test_conda(session):
+    """
+    Runs the test suite against all support python version
+    in a conda virtual environment.
+    """
+    session.conda_install(
+        "pandas",
+        "numpy>",
+        "openpyxl",
+        "altair",
+        "altair_data_server",
+        "altair_saver",
+        "pytest",
+        "pytest-cov>",
+    )
+    session.install(".", "--no-deps")
     tests = session.posargs or ["tests/"]
     session.run("pytest", "--cov=pymechtest", *tests)
 
