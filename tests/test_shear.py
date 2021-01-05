@@ -14,20 +14,20 @@ def test_shear_init():
 
     obj = Shear(
         folder="made/up/directory",
+        header=8,
         stress_col="Shear stress",
         strain_col="Shear strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
     )
 
     assert obj.folder == "made/up/directory"
+    assert obj.header == 8
     assert obj.stress_col == "Shear stress"
     assert obj.strain_col == "Shear strain (Strain 1)"
     assert obj.id_row == 3
-    assert obj.skip_rows == [0, 1, 2, 3, 4, 5, 6, 7, 8, 10]
     assert obj.strain1 == 0.05
     assert obj.strain2 == 0.15
     assert obj.expect_yield is False
@@ -37,10 +37,10 @@ def test_shear_repr():
 
     obj = Shear(
         folder="made/up/directory",
+        header=8,
         stress_col="Shear stress",
         strain_col="Shear strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -48,9 +48,10 @@ def test_shear_repr():
 
     assert (
         obj.__repr__() == "Shear(folder='made/up/directory', "
+        "header=8, "
         "stress_col='Shear stress', "
         "strain_col='Shear strain (Strain 1)', "
-        "id_row=3, skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10], "
+        "id_row=3, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
 
@@ -59,10 +60,10 @@ def test_shear_eq():
 
     obj = Shear(
         folder="made/up/directory",
+        header=8,
         stress_col="Shear stress",
         strain_col="Shear strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -70,10 +71,10 @@ def test_shear_eq():
 
     same = Shear(
         folder="made/up/directory",
+        header=8,
         stress_col="Shear stress",
         strain_col="Shear strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -81,10 +82,10 @@ def test_shear_eq():
 
     diff = Shear(
         folder="different/made/up/directory",
+        header=8,
         stress_col="Different stress col",
         strain_col="This doesn't match either",
         id_row=6,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.025,
         strain2=0.3,
         expect_yield=True,
