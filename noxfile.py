@@ -33,8 +33,7 @@ def test(session):
 @nox.session(python=["3.7", "3.8"], venv_backend="conda")
 def test_conda(session):
     """
-    Runs the test suite against all support python version
-    in a conda virtual environment.
+    Runs the test suite against all support python version in a conda env.
     """
     session.conda_install(
         "pandas",

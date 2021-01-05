@@ -25,20 +25,20 @@ def test_tensile_init():
 
     obj = Tensile(
         folder="made/up/directory",
+        header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
     )
 
     assert obj.folder == "made/up/directory"
+    assert obj.header == 8
     assert obj.stress_col == "Tensile stress"
     assert obj.strain_col == "Tensile strain (Strain 1)"
     assert obj.id_row == 3
-    assert obj.skip_rows == [0, 1, 2, 3, 4, 5, 6, 7, 8, 10]
     assert obj.strain1 == 0.05
     assert obj.strain2 == 0.15
     assert obj.expect_yield is False
@@ -48,10 +48,10 @@ def test_tensile_repr():
 
     obj = Tensile(
         folder="made/up/directory",
+        header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -59,9 +59,10 @@ def test_tensile_repr():
 
     assert (
         obj.__repr__() == "Tensile(folder='made/up/directory', "
+        "header=8, "
         "stress_col='Tensile stress', "
         "strain_col='Tensile strain (Strain 1)', "
-        "id_row=3, skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10], "
+        "id_row=3, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
 
@@ -70,10 +71,10 @@ def test_tensile_eq():
 
     obj = Tensile(
         folder="made/up/directory",
+        header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -81,10 +82,10 @@ def test_tensile_eq():
 
     same = Tensile(
         folder="made/up/directory",
+        header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -92,10 +93,10 @@ def test_tensile_eq():
 
     diff = Tensile(
         folder="different/made/up/directory",
+        header=8,
         stress_col="Different stress col",
         strain_col="This doesn't match either",
         id_row=6,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.025,
         strain2=0.3,
         expect_yield=True,
@@ -165,7 +166,9 @@ def test_calc_modulus_long(tensile_long, filepath, modulus):
 
     long_obj = tensile_long
 
-    assert_almost_equal(long_obj._calc_modulus(long_obj._load(filepath)), modulus)
+    assert_almost_equal(
+        long_obj._calc_modulus(long_obj._load(filepath)), modulus, decimal=2
+    )
 
 
 @pytest.mark.parametrize("filepath, modulus", paths_and_moduli_trans)
@@ -173,7 +176,9 @@ def test_calc_modulus_trans(tensile_trans, filepath, modulus):
 
     trans_obj = tensile_trans
 
-    assert_almost_equal(trans_obj._calc_modulus(trans_obj._load(filepath)), modulus)
+    assert_almost_equal(
+        trans_obj._calc_modulus(trans_obj._load(filepath)), modulus, decimal=2
+    )
 
 
 paths_and_df_shapes_long = [
@@ -296,16 +301,16 @@ def test_specimen_id_column_trans(tensile_trans):
 
 
 paths_and_yield_strengths = [
-    (TRANS_DATA.joinpath("Specimen_RawData_10.csv"), 83.3453),
-    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), 89.108),
-    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), 85.1674),
-    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), 88.398),
-    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), 86.4215),
-    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), 89.6358),
-    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), 77.2231),
-    (TRANS_DATA.joinpath("Specimen_RawData_7.csv"), 86.8556),
-    (TRANS_DATA.joinpath("Specimen_RawData_8.csv"), 90.1102),
-    (TRANS_DATA.joinpath("Specimen_RawData_9.csv"), 89.7818),
+    (TRANS_DATA.joinpath("Specimen_RawData_10.csv"), 83.7694),
+    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), 90.1206),
+    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), 85.9652),
+    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), 89.1603),
+    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), 87.1522),
+    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), 90.5217),
+    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), 78.2747),
+    (TRANS_DATA.joinpath("Specimen_RawData_7.csv"), 87.7896),
+    (TRANS_DATA.joinpath("Specimen_RawData_8.csv"), 90.7741),
+    (TRANS_DATA.joinpath("Specimen_RawData_9.csv"), 90.9967),
 ]
 
 
@@ -314,7 +319,7 @@ def test_calc_yield_strength(tensile_trans, filepath, yield_strength):
 
     obj = tensile_trans
 
-    assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength)
+    assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength, decimal=2)
 
 
 paths = [f for f in TRANS_DATA.rglob("*.csv")] + [f for f in LONG_DATA.rglob("*.csv")]
@@ -444,7 +449,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "010",
                 "Strength": 180.2974,
                 "Modulus": 171.04161005434793,
-                "Yield Strength": 83.3453,
+                "Yield Strength": 83.7694,
             }
         ),
     ),
@@ -455,7 +460,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "009",
                 "Strength": 188.4382,
                 "Modulus": 177.04030085330862,
-                "Yield Strength": 89.108,
+                "Yield Strength": 90.1206,
             }
         ),
     ),
@@ -466,7 +471,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "008",
                 "Strength": 183.7281,
                 "Modulus": 190.00716803363935,
-                "Yield Strength": 85.1674,
+                "Yield Strength": 85.9652,
             }
         ),
     ),
@@ -477,7 +482,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "007",
                 "Strength": 151.3554,
                 "Modulus": 174.266659531658,
-                "Yield Strength": 88.398,
+                "Yield Strength": 89.1603,
             }
         ),
     ),
@@ -488,7 +493,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "006",
                 "Strength": 180.8582,
                 "Modulus": 154.94934554636595,
-                "Yield Strength": 86.4215,
+                "Yield Strength": 87.1522,
             }
         ),
     ),
@@ -499,7 +504,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "005",
                 "Strength": 184.7623,
                 "Modulus": 178.20932823593682,
-                "Yield Strength": 89.6358,
+                "Yield Strength": 90.5217,
             }
         ),
     ),
@@ -510,7 +515,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "004",
                 "Strength": 190.4115,
                 "Modulus": 152.57936457584347,
-                "Yield Strength": 77.2231,
+                "Yield Strength": 78.2747,
             }
         ),
     ),
@@ -521,7 +526,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "003",
                 "Strength": 194.3136,
                 "Modulus": 145.2465016821223,
-                "Yield Strength": 86.8556,
+                "Yield Strength": 87.7896,
             }
         ),
     ),
@@ -532,7 +537,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "002",
                 "Strength": 191.4301,
                 "Modulus": 186.87429547855706,
-                "Yield Strength": 90.1102,
+                "Yield Strength": 90.7741,
             }
         ),
     ),
@@ -543,7 +548,7 @@ paths_and_extract_values_series_trans = [
                 "Specimen ID": "001",
                 "Strength": 168.0556,
                 "Modulus": 182.94653227297943,
-                "Yield Strength": 89.7818,
+                "Yield Strength": 90.9967,
             }
         ),
     ),
@@ -557,7 +562,9 @@ def test_extract_values_long(tensile_long, filepath, extracted_series):
 
     obj = tensile_long
 
-    assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
+    assert_series_equal(
+        obj._extract_values(obj._load(filepath)), extracted_series, atol=0.01
+    )
 
 
 @pytest.mark.parametrize(
@@ -567,7 +574,9 @@ def test_extract_values_trans(tensile_trans, filepath, extracted_series):
 
     obj = tensile_trans
 
-    assert_series_equal(obj._extract_values(obj._load(filepath)), extracted_series)
+    assert_series_equal(
+        obj._extract_values(obj._load(filepath)), extracted_series, atol=0.01
+    )
 
 
 def test_summarise_long(tensile_long):
@@ -630,7 +639,7 @@ def test_summarise_long(tensile_long):
         .convert_dtypes()
     )
 
-    assert_frame_equal(test_df, truth_df)
+    assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
 def test_summarise_trans(tensile_trans):
@@ -676,16 +685,16 @@ def test_summarise_trans(tensile_trans):
                 171.04161005434793,
             ],
             "Yield Strength": [
-                77.2231,
-                86.8556,
-                89.6358,
-                86.4215,
-                89.108,
-                88.398,
-                85.1674,
-                89.7818,
-                90.1102,
-                83.3453,
+                78.2747,
+                87.7896,
+                90.5217,
+                87.1522,
+                90.1206,
+                89.1603,
+                85.9652,
+                90.9967,
+                90.7741,
+                83.7694,
             ],
         }
     )
@@ -705,7 +714,7 @@ def test_summarise_trans(tensile_trans):
         .convert_dtypes()
     )
 
-    assert_frame_equal(test_df, truth_df)
+    assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
 def test_stats_long(tensile_long):
@@ -741,7 +750,7 @@ def test_stats_long(tensile_long):
 
     test_df = obj.stats()
 
-    assert_frame_equal(test_df, truth_df)
+    assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
 def test_stats_trans(tensile_trans):
@@ -774,21 +783,21 @@ def test_stats_trans(tensile_trans):
             },
             "Yield Strength": {
                 "count": 10.0,
-                "mean": 86.60467,
-                "std": 3.970067854178035,
-                "cov%": 4.584126761499161,
-                "min": 77.2231,
-                "25%": 85.480925,
-                "50%": 87.6268,
-                "75%": 89.50385,
-                "max": 90.1102,
+                "mean": 87.45245,
+                "std": 3.989748300401363,
+                "cov%": 4.562191568562531,
+                "min": 78.2747,
+                "25%": 86.26195,
+                "50%": 88.47495,
+                "75%": 90.421425,
+                "max": 90.9967,
             },
         }
     )
 
     test_df = obj.stats()
 
-    assert_frame_equal(test_df, truth_df)
+    assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
 def test_tensile_plot_curves_long(tensile_long):

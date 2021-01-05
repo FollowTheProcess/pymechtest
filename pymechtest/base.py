@@ -8,8 +8,9 @@ Created: 09/12/2020
 import collections
 import csv
 import itertools
+from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
 import altair as alt
 import altair_data_server  # noqa: F401
@@ -18,95 +19,42 @@ import pandas as pd
 from altair_saver import save
 
 
+@dataclass
 class BaseMechanicalTest:
-    def __init__(
-        self,
-        folder: Union[Path, str],
-        stress_col: str,
-        strain_col: str,
-        id_row: int,
-        skip_rows: Union[int, List[int]],
-        strain1: float,
-        strain2: float,
-        expect_yield: bool,
-    ) -> None:
-        """
-        Mechanical Test Base class.
+    """
+    Mechanical Test Base class.
 
-        Args:
-            folder (Union[Path, str]): String or Path-like folder containing
-                test data.
+    Args:
+        folder (Union[Path, str]): String or Path-like folder containing
+            test data.
 
-            stress_col (str): Name of the column containing stress data.
+        header (int): 0-indexed row number of the table header
+            (i.e. the row containing things like "Stress", "Strain", "Load" etc.)
 
-            strain_col (str): Name of the column containing strain data.
+        stress_col (str): Name of the column containing stress data.
 
-            id_row (int): Row number of the specimen ID. Most test machines export a
-                headed csv file with some metadata like date, test method name etc,
-                specimen ID should be contained in this section.
+        strain_col (str): Name of the column containing strain data.
 
-            skip_rows (Union[int, List[int]]): Rows to skip during loading of the csv.
-                Typically there is some metadata at the top, skip this and load
-                only the data by passing skip_rows.
+        id_row (int): Row number of the specimen ID. Most test machines export a
+            headed csv file with some metadata like date, test method name etc,
+            specimen ID should be contained in this section.
 
-                Follows pandas skiprows syntax so can be an integer or a list
-                of integers.
+        strain1 (float): Lower strain bound for modulus calculation. Must be in %.
 
-                Don't worry about conflict between skipping rows and the id_row,
-                grabbing the specimen ID is handled seperately.
+        strain2 (float): Upper strain bound for modulus calculation. Must be in %.
 
-            strain1 (float): Lower strain bound for modulus calculation. Must be in %.
+        expect_yield (bool): Whether the specimens are expected to be elastic to
+            failure (False) or they are expected to have a yield strength (True).
+    """
 
-            strain2 (float): Upper strain bound for modulus calculation. Must be in %.
-
-            expect_yield (bool): Whether the specimens are expected to be elastic to
-                failure (False) or they are expected to have a yield strength (True).
-        """
-
-        self.folder = folder
-        self.stress_col = stress_col
-        self.strain_col = strain_col
-        self.id_row = id_row
-        self.skip_rows = skip_rows
-        self.strain1 = strain1
-        self.strain2 = strain2
-        self.expect_yield = expect_yield
-
-    def __repr__(self) -> str:
-        return (
-            self.__class__.__qualname__ + f"(folder={self.folder!r}, "
-            f"stress_col={self.stress_col!r}, "
-            f"strain_col={self.strain_col!r}, "
-            f"id_row={self.id_row!r}, "
-            f"skip_rows={self.skip_rows!r}, "
-            f"strain1={self.strain1!r}, "
-            f"strain2={self.strain2!r}, "
-            f"expect_yield={self.expect_yield!r})"
-        )
-
-    def __eq__(self, other) -> bool:
-        if other.__class__ is self.__class__:
-
-            return (
-                self.folder,
-                self.stress_col,
-                self.strain_col,
-                self.id_row,
-                self.skip_rows,
-                self.strain1,
-                self.strain2,
-                self.expect_yield,
-            ) == (
-                other.folder,
-                other.stress_col,
-                other.strain_col,
-                other.id_row,
-                other.skip_rows,
-                other.strain1,
-                other.strain2,
-                other.expect_yield,
-            )
-        return NotImplemented
+    folder: Union[Path, str]
+    header: int
+    stress_col: str
+    strain_col: str
+    id_row: int
+    strain1: float
+    strain2: float
+    expect_yield: bool
 
     def _get_specimen_id(self, fp: Union[Path, str]) -> str:
         """
@@ -144,8 +92,13 @@ class BaseMechanicalTest:
         Returns:
             pd.DataFrame: DataFrame containing single sample's data.
         """
-
-        df = pd.read_csv(fp, skiprows=self.skip_rows, thousands=",")
+        # Incase there are any non-numerics below header
+        df = (
+            (pd.read_csv(fp, header=self.header, thousands=","))
+            .applymap(lambda x: x.strip().replace(",", "") if isinstance(x, str) else x)
+            .apply(pd.to_numeric, errors="coerce")
+            .dropna()
+        )
         df["Specimen ID"] = self._get_specimen_id(fp)
 
         return df

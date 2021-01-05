@@ -21,10 +21,10 @@ def tensile_long():
 
     return Tensile(
         folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Long"),
+        header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -40,10 +40,10 @@ def tensile_trans():
 
     return Tensile(
         folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Trans"),
+        header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
         id_row=3,
-        skip_rows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10],
         strain1=0.005,
         strain2=0.015,
         expect_yield=True,
