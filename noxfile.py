@@ -37,13 +37,13 @@ def test_conda(session):
     """
     session.conda_install(
         "pandas",
-        "numpy>",
+        "numpy",
         "openpyxl",
         "altair",
         "altair_data_server",
         "altair_saver",
         "pytest",
-        "pytest-cov>",
+        "pytest-cov",
     )
     session.install(".", "--no-deps")
     tests = session.posargs or ["tests/"]
