@@ -21,7 +21,7 @@ TENS_NO_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_No_Yield")
 TENS_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_Yield")
 
 
-def test_tensile_init():
+def test_base_init():
 
     obj = BaseMechanicalTest(
         folder="made/up/directory",
@@ -44,7 +44,7 @@ def test_tensile_init():
     assert obj.expect_yield is False
 
 
-def test_tensile_repr():
+def test_base_repr():
 
     obj = BaseMechanicalTest(
         folder="made/up/directory",
@@ -67,7 +67,7 @@ def test_tensile_repr():
     )
 
 
-def test_tensile_eq():
+def test_base_eq():
 
     obj = BaseMechanicalTest(
         folder="made/up/directory",
@@ -802,7 +802,7 @@ def test_stats_trans(base_trans):
     assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
-def test_tensile_plot_curves_long(base_long):
+def test_base_plot_curves_long(base_long):
 
     obj = base_long
 
@@ -812,7 +812,7 @@ def test_tensile_plot_curves_long(base_long):
     assert isinstance(plot, alt.Chart)
 
 
-def test_tensile_plot_curves_trans(base_trans):
+def test_base_plot_curves_trans(base_trans):
 
     obj = base_trans
 
