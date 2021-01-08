@@ -28,9 +28,6 @@ class BaseMechanicalTest:
         folder (Union[Path, str]): String or Path-like folder containing
             test data.
 
-        header (int): 0-indexed row number of the table header
-            (i.e. the row containing things like "Stress", "Strain", "Load" etc.)
-
         stress_col (str): Name of the column containing stress data.
 
         strain_col (str): Name of the column containing strain data.
@@ -39,22 +36,29 @@ class BaseMechanicalTest:
             headed csv file with some metadata like date, test method name etc,
             specimen ID should be contained in this section.
 
-        strain1 (float): Lower strain bound for modulus calculation. Must be in %.
+        header (int, optiona;): 0-indexed row number of the table header
+            (i.e. the row containing things like "Stress", "Strain", "Load" etc.).
+            Defaults to 0.
 
-        strain2 (float): Upper strain bound for modulus calculation. Must be in %.
+        strain1 (float, optional): Lower strain bound for modulus calculation.
+            Must be in %. Defaults to 0.05.
 
-        expect_yield (bool): Whether the specimens are expected to be elastic to
-            failure (False) or they are expected to have a yield strength (True).
+        strain2 (float, optional): Upper strain bound for modulus calculation.
+            Must be in %. Defaults to 0.05.
+
+        expect_yield (bool, optiona;): Whether the specimens are expected to be
+        elastic to failure (False) or they are expected to have a
+        yield strength (True). Defaults to True.
     """
 
     folder: Union[Path, str]
-    header: int
     stress_col: str
     strain_col: str
     id_row: int
-    strain1: float
-    strain2: float
-    expect_yield: bool
+    header: int
+    strain1: float = 0.05
+    strain2: float = 0.15
+    expect_yield: bool = True
 
     def _get_specimen_id(self, fp: Union[Path, str]) -> str:
         """
@@ -94,10 +98,10 @@ class BaseMechanicalTest:
         """
         # Incase there are any non-numerics below header
         df = (
-            (pd.read_csv(fp, header=self.header, thousands=","))
+            (pd.read_csv(fp, header=self.header))
             .applymap(lambda x: x.strip().replace(",", "") if isinstance(x, str) else x)
             .apply(pd.to_numeric, errors="coerce")
-            .dropna()
+            .dropna(how="all")
         )
         df["Specimen ID"] = self._get_specimen_id(fp)
 
