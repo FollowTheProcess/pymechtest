@@ -17,8 +17,8 @@ from pandas.testing import assert_frame_equal, assert_series_equal
 from pymechtest.base import BaseMechanicalTest
 
 # Data for testing & development only
-LONG_DATA = Path(__file__).parent.resolve().joinpath("data/Long")
-TRANS_DATA = Path(__file__).parent.resolve().joinpath("data/Trans")
+TENS_NO_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_No_Yield")
+TENS_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_Yield")
 
 
 def test_tensile_init():
@@ -111,18 +111,18 @@ def test_tensile_eq():
 
 
 paths_and_specimen_ids = [
-    (LONG_DATA.joinpath("Specimen_RawData_1.csv"), "0038"),
-    (LONG_DATA.joinpath("Specimen_RawData_2.csv"), "0031"),
-    (LONG_DATA.joinpath("Specimen_RawData_3.csv"), "0040"),
-    (LONG_DATA.joinpath("Specimen_RawData_4.csv"), "0032"),
-    (LONG_DATA.joinpath("Specimen_RawData_5.csv"), "0033"),
-    (LONG_DATA.joinpath("Specimen_RawData_6.csv"), "0034"),
-    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), "009"),
-    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), "008"),
-    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), "007"),
-    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), "006"),
-    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), "005"),
-    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), "004"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), "0038"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), "0031"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), "0040"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), "0032"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), "0033"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), "0034"),
+    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), "009"),
+    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), "008"),
+    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), "007"),
+    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), "006"),
+    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), "005"),
+    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), "004"),
 ]
 
 
@@ -135,29 +135,29 @@ def test_get_specimen_id(base_long, filepath, specimen_id):
 
 
 paths_and_moduli_long = [
-    (LONG_DATA.joinpath("Specimen_RawData_1.csv"), 214.73703704359207),
-    (LONG_DATA.joinpath("Specimen_RawData_10.csv"), 227.9269563135135),
-    (LONG_DATA.joinpath("Specimen_RawData_2.csv"), 222.72607703734684),
-    (LONG_DATA.joinpath("Specimen_RawData_3.csv"), 226.24042185043274),
-    (LONG_DATA.joinpath("Specimen_RawData_4.csv"), 227.20719368480655),
-    (LONG_DATA.joinpath("Specimen_RawData_5.csv"), 237.49691564169657),
-    (LONG_DATA.joinpath("Specimen_RawData_6.csv"), 229.99812783980767),
-    (LONG_DATA.joinpath("Specimen_RawData_7.csv"), 210.5774902227845),
-    (LONG_DATA.joinpath("Specimen_RawData_8.csv"), 201.59969738297002),
-    (LONG_DATA.joinpath("Specimen_RawData_9.csv"), 222.34006012040436),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), 214.73703704359207),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"), 227.9269563135135),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), 222.72607703734684),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), 226.24042185043274),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), 227.20719368480655),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), 237.49691564169657),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), 229.99812783980767),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_7.csv"), 210.5774902227845),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_8.csv"), 201.59969738297002),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"), 222.34006012040436),
 ]
 
 paths_and_moduli_trans = [
-    (TRANS_DATA.joinpath("Specimen_RawData_10.csv"), 171.04161005434793),
-    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), 177.04030085330862),
-    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), 190.00716803363935),
-    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), 174.266659531658),
-    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), 154.94934554636575),
-    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), 178.20932823593682),
-    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), 152.57936457584347),
-    (TRANS_DATA.joinpath("Specimen_RawData_7.csv"), 145.24650168212222),
-    (TRANS_DATA.joinpath("Specimen_RawData_8.csv"), 186.87429547855731),
-    (TRANS_DATA.joinpath("Specimen_RawData_9.csv"), 182.94653227297943),
+    (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), 171.04161005434793),
+    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), 177.04030085330862),
+    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), 190.00716803363935),
+    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), 174.266659531658),
+    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), 154.94934554636575),
+    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), 178.20932823593682),
+    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), 152.57936457584347),
+    (TENS_YIELD.joinpath("Specimen_RawData_7.csv"), 145.24650168212222),
+    (TENS_YIELD.joinpath("Specimen_RawData_8.csv"), 186.87429547855731),
+    (TENS_YIELD.joinpath("Specimen_RawData_9.csv"), 182.94653227297943),
 ]
 
 
@@ -182,29 +182,29 @@ def test_calc_modulus_trans(base_trans, filepath, modulus):
 
 
 paths_and_df_shapes_long = [
-    (LONG_DATA.joinpath("Specimen_RawData_1.csv"), (1467, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_10.csv"), (1299, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_2.csv"), (1066, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_3.csv"), (1177, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_4.csv"), (1214, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_5.csv"), (1228, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_6.csv"), (1238, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_7.csv"), (1303, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_8.csv"), (1245, 6)),
-    (LONG_DATA.joinpath("Specimen_RawData_9.csv"), (1237, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), (1467, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"), (1299, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), (1066, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), (1177, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), (1214, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), (1228, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), (1238, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_7.csv"), (1303, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_8.csv"), (1245, 6)),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"), (1237, 6)),
 ]
 
 paths_and_df_shapes_trans = [
-    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), (279, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_10.csv"), (319, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), (309, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), (185, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), (288, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), (269, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), (469, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_7.csv"), (331, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_8.csv"), (297, 6)),
-    (TRANS_DATA.joinpath("Specimen_RawData_9.csv"), (219, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), (279, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), (319, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), (309, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), (185, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), (288, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), (269, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), (469, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_7.csv"), (331, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_8.csv"), (297, 6)),
+    (TENS_YIELD.joinpath("Specimen_RawData_9.csv"), (219, 6)),
 ]
 
 
@@ -301,16 +301,16 @@ def test_specimen_id_column_trans(base_trans):
 
 
 paths_and_yield_strengths = [
-    (TRANS_DATA.joinpath("Specimen_RawData_10.csv"), 83.7694),
-    (TRANS_DATA.joinpath("Specimen_RawData_1.csv"), 90.1206),
-    (TRANS_DATA.joinpath("Specimen_RawData_2.csv"), 85.9652),
-    (TRANS_DATA.joinpath("Specimen_RawData_3.csv"), 89.1603),
-    (TRANS_DATA.joinpath("Specimen_RawData_4.csv"), 87.1522),
-    (TRANS_DATA.joinpath("Specimen_RawData_5.csv"), 90.5217),
-    (TRANS_DATA.joinpath("Specimen_RawData_6.csv"), 78.2747),
-    (TRANS_DATA.joinpath("Specimen_RawData_7.csv"), 87.7896),
-    (TRANS_DATA.joinpath("Specimen_RawData_8.csv"), 90.7741),
-    (TRANS_DATA.joinpath("Specimen_RawData_9.csv"), 90.9967),
+    (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), 83.7694),
+    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), 90.1206),
+    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), 85.9652),
+    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), 89.1603),
+    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), 87.1522),
+    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), 90.5217),
+    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), 78.2747),
+    (TENS_YIELD.joinpath("Specimen_RawData_7.csv"), 87.7896),
+    (TENS_YIELD.joinpath("Specimen_RawData_8.csv"), 90.7741),
+    (TENS_YIELD.joinpath("Specimen_RawData_9.csv"), 90.9967),
 ]
 
 
@@ -322,7 +322,9 @@ def test_calc_yield_strength(base_trans, filepath, yield_strength):
     assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength, decimal=2)
 
 
-paths = [f for f in TRANS_DATA.rglob("*.csv")] + [f for f in LONG_DATA.rglob("*.csv")]
+paths = [f for f in TENS_YIELD.rglob("*.csv")] + [
+    f for f in TENS_NO_YIELD.rglob("*.csv")
+]
 
 
 @pytest.mark.parametrize("filepath", paths)
@@ -340,7 +342,7 @@ def test_calc_yield_raises_attribute_error_if_yield_false(base_long, filepath):
 
 paths_and_extract_values_series_long = [
     (
-        LONG_DATA.joinpath("Specimen_RawData_1.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0038",
@@ -350,7 +352,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_10.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0039",
@@ -360,7 +362,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_2.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0031",
@@ -370,7 +372,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_3.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0040",
@@ -380,7 +382,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_4.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0032",
@@ -390,7 +392,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_5.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0033",
@@ -400,7 +402,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_6.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0034",
@@ -410,7 +412,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_7.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_7.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0036",
@@ -420,7 +422,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_8.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_8.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0035",
@@ -430,7 +432,7 @@ paths_and_extract_values_series_long = [
         ),
     ),
     (
-        LONG_DATA.joinpath("Specimen_RawData_9.csv"),
+        TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"),
         pd.Series(
             data={
                 "Specimen ID": "0037",
@@ -443,7 +445,7 @@ paths_and_extract_values_series_long = [
 
 paths_and_extract_values_series_trans = [
     (
-        TRANS_DATA.joinpath("Specimen_RawData_10.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_10.csv"),
         pd.Series(
             data={
                 "Specimen ID": "010",
@@ -454,7 +456,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_1.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_1.csv"),
         pd.Series(
             data={
                 "Specimen ID": "009",
@@ -465,7 +467,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_2.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_2.csv"),
         pd.Series(
             data={
                 "Specimen ID": "008",
@@ -476,7 +478,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_3.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_3.csv"),
         pd.Series(
             data={
                 "Specimen ID": "007",
@@ -487,7 +489,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_4.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_4.csv"),
         pd.Series(
             data={
                 "Specimen ID": "006",
@@ -498,7 +500,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_5.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_5.csv"),
         pd.Series(
             data={
                 "Specimen ID": "005",
@@ -509,7 +511,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_6.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_6.csv"),
         pd.Series(
             data={
                 "Specimen ID": "004",
@@ -520,7 +522,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_7.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_7.csv"),
         pd.Series(
             data={
                 "Specimen ID": "003",
@@ -531,7 +533,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_8.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_8.csv"),
         pd.Series(
             data={
                 "Specimen ID": "002",
@@ -542,7 +544,7 @@ paths_and_extract_values_series_trans = [
         ),
     ),
     (
-        TRANS_DATA.joinpath("Specimen_RawData_9.csv"),
+        TENS_YIELD.joinpath("Specimen_RawData_9.csv"),
         pd.Series(
             data={
                 "Specimen ID": "001",

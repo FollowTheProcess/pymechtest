@@ -23,7 +23,7 @@ def base_long():
     """
 
     return BaseMechanicalTest(
-        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Long"),
+        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Tens_No_Yield"),
         header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
@@ -45,7 +45,7 @@ def base_trans():
     """
 
     return BaseMechanicalTest(
-        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Trans"),
+        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Tens_Yield"),
         header=8,
         stress_col="Tensile stress",
         strain_col="Tensile strain (Strain 1)",
