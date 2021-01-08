@@ -39,12 +39,15 @@ class BaseMechanicalTest:
             headed csv file with some metadata like date, test method name etc,
             specimen ID should be contained in this section.
 
-        strain1 (float): Lower strain bound for modulus calculation. Must be in %.
+        strain1 (float, optional): Lower strain bound for modulus calculation.
+            Must be in %. Defaults to 0.05.
 
-        strain2 (float): Upper strain bound for modulus calculation. Must be in %.
+        strain2 (float, optional): Upper strain bound for modulus calculation.
+            Must be in %. Defaults to 0.05.
 
-        expect_yield (bool): Whether the specimens are expected to be elastic to
-            failure (False) or they are expected to have a yield strength (True).
+        expect_yield (bool, optiona;): Whether the specimens are expected to be
+        elastic to failure (False) or they are expected to have a
+        yield strength (True). Defaults to True.
     """
 
     folder: Union[Path, str]
@@ -52,9 +55,9 @@ class BaseMechanicalTest:
     stress_col: str
     strain_col: str
     id_row: int
-    strain1: float
-    strain2: float
-    expect_yield: bool
+    strain1: float = 0.05
+    strain2: float = 0.15
+    expect_yield: bool = True
 
     def _get_specimen_id(self, fp: Union[Path, str]) -> str:
         """
