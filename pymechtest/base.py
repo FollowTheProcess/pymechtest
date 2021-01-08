@@ -28,9 +28,6 @@ class BaseMechanicalTest:
         folder (Union[Path, str]): String or Path-like folder containing
             test data.
 
-        header (int): 0-indexed row number of the table header
-            (i.e. the row containing things like "Stress", "Strain", "Load" etc.)
-
         stress_col (str): Name of the column containing stress data.
 
         strain_col (str): Name of the column containing strain data.
@@ -38,6 +35,10 @@ class BaseMechanicalTest:
         id_row (int): Row number of the specimen ID. Most test machines export a
             headed csv file with some metadata like date, test method name etc,
             specimen ID should be contained in this section.
+
+        header (int, optiona;): 0-indexed row number of the table header
+            (i.e. the row containing things like "Stress", "Strain", "Load" etc.).
+            Defaults to 0.
 
         strain1 (float, optional): Lower strain bound for modulus calculation.
             Must be in %. Defaults to 0.05.
@@ -51,10 +52,10 @@ class BaseMechanicalTest:
     """
 
     folder: Union[Path, str]
-    header: int
     stress_col: str
     strain_col: str
     id_row: int
+    header: int
     strain1: float = 0.05
     strain2: float = 0.15
     expect_yield: bool = True

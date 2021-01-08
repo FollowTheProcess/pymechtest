@@ -37,10 +37,10 @@ def test_shear_repr():
 
     obj = Shear(
         folder="made/up/directory",
-        header=8,
         stress_col="Shear stress",
         strain_col="Shear strain (Strain 1)",
         id_row=3,
+        header=8,
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -48,10 +48,10 @@ def test_shear_repr():
 
     assert (
         obj.__repr__() == "Shear(folder='made/up/directory', "
-        "header=8, "
         "stress_col='Shear stress', "
         "strain_col='Shear strain (Strain 1)', "
         "id_row=3, "
+        "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
 

@@ -29,16 +29,16 @@ def test_fatigue_repr():
 
     obj = Fatigue(
         folder="made/up/directory",
-        header=0,
         stress_col="Fatigue stress",
         strain_col="Fatigue strain (Strain 1)",
+        header=0,
     )
 
     assert (
         obj.__repr__() == "Fatigue(folder='made/up/directory', "
-        "header=0, "
         "stress_col='Fatigue stress', "
-        "strain_col='Fatigue strain (Strain 1)')"
+        "strain_col='Fatigue strain (Strain 1)', "
+        "header=0)"
     )
 
 

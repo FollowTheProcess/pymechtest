@@ -16,9 +16,9 @@ import pandas as pd
 class Fatigue:
 
     folder: Union[Path, str]
-    header: int
     stress_col: str
     strain_col: str
+    header: int = 0
 
     def _load(self, fp: Path) -> pd.DataFrame:
         """

@@ -48,10 +48,10 @@ def test_tensile_repr():
 
     obj = BaseMechanicalTest(
         folder="made/up/directory",
-        header=8,
         stress_col="BaseMechanicalTest stress",
         strain_col="BaseMechanicalTest strain (Strain 1)",
         id_row=3,
+        header=8,
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -59,10 +59,10 @@ def test_tensile_repr():
 
     assert (
         obj.__repr__() == "BaseMechanicalTest(folder='made/up/directory', "
-        "header=8, "
         "stress_col='BaseMechanicalTest stress', "
         "strain_col='BaseMechanicalTest strain (Strain 1)', "
         "id_row=3, "
+        "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
 
@@ -71,10 +71,10 @@ def test_tensile_eq():
 
     obj = BaseMechanicalTest(
         folder="made/up/directory",
-        header=8,
         stress_col="BaseMechanicalTest stress",
         strain_col="BaseMechanicalTest strain (Strain 1)",
         id_row=3,
+        header=8,
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -82,10 +82,10 @@ def test_tensile_eq():
 
     same = BaseMechanicalTest(
         folder="made/up/directory",
-        header=8,
         stress_col="BaseMechanicalTest stress",
         strain_col="BaseMechanicalTest strain (Strain 1)",
         id_row=3,
+        header=8,
         strain1=0.05,
         strain2=0.15,
         expect_yield=False,
@@ -93,10 +93,10 @@ def test_tensile_eq():
 
     diff = BaseMechanicalTest(
         folder="different/made/up/directory",
-        header=8,
         stress_col="Different stress col",
         strain_col="This doesn't match either",
         id_row=6,
+        header=8,
         strain1=0.025,
         strain2=0.3,
         expect_yield=True,
