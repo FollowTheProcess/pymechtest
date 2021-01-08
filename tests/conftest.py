@@ -9,17 +9,20 @@ from pathlib import Path
 
 import pytest
 
-from pymechtest import Tensile
+from pymechtest.base import BaseMechanicalTest
 
 
 @pytest.fixture
-def tensile_long():
+def base_long():
     """
-    Equivalent to calling Tensile pointing at the
+    Equivalent to calling BaseMechanicalTest pointing at the
     longitudinal test data.
+
+    Stress and strain col refer to Tensile because
+    the data I'm using for testing is from a static tensile test.
     """
 
-    return Tensile(
+    return BaseMechanicalTest(
         folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Long"),
         header=8,
         stress_col="Tensile stress",
@@ -32,13 +35,16 @@ def tensile_long():
 
 
 @pytest.fixture
-def tensile_trans():
+def base_trans():
     """
-    Equivalent to calling Tensile pointing at the
+    Equivalent to calling BaseMechanicalTest pointing at the
     transverse test data.
+
+    Stress and strain col refer to Tensile because
+    the data I'm using for testing is from a static tensile test.
     """
 
-    return Tensile(
+    return BaseMechanicalTest(
         folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Trans"),
         header=8,
         stress_col="Tensile stress",
