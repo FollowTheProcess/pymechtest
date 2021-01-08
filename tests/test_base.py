@@ -59,9 +59,9 @@ def test_base_repr():
 
     assert (
         obj.__repr__() == "BaseMechanicalTest(folder='made/up/directory', "
+        "id_row=3, "
         "stress_col='BaseMechanicalTest stress', "
         "strain_col='BaseMechanicalTest strain (Strain 1)', "
-        "id_row=3, "
         "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
@@ -108,6 +108,24 @@ def test_base_eq():
     assert obj.__eq__(same) is True
     assert obj.__eq__(diff) is False
     assert obj.__eq__(different_class) is NotImplemented
+
+
+def test_default_stress_strain_cols_long(base_long_no_stress_strain_cols):
+
+    obj = base_long_no_stress_strain_cols
+
+    # This method relies on knowing what the stress/strain cols are
+    # It will raise a ValueError if it can't autodetect
+    obj.summarise()
+
+
+def test_default_stress_strain_cols_trans(base_trans_no_stress_strain_cols):
+
+    obj = base_trans_no_stress_strain_cols
+
+    # This method relies on knowing what the stress/strain cols are
+    # It will raise a ValueError if it can't autodetect
+    obj.summarise()
 
 
 paths_and_specimen_ids = [

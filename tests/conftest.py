@@ -54,3 +54,37 @@ def base_trans():
         strain2=0.015,
         expect_yield=True,
     )
+
+
+@pytest.fixture
+def base_long_no_stress_strain_cols():
+    """
+    Like above but not specifying stress and strain col
+    names to test the auto-detection.
+    """
+
+    return BaseMechanicalTest(
+        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Tens_No_Yield"),
+        header=8,
+        id_row=3,
+        strain1=0.05,
+        strain2=0.15,
+        expect_yield=False,
+    )
+
+
+@pytest.fixture
+def base_trans_no_stress_strain_cols():
+    """
+    Like above but not specifying stress and strain col
+    names to test the auto-detection.
+    """
+
+    return BaseMechanicalTest(
+        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Tens_Yield"),
+        header=8,
+        id_row=3,
+        strain1=0.005,
+        strain2=0.015,
+        expect_yield=True,
+    )

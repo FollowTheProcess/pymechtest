@@ -48,9 +48,9 @@ def test_compression_repr():
 
     assert (
         obj.__repr__() == "Compression(folder='made/up/directory', "
+        "id_row=3, "
         "stress_col='Compression stress', "
         "strain_col='Compression strain (Strain 1)', "
-        "id_row=3, "
         "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
