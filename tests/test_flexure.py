@@ -48,9 +48,9 @@ def test_flexure_repr():
 
     assert (
         obj.__repr__() == "Flexure(folder='made/up/directory', "
+        "id_row=3, "
         "stress_col='Flexure stress', "
         "strain_col='Flexure strain (Strain 1)', "
-        "id_row=3, "
         "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )

@@ -28,15 +28,17 @@ class BaseMechanicalTest:
         folder (Union[Path, str]): String or Path-like folder containing
             test data.
 
-        stress_col (str): Name of the column containing stress data.
-
-        strain_col (str): Name of the column containing strain data.
-
         id_row (int): Row number of the specimen ID. Most test machines export a
             headed csv file with some metadata like date, test method name etc,
             specimen ID should be contained in this section.
 
-        header (int, optiona;): 0-indexed row number of the table header
+        stress_col (str, optional): Name of the column containing stress data.
+            If not passed, pymechtest will try to autodetect it from your data.
+
+        strain_col (str, optional): Name of the column containing strain data.
+            If not passed, pymechtest will try to autodetect it from your data.
+
+        header (int, optional): 0-indexed row number of the table header
             (i.e. the row containing things like "Stress", "Strain", "Load" etc.).
             Defaults to 0.
 
@@ -46,16 +48,16 @@ class BaseMechanicalTest:
         strain2 (float, optional): Upper strain bound for modulus calculation.
             Must be in %. Defaults to 0.05.
 
-        expect_yield (bool, optiona;): Whether the specimens are expected to be
+        expect_yield (bool, optional): Whether the specimens are expected to be
         elastic to failure (False) or they are expected to have a
         yield strength (True). Defaults to True.
     """
 
     folder: Union[Path, str]
-    stress_col: str
-    strain_col: str
     id_row: int
-    header: int
+    stress_col: Optional[str] = None
+    strain_col: Optional[str] = None
+    header: int = 0
     strain1: float = 0.05
     strain2: float = 0.15
     expect_yield: bool = True
@@ -84,6 +86,43 @@ class BaseMechanicalTest:
             return spec_id[1]
         else:
             raise ValueError(f"Specimen ID in file: {str(fp)} not found!")
+
+    def _get_stress_col(self, df: pd.DataFrame) -> Union[str, None]:
+
+        # Dummy so mypy doesn't complain about unbound
+        # Should never reach this bit of code
+        stress_col_name = None
+
+        if not self.stress_col:
+            for col in df.columns.tolist():
+                if "stress" in col.strip().lower():
+                    stress_col_name = col
+
+        else:
+            stress_col_name = self.stress_col
+
+        if stress_col_name:
+            return stress_col_name
+        else:
+            raise ValueError("Cannot detect name of stress column.")
+
+    def _get_strain_col(self, df: pd.DataFrame) -> Union[str, None]:
+
+        # Dummy so mypy doesn't complain about unbound
+        # Should never reach this bit of code
+        strain_col_name = None
+
+        if not self.strain_col:
+            for col in df.columns.tolist():
+                if "strain" in col.strip().lower():
+                    strain_col_name = col
+        else:
+            strain_col_name = self.strain_col
+
+        if strain_col_name:
+            return strain_col_name
+        else:
+            raise ValueError("Cannot detect name of strain column.")
 
     def _load(self, fp: Path) -> pd.DataFrame:
         """
@@ -124,15 +163,17 @@ class BaseMechanicalTest:
         """
         # Grab stress and strain data between strain1 and strain2
         # Elastic portion of the stress-strain curve
-        mod_filt = (df[self.strain_col] >= self.strain1) & (
-            df[self.strain_col] <= self.strain2
-        )
 
-        mod_df = df[mod_filt][[self.strain_col, self.stress_col]]
+        stress_col = self._get_stress_col(df)
+        strain_col = self._get_strain_col(df)
+
+        mod_filt = (df[strain_col] >= self.strain1) & (df[strain_col] <= self.strain2)
+
+        mod_df = df[mod_filt][[strain_col, stress_col]]
 
         # A is here to convert x to a matrix so numpy can be used
-        x = np.array(mod_df[self.strain_col])
-        y = np.array(mod_df[self.stress_col])
+        x = np.array(mod_df[strain_col])
+        y = np.array(mod_df[stress_col])
 
         A = np.vstack([x, np.ones(len(x))]).T
 
@@ -179,21 +220,22 @@ class BaseMechanicalTest:
         # Avoids pandas view/copy warning
         offset_df = df.copy()
 
+        stress_col = self._get_stress_col(df)
+        strain_col = self._get_strain_col(df)
+
         # Apply the offset to determine offset stress at each row
         # Offset stress vs strain is straight line of gradient = modulus
         # Yield is where this line intersects the original curve
-        offset_df["offset_stress"] = slope * (df[self.strain_col] - offset) + intercept
+        offset_df["offset_stress"] = slope * (df[strain_col] - offset) + intercept
 
         # Diff between offset stress and actual
         # Intersect is where this is = 0
-        offset_df["offset_delta"] = (
-            offset_df["offset_stress"] - offset_df[self.stress_col]
-        )
+        offset_df["offset_delta"] = offset_df["offset_stress"] - offset_df[stress_col]
 
         # Find actual stress value of the intersect
         yield_index = offset_df["offset_delta"].abs().idxmin()
 
-        yield_strength = offset_df.iloc[yield_index][self.stress_col]
+        yield_strength = offset_df.iloc[yield_index][stress_col]
 
         return yield_strength
 
@@ -211,11 +253,13 @@ class BaseMechanicalTest:
             pd.Series: Series of key test values.
         """
 
+        stress_col = self._get_stress_col(df)
+
         cols = ["Specimen ID", "Strength", "Modulus"]
 
         # Only one specimen in df here so specimen ID is constant for each
         spec_id = df["Specimen ID"].iloc[0]
-        uts = df[self.stress_col].max()
+        uts = df[stress_col].max()
         modulus = self._calc_modulus(df)
 
         vals = [spec_id, uts, modulus]
@@ -256,10 +300,6 @@ class BaseMechanicalTest:
         # Reorder the columns for OCD reasons
         col = df.pop("Specimen ID")
         df.insert(0, "Specimen ID", col)
-
-        # So we can avoid having to load data repeatedly
-        self._loaded_all = True
-        self._df = df
 
         return df
 
@@ -359,12 +399,15 @@ class BaseMechanicalTest:
 
         df = self.load_all()
 
+        stress_col = self._get_stress_col(df)
+        strain_col = self._get_strain_col(df)
+
         chart = (
             alt.Chart(data=df)
             .mark_line(size=1)
             .encode(
-                x=alt.X(f"{self.strain_col}:Q", title=x_label),
-                y=alt.Y(f"{self.stress_col}:Q", title=y_label),
+                x=alt.X(f"{strain_col}:Q", title=x_label),
+                y=alt.Y(f"{stress_col}:Q", title=y_label),
                 color=alt.Color("Specimen ID:N", title="Specimen ID"),
             )
             .properties(title=title, height=height, width=width)

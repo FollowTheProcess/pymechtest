@@ -59,9 +59,9 @@ def test_base_repr():
 
     assert (
         obj.__repr__() == "BaseMechanicalTest(folder='made/up/directory', "
+        "id_row=3, "
         "stress_col='BaseMechanicalTest stress', "
         "strain_col='BaseMechanicalTest strain (Strain 1)', "
-        "id_row=3, "
         "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
