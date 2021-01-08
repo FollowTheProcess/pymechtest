@@ -97,10 +97,10 @@ class BaseMechanicalTest:
         """
         # Incase there are any non-numerics below header
         df = (
-            (pd.read_csv(fp, header=self.header, thousands=","))
+            (pd.read_csv(fp, header=self.header))
             .applymap(lambda x: x.strip().replace(",", "") if isinstance(x, str) else x)
             .apply(pd.to_numeric, errors="coerce")
-            .dropna()
+            .dropna(how="all")
         )
         df["Specimen ID"] = self._get_specimen_id(fp)
 
