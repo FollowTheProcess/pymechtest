@@ -110,6 +110,24 @@ def test_base_eq():
     assert obj.__eq__(different_class) is NotImplemented
 
 
+def test_default_stress_strain_cols_long(base_long_no_stress_strain_cols):
+
+    obj = base_long_no_stress_strain_cols
+
+    # This method relies on knowing what the stress/strain cols are
+    # It will raise a ValueError if it can't autodetect
+    obj.summarise()
+
+
+def test_default_stress_strain_cols_trans(base_trans_no_stress_strain_cols):
+
+    obj = base_trans_no_stress_strain_cols
+
+    # This method relies on knowing what the stress/strain cols are
+    # It will raise a ValueError if it can't autodetect
+    obj.summarise()
+
+
 paths_and_specimen_ids = [
     (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), "0038"),
     (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), "0031"),
