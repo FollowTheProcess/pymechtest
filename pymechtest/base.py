@@ -46,7 +46,7 @@ class BaseMechanicalTest:
             Must be in %. Defaults to 0.05.
 
         strain2 (float, optional): Upper strain bound for modulus calculation.
-            Must be in %. Defaults to 0.05.
+            Must be in %. Defaults to 0.15.
 
         expect_yield (bool, optional): Whether the specimens are expected to be
         elastic to failure (False) or they are expected to have a

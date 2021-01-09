@@ -5,8 +5,8 @@ site_description: Python package to automate the boring bits of mechanical test 
 site_author: Tom Fleet
 use_directory_urls: false
 nav:
-  - Home:
-      - Index: index.md
+  - Home: index.md
+  - Api: api/pymechtest.md
 plugins:
   - mkdocstrings:
       watch:
@@ -24,10 +24,11 @@ theme:
     accent: blue
 markdown_extensions:
   - codehilite
-  - pymdownx.inlinehilite
-  - pymdownx.details
-  - pymdownx.tabbed
   - pymdownx.highlight:
       use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed
   - toc:
       permalink: true
