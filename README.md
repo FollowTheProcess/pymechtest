@@ -17,7 +17,7 @@
 
 pymechtest is a small, helpful(hopefully) python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as an engineer. I hope it can prove some use to you too!
 
-Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength?
+Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength? Only to then have to make another Excel file where you create a summary table? And then have to copy and paste that into a report or an email? And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional?
 
 **No more!**
 
@@ -25,7 +25,7 @@ pymechtest has a very simple goal: to reduce the amount of time engineers spend 
 
 Here is a quick taste of how easy it is to go from raw data to a tabular summary and a stress-strain plot:
 
-``` python
+```python
 from pymechtest import Tensile
 
 # header and id_row are related to the structure of your csv files
@@ -41,6 +41,8 @@ tens.plot_curves()
 tens.summarise()
 ```
 
+You'll see more about these methods in the docs later...
+
 The key features are:
 
 * **Intuitive**: The API is very intuitive, with descriptive methods like `plot_curves` and `summarise`
@@ -52,14 +54,22 @@ The key features are:
 
 ## Installation
 
-``` shell
+```shell
 pip install pymechtest
 ```
 
-#### Credits
+I also plan to make a conda package for this, once I've learned how to do it!
 
-This package was created with [cookiecutter](https://github.com/cookiecutter/cookiecutter) and the `FollowTheProcess/cookie_pypackage` project template.
+## Help
+
+**An important note about pymechtest**
+
+While I've tried to generalise the API to be of use on different formats of raw data, it is impossible to cover every type of format and ensure compatability.
+
+One way you can help is by try it on your data format, and raise an [issue] or submit a [PR] implementing your new format!
 
 [altair]: https://altair-viz.github.io
 [pandas]: https://pandas.pydata.org
 [numpy]: https://numpy.org
+[issue]: https://github.com/FollowTheProcess/pymechtest/issues
+[PR]: https://github.com/FollowTheProcess/pymechtest/pulls

@@ -1,3 +1,0 @@
-# `pymechtest`
-
-::: pymechtest.base.BaseMechanicalTest

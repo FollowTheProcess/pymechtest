@@ -6,7 +6,8 @@ site_author: Tom Fleet
 use_directory_urls: false
 nav:
   - Home: index.md
-  - Api: api/pymechtest.md
+  - Getting Started:
+      - First Steps: getting_started/first_steps.md
 plugins:
   - mkdocstrings:
       watch:
