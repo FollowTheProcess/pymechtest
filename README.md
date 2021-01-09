@@ -5,18 +5,71 @@
 ![Code Style](https://img.shields.io/badge/code%20style-black-black)
 [![CI](https://github.com/FollowTheProcess/pymechtest/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ACI)
 
-Python package to automate the boring bits of mechanical test data analysis!
+*Python package to automate the boring bits of mechanical test data analysis!*
 
-* Free software: GNU General Public License v3
+* **Source Code**: [https://github.com/FollowTheProcess/pymechtest](https://github.com/FollowTheProcess/pymechtest)
 
-## Project Description
+* **Documentation**: [https://FollowTheProcess.github.io/pymechtest/](https://FollowTheProcess.github.io/pymechtest/)
 
-:warning: Project under initial development
+## What is it?
+
+*:warning: Project under initial development*
+
+pymechtest is a small, helpful(hopefully) python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as an engineer. I hope it can prove some use to you too!
+
+Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength? Only to then have to make another Excel file where you create a summary table? And then have to copy and paste that into a report or an email? And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional?
+
+**No more!**
+
+pymechtest has a very simple goal: to reduce the amount of time engineers spend munging data after a batch of mechanical testing.
+
+Here is a quick taste of how easy it is to go from raw data to a tabular summary and a stress-strain plot:
+
+```python
+from pymechtest import Tensile
+
+# header and id_row are related to the structure of your csv files
+tens = Tensile(folder = "path/to/raw/data", header = 8, id_row = 3)
+
+# Load all data in the folder into a pandas dataframe
+tens.load_all()
+
+# Plot a really nice stress-strain curve with Altair
+tens.plot_curves()
+
+# Show a summary table with modulus and strength for each sample
+tens.summarise()
+```
+
+You'll see more about these methods in the docs later...
+
+The key features are:
+
+* **Intuitive**: The API is very intuitive, with descriptive methods like `plot_curves` and `summarise`
+* **Column Autodetection**: pymechtest will try to auto-detect which columns correspond to stress and strain, and ask you to clarify if it can't.
+* **Sensible Defaults**: The API is designed around sensible defaults for things like modulus strain range, whether to expect a yield strength etc.
+* **Automatic Calculations**: pymechtest will automatically calculate strength, elastic modulus, yield strength etc. for you.
+* **Elegant Looking Stress Strain Curves**: pymechtest uses [altair] to plot amazing looking stress strain curves.
+* **Reliable**: pymechtest uses battle-tested libraries like [pandas], [numpy] and [altair] to do most of the work. The API is really a domain-specific convenience wrapper. pymechtest also maintains high test coverage.
 
 ## Installation
 
-## Quickstart
+```shell
+pip install pymechtest
+```
 
-### Credits
+I also plan to make a conda package for this, once I've learned how to do it!
 
-This package was created with [cookiecutter](https://github.com/cookiecutter/cookiecutter) and the `FollowTheProcess/cookie_pypackage` project template.
+## Help
+
+**An important note about pymechtest**
+
+While I've tried to generalise the API to be of use on different formats of raw data, it is impossible to cover every type of format and ensure compatability.
+
+One way you can help is by try it on your data format, and raise an [issue] or submit a [PR] implementing your new format!
+
+[altair]: https://altair-viz.github.io
+[pandas]: https://pandas.pydata.org
+[numpy]: https://numpy.org
+[issue]: https://github.com/FollowTheProcess/pymechtest/issues
+[PR]: https://github.com/FollowTheProcess/pymechtest/pulls

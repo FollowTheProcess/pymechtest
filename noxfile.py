@@ -79,8 +79,15 @@ def lint(session):
 def docs(session):
     """
     Builds the project documentation.
+
+    If '-- serve' passed, auto serves docs.
+
+    Run 'nox -s docs -- serve' to do this.
     """
     session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(".[docs]")
 
-    session.run("mkdocs", "build", "--clean")
+    if "serve" in session.posargs:
+        session.run("mkdocs", "serve")
+    else:
+        session.run("mkdocs", "build", "--clean")
