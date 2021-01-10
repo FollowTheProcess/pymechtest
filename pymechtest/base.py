@@ -350,6 +350,7 @@ class BaseMechanicalTest:
         self,
         title: Optional[str] = None,
         save_path: Optional[Union[str, Path]] = None,
+        save_method: str = "selenium",
         x_label: Optional[str] = None,
         y_label: Optional[str] = None,
         height: int = 500,
@@ -368,6 +369,11 @@ class BaseMechanicalTest:
             save_path (Union[str, Path], optional): str or Pathlike path to save
                 a png of the plot. Requires chrome and selenium. If not passed, plot
                 is simply returned and not saved.
+
+            save_method(str, optional): One of 2 altair save methods:
+                'selenium' or 'node'.
+                if 'selenium' requires a configured geckodriver or chromedriver on PATH.
+                if 'node' requires nodejs installation. Defaults to 'selenium'
 
             x_label (str, optional): Label for x-axis.
                 Defaults to "{class name}Strain (%)".
@@ -413,6 +419,11 @@ class BaseMechanicalTest:
             .properties(title=title, height=height, width=width)
         )
 
+        if save_method not in set(["selenium", "node"]):
+            raise ValueError(
+                f"Save method must be one of 'selenium' or 'node'. Got: {save_method}"
+            )
+
         if save_path:
             fp = Path(save_path).resolve()
             save(
@@ -420,8 +431,7 @@ class BaseMechanicalTest:
                 fp=str(fp),
                 fmt="png",
                 scale_factor=6.0,
-                method="selenium",
-                webdriver="chrome",
+                method=save_method,
             )
 
         return chart
