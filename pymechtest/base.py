@@ -30,7 +30,7 @@ class BaseMechanicalTest:
 
         id_row (int): Row number of the specimen ID. Most test machines export a
             headed csv file with some metadata like date, test method name etc,
-            specimen ID should be contained in this section.
+            specimen ID should be contained in this section. Defaults to 0.
 
         stress_col (str, optional): Name of the column containing stress data.
             If not passed, pymechtest will try to autodetect it from your data.
@@ -54,7 +54,7 @@ class BaseMechanicalTest:
     """
 
     folder: Union[Path, str]
-    id_row: int
+    id_row: int = 0
     stress_col: Optional[str] = None
     strain_col: Optional[str] = None
     header: int = 0
