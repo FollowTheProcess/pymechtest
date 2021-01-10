@@ -1,0 +1,570 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python package to automate the boring bits of mechanical test data analysis!">
+      
+      
+      
+        <meta name="author" content="Tom Fleet">
+      
+      
+        <link rel="canonical" href="https://followtheprocess.github.io/pymechtest/getting_started/options.html">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
+    
+    
+      
+        <title>Options - pymechtest</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.3b61ea93.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>body,input{font-family:"Ubuntu",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Ubuntu Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="indigo" data-md-color-accent="blue">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#options-arguments" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://followtheprocess.github.io/pymechtest/" title="pymechtest" class="md-header-nav__button md-logo" aria-label="pymechtest">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            pymechtest
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Options
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/FollowTheProcess/pymechtest/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://followtheprocess.github.io/pymechtest/" title="pymechtest" class="md-nav__button md-logo" aria-label="pymechtest">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    pymechtest
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/FollowTheProcess/pymechtest/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  
+
+
+  
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Getting Started
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Getting Started
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="usage.html" class="md-nav__link">
+      Usage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Options
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="options.html" class="md-nav__link md-nav__link--active">
+      Options
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id-row" class="md-nav__link">
+    ID Row
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#header" class="md-nav__link">
+    Header
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strain1-strain2" class="md-nav__link">
+    Strain1 &amp; Strain2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expect-yield" class="md-nav__link">
+    Expect Yield
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id-row" class="md-nav__link">
+    ID Row
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#header" class="md-nav__link">
+    Header
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strain1-strain2" class="md-nav__link">
+    Strain1 &amp; Strain2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expect-yield" class="md-nav__link">
+    Expect Yield
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/FollowTheProcess/pymechtest/edit/master/docs/getting_started/options.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="options-arguments">Options &amp; Arguments<a class="headerlink" href="#options-arguments" title="Permanent link">&para;</a></h1>
+<p>All the static test classes in pymechtest have the same options and arguments available to them. These help you tweak what it does and doesn't load, what format the columns are in, whether you have specimen ID numbers in the files etc.</p>
+<p>Here we'll explain how to use these with an example.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>Let's use the <code>Tensile</code> class for a simple batch of tensile tests.</p>
+<p><em>Don't forget, pymechtest also has <code>Compression</code> and <code>Flexure</code> classes we could easily have used, they all work exactly the same way!</em></p>
+<p>pymechtest is designed to work directly from the raw data exported by the machine, so all you have to do is 'point it' at the folder where your batch of test data is and it will do the rest.</p>
+<p>In order for it work properly though, with some formats of data you might have to configure a few things.</p>
+<h3 id="id-row">ID Row<a class="headerlink" href="#id-row" title="Permanent link">&para;</a></h3>
+<p>Let's say you've just finished doing a batch of tensile tests and have a folder of randomly named csv files corresponding to this batch.</p>
+<p>Your csv file will look something like this (when opened in Excel):</p>
+<p><img alt="csv_example" src="../img/csv_file_example.png" /></p>
+<p>There may or may not be some metadata at the top of the file, and then there'll be your data below.</p>
+<p>In this example you notice we have a row called <code>Specimen ID</code> with the number 9, uniquely identifying this particular specimen in the batch.</p>
+<p><img alt="specimen_id" src="../img/specimen_id.png" /></p>
+<p>Well pymechtest can use this! All you have to do is specify which row this ID is on with the <code>id_row</code> argument...</p>
+<p>In our example, it's on the 4th row (so 3rd row in 0-indexed python)</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
+
+<span class="n">tens</span> <span class="o">=</span> <span class="n">Tensile</span><span class="p">(</span><span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/raw/data&quot;</span><span class="p">,</span> <span class="n">id_row</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p>Just by specifying this, you get this ID integrated into the rest of your work for free. For example, now the <code>.summarise</code> method will show it...</p>
+<p><img alt="summarise" src="../img/summarise.png" /></p>
+<p>If your csv structure doesn't have this format, don't worry. If you don't enter anything for <code>id_row</code> the <code>Specimen ID</code> column in the <code>.summarise</code> result will use the file name instead.</p>
+<h3 id="header">Header<a class="headerlink" href="#header" title="Permanent link">&para;</a></h3>
+<p>Notice again in our example file, there's a load of metadata on top (which is where we got the Specimen ID from) containing things like specimen width, thickness etc. and the actual data doesn't start until later on down the file.</p>
+<p>If you just try and read this in as it is, you'll get an error...</p>
+<p><img alt="parser_error" src="../img/parser_error.png" /></p>
+<p>This error actually comes from <a href="https://pandas.pydata.org">pandas</a> not from pymechtest, and it's because pandas tries to infer the structure of a csv from the first few rows. In our example case, the first few rows are different to the actual data. The actual data begins after row 9 (so 8 in 0-indexed python)</p>
+<p>To fix this, you need to pass the <code>header</code> argument, telling pymechtest which row the <strong>table header row is</strong> i.e. the row containing your column titles like <code>Tensile stress</code> etc. In our case, this means <code>header = 8</code></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
+
+<span class="n">tens</span> <span class="o">=</span> <span class="n">Tensile</span><span class="p">(</span><span class="s2">&quot;path/to/raw/data&quot;</span><span class="p">,</span> <span class="n">id_row</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+</code></pre></div>
+<p>And now it works perfectly!</p>
+<p><img alt="header" src="../img/header.png" /></p>
+<p>Note: In our example, the csv file had the units in brackets below the table headers. If this is true for your data too, or infact if your data has any non-numerics below your table headers, don't worry! pymechtest (well actually <a href="https://pandas.pydata.org">pandas</a>) is smart enough to remove these for you.</p>
+<blockquote>
+<p>Currently pymechtest doesn't support unit conversion. It assumes SI units: Stress = MPa, Modulus = GPa, Strain = %. This is something I want to support in the future and is on the roadmap.</p>
+</blockquote>
+<h3 id="strain1-strain2">Strain1 &amp; Strain2<a class="headerlink" href="#strain1-strain2" title="Permanent link">&para;</a></h3>
+<p>Notice that the <code>.summarise</code> method calculates the elastic modulus. But you didn't tell it to do that, and you didn't specify how to calculate it or what strain range to use etc.</p>
+<p>This is because pymechtest uses <strong>sensible defaults</strong> and actually configured this behind the scenes without you knowing. The range over which the elastic modulus is calculated is controlled by the <code>strain1</code> and <code>strain2</code> arguments and defaults to <code>0.05</code> and <code>0.15</code> (in % strain). This is a good range for a lot of common materials.</p>
+<p>You can always override this by explicitly defining what you want <code>strain1</code> and <code>strain2</code> to be...</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
+
+<span class="n">tens</span> <span class="o">=</span> <span class="n">Tensile</span><span class="p">(</span><span class="s2">&quot;path/to/raw/data&quot;</span><span class="p">,</span> <span class="n">id_row</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">strain1</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">strain2</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div>
+<p>Now pymechtest will use your values of <code>strain1</code> and <code>strain2</code> to calculate the modulus.</p>
+<div class="arithmatex">\[
+E=\Delta\sigma / \Delta\epsilon
+\]</div>
+<p>With your ranges:</p>
+<div class="arithmatex">\[
+E=\Delta\sigma / (strain2 - strain1)
+\]</div>
+<p>Obviously, if you define your own ranges, it's now up to you that those ranges are valid and you are still capturing the elastic portion of the stress strain curve, so you might want to check it out with <code>.plot_curves()</code> first!</p>
+<blockquote>
+<p>Currently, only Young's modulus is supported. In the future I want to provide the option for different types of modulus i.e. secant, chord etc. This is on the roadmap!</p>
+</blockquote>
+<h3 id="expect-yield">Expect Yield<a class="headerlink" href="#expect-yield" title="Permanent link">&para;</a></h3>
+<p>You've seen how the <code>.summarise</code> method returns a column for yield strength in our earlier example. How did it know how to do that?</p>
+<p>Well there's an argument for that: <code>expect_yield</code> which defaults to <code>True</code> (a sensible default).</p>
+<p>If you were testing a load of carbon fibre test pieces in the fibre direction, they are elastic to failure and the concept of yield strength becomes irrelevant.</p>
+<p>In that case, you would pass <code>expect_yield = False</code> when instantiating the <code>Tensile</code> class...</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
+
+<span class="n">tens</span> <span class="o">=</span> <span class="n">Tensile</span><span class="p">(</span><span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/raw/data&quot;</span><span class="p">,</span> <span class="n">id_row</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">expect_yield</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Now if you call <code>.summarise</code> on your non-yielding data, you won't see the yield strength column because it won't be calculated...</p>
+<p><img alt="no_yield_summarise" src="../img/no_yield_summarise.png" /></p>
+<p>By tweaking all these things, it's my aim that pymechtest can be used to help you process lots of different types of mechanical test data output!</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="usage.html" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Usage
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.08c56446.min.js"></script>
+      <script src="../assets/javascripts/bundle.6ced434e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
