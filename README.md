@@ -13,7 +13,7 @@
 
 ## What is it?
 
-*:warning: Project under initial development*
+*:warning: Project under pre-release development*
 
 pymechtest is a small, helpful(hopefully) python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as an engineer. I hope it can prove some use to you too!
 

@@ -5,7 +5,7 @@
 ![Code Style](https://img.shields.io/badge/code%20style-black-black)
 [![CI](https://github.com/FollowTheProcess/pymechtest/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ACI)
 
-*Python package to automate the boring bits of mechanical test data analysis!*
+*pymechtest is a small, hopefully helpful python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as a materials engineer. I hope it can prove some use to you too!*
 
 * **Source Code**: [https://github.com/FollowTheProcess/pymechtest](https://github.com/FollowTheProcess/pymechtest)
 
@@ -13,9 +13,7 @@
 
 ## What is it?
 
-*:warning: Project under initial development*
-
-pymechtest is a small, helpful(hopefully) python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as an engineer. I hope it can prove some use to you too!
+*:warning: Project under pre-release development*
 
 Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength? Only to then have to make another Excel file where you create a summary table? And then have to copy and paste that into a report or an email? And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional?
 
