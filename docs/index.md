@@ -1,7 +1,5 @@
 ![logo](./img/logo.png)
 
-# pymechtest
-
 [![License](https://img.shields.io/github/license/FollowTheProcess/pymechtest)](https://github.com/FollowTheProcess/pymechtest)
 [![PyPI](https://img.shields.io/pypi/v/pymechtest.svg)](https://pypi.python.org/pypi/pymechtest)
 ![Code Style](https://img.shields.io/badge/code%20style-black-black)
@@ -17,9 +15,19 @@
 
 *:warning: Project under pre-release development*
 
-Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength? Only to then have to make another Excel file where you create a summary table? And then have to copy and paste that into a report or an email? And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional?
+Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength?
 
-**No more!**
+Only to then have to make another Excel file where you create a summary table...
+
+And then have to copy and paste that into a report or an email...
+
+And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional...
+
+And then you discover Excel has formatted your strain column as a date for literally no reason so now your plots have broken...
+
+And then next week you have to do all this again! :angry:
+
+**No more!** :boom:
 
 pymechtest has a very simple goal: to reduce the amount of time engineers spend munging data after a batch of mechanical testing.
 
@@ -36,8 +44,6 @@ tens.plot_curves()
 ```
 
 ![plot_curves](img/plot_curves.png)
-
-You'll see more about these methods in the docs later...
 
 The key features are:
 

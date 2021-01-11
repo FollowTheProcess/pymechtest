@@ -106,6 +106,8 @@ You've seen how the `.summarise` method returns a column for yield strength in o
 
 Well there's an argument for that: `expect_yield` which defaults to `True` (a sensible default).
 
+> By the way, pymechtest uses the 0.2% offset yield strength. Currently this is the only option, but in the future I want to support alternative methods such a slope threshold etc.
+
 If you were testing a load of carbon fibre test pieces in the fibre direction, they are elastic to failure and the concept of yield strength becomes irrelevant.
 
 In that case, you would pass `expect_yield = False` when instantiating the `Tensile` class...

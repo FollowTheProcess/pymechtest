@@ -7,7 +7,7 @@
 ![Code Style](https://img.shields.io/badge/code%20style-black-black)
 [![CI](https://github.com/FollowTheProcess/pymechtest/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ACI)
 
-*Python package to automate the boring bits of mechanical test data analysis!*
+*pymechtest is a small, hopefully helpful python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as a materials engineer. I hope it can prove some use to you too!*
 
 * **Source Code**: [https://github.com/FollowTheProcess/pymechtest](https://github.com/FollowTheProcess/pymechtest)
 
@@ -17,15 +17,23 @@
 
 *:warning: Project under pre-release development*
 
-pymechtest is a small, helpful(hopefully) python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as an engineer. I hope it can prove some use to you too!
+Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength?
 
-Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength? Only to then have to make another Excel file where you create a summary table? And then have to copy and paste that into a report or an email? And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional?
+Only to then have to make another Excel file where you create a summary table...
 
-**No more!**
+And then have to copy and paste that into a report or an email...
+
+And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional...
+
+And then you discover Excel has formatted your strain column as a date for literally no reason so now your plots have broken...
+
+And then next week you have to do all this again! :angry:
+
+**No more!** :boom:
 
 pymechtest has a very simple goal: to reduce the amount of time engineers spend munging data after a batch of mechanical testing.
 
-Here is a quick taste of how easy it is to go from raw data to a tabular summary and a stress-strain plot:
+Here is a quick taste of how easy it is to go from raw data to a gorgeous stress-strain plot:
 
 ```python
 from pymechtest import Tensile
@@ -33,17 +41,11 @@ from pymechtest import Tensile
 # header and id_row are related to the structure of your csv files
 tens = Tensile(folder = "path/to/raw/data", header = 8, id_row = 3)
 
-# Load all data in the folder into a pandas dataframe
-tens.load_all()
-
 # Plot a really nice stress-strain curve with Altair
 tens.plot_curves()
-
-# Show a summary table with modulus and strength for each sample
-tens.summarise()
 ```
 
-You'll see more about these methods in the docs later...
+![plot_curves](img/plot_curves.png)
 
 The key features are:
 
