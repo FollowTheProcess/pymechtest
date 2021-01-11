@@ -1,3 +1,5 @@
+![logo](./img/logo.png)
+
 # pymechtest
 
 [![License](https://img.shields.io/github/license/FollowTheProcess/pymechtest)](https://github.com/FollowTheProcess/pymechtest)
