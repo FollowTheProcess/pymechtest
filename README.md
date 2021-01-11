@@ -1,3 +1,5 @@
+<img src="docs/img/logo.png" height = 125 align="right">
+
 # pymechtest
 
 [![License](https://img.shields.io/github/license/FollowTheProcess/pymechtest)](https://github.com/FollowTheProcess/pymechtest)
