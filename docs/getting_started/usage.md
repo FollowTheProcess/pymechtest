@@ -1,4 +1,4 @@
-# First Steps
+# Usage
 
 pymechtest is a super tiny package, it focusses on just a few common tasks, as such it's super easy to learn!
 

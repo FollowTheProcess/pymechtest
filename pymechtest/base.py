@@ -49,8 +49,8 @@ class BaseMechanicalTest:
             Must be in %. Defaults to 0.15.
 
         expect_yield (bool, optional): Whether the specimens are expected to be
-        elastic to failure (False) or they are expected to have a
-        yield strength (True). Defaults to True.
+            elastic to failure (False) or they are expected to have a
+            yield strength (True). Defaults to True.
     """
 
     folder: Union[Path, str]
@@ -350,7 +350,7 @@ class BaseMechanicalTest:
         self,
         title: Optional[str] = None,
         save_path: Optional[Union[str, Path]] = None,
-        save_method: str = "selenium",
+        save_method: Optional[str] = "selenium",
         x_label: Optional[str] = None,
         y_label: Optional[str] = None,
         height: int = 500,
@@ -364,13 +364,13 @@ class BaseMechanicalTest:
 
         Args:
             title (str, optional): Title for the plot.
-                Defaults to "Stress-Strain Curves".
+                Defaults to "{class_name} Stress-Strain Curves".
 
             save_path (Union[str, Path], optional): str or Pathlike path to save
                 a png of the plot. Requires chrome and selenium. If not passed, plot
                 is simply returned and not saved.
 
-            save_method(str, optional): One of 2 altair save methods:
+            save_method (str, optional): One of 2 altair save methods:
                 'selenium' or 'node'.
                 if 'selenium' requires a configured geckodriver or chromedriver on PATH.
                 if 'node' requires nodejs installation. Defaults to 'selenium'

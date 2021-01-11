@@ -9,6 +9,12 @@ nav:
   - Getting Started:
       - Usage: getting_started/usage.md
       - Options: getting_started/options.md
+      - Plot Curves: getting_started/plot.md
+  - Contributing:
+      - Help: contributing/help.md
+      - How to: contributing/guide.md
+  - API:
+      - Static Test: api/static.md
 plugins:
   - mkdocstrings:
       watch:
@@ -34,6 +40,9 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - toc:
       permalink: true
 extra_javascript:
