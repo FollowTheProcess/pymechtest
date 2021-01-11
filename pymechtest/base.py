@@ -8,7 +8,6 @@ Created: 09/12/2020
 import collections
 import csv
 import itertools
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Tuple, Union
 
@@ -19,48 +18,95 @@ import pandas as pd
 from altair_saver import save
 
 
-@dataclass
 class BaseMechanicalTest:
-    """
-    Mechanical Test Base class.
+    def __init__(
+        self,
+        folder: Union[Path, str],
+        id_row: int = 0,
+        stress_col: Optional[str] = None,
+        strain_col: Optional[str] = None,
+        header: int = 0,
+        strain1: float = 0.05,
+        strain2: float = 0.15,
+        expect_yield: bool = True,
+    ) -> None:
+        """
+        Base Mechanical test class.
 
-    Args:
-        folder (Union[Path, str]): String or Path-like folder containing
-            test data.
+        Args:
+            folder (Union[Path, str]): String or Path-like folder containing
+                test data.
 
-        id_row (int): Row number of the specimen ID. Most test machines export a
-            headed csv file with some metadata like date, test method name etc,
-            specimen ID should be contained in this section. Defaults to 0.
+            id_row (int): Row number of the specimen ID. Most test machines export a
+                headed csv file with some metadata like date, test method name etc,
+                specimen ID should be contained in this section. Defaults to 0.
 
-        stress_col (str, optional): Name of the column containing stress data.
-            If not passed, pymechtest will try to autodetect it from your data.
+            stress_col (str, optional): Name of the column containing stress data.
+                If not passed, pymechtest will try to autodetect it from your data.
 
-        strain_col (str, optional): Name of the column containing strain data.
-            If not passed, pymechtest will try to autodetect it from your data.
+            strain_col (str, optional): Name of the column containing strain data.
+                If not passed, pymechtest will try to autodetect it from your data.
 
-        header (int, optional): 0-indexed row number of the table header
-            (i.e. the row containing things like "Stress", "Strain", "Load" etc.).
-            Defaults to 0.
+            header (int, optional): 0-indexed row number of the table header
+                (i.e. the row containing things like "Stress", "Strain", "Load" etc.).
+                Defaults to 0.
 
-        strain1 (float, optional): Lower strain bound for modulus calculation.
-            Must be in %. Defaults to 0.05.
+            strain1 (float, optional): Lower strain bound for modulus calculation.
+                Must be in %. Defaults to 0.05.
 
-        strain2 (float, optional): Upper strain bound for modulus calculation.
-            Must be in %. Defaults to 0.15.
+            strain2 (float, optional): Upper strain bound for modulus calculation.
+                Must be in %. Defaults to 0.15.
 
-        expect_yield (bool, optional): Whether the specimens are expected to be
-            elastic to failure (False) or they are expected to have a
-            yield strength (True). Defaults to True.
-    """
+            expect_yield (bool, optional): Whether the specimens are expected to be
+                elastic to failure (False) or they are expected to have a
+                yield strength (True). Defaults to True.
+        """
+        self.folder = folder
+        self.id_row = id_row
+        self.stress_col = stress_col
+        self.strain_col = strain_col
+        self.header = header
+        self.strain1 = strain1
+        self.strain2 = strain2
+        self.expect_yield = expect_yield
 
-    folder: Union[Path, str]
-    id_row: int = 0
-    stress_col: Optional[str] = None
-    strain_col: Optional[str] = None
-    header: int = 0
-    strain1: float = 0.05
-    strain2: float = 0.15
-    expect_yield: bool = True
+    def __repr__(self) -> str:
+
+        return (
+            self.__class__.__qualname__ + f"(folder={self.folder!r}, "
+            f"id_row={self.id_row!r}, "
+            f"stress_col={self.stress_col!r}, "
+            f"strain_col={self.strain_col!r}, "
+            f"header={self.header!r}, "
+            f"strain1={self.strain1!r}, "
+            f"strain2={self.strain2!r}, "
+            f"expect_yield={self.expect_yield!r})"
+        )
+
+    def __eq__(self, other) -> bool:
+
+        if other.__class__ is self.__class__:
+
+            return (
+                self.folder,
+                self.id_row,
+                self.stress_col,
+                self.strain_col,
+                self.header,
+                self.strain1,
+                self.strain2,
+                self.expect_yield,
+            ) == (
+                other.folder,
+                other.id_row,
+                other.stress_col,
+                other.strain_col,
+                other.header,
+                other.strain1,
+                other.strain2,
+                other.expect_yield,
+            )
+        return NotImplemented
 
     def _get_specimen_id(self, fp: Union[Path, str]) -> str:
         """
@@ -429,7 +475,6 @@ class BaseMechanicalTest:
             save(
                 chart,
                 fp=str(fp),
-                fmt="png",
                 scale_factor=6.0,
                 method=save_method,
             )
