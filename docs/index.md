@@ -21,7 +21,7 @@ Have you ever had to process a bunch of csv output from a mechanical test machin
 
 pymechtest has a very simple goal: to reduce the amount of time engineers spend munging data after a batch of mechanical testing.
 
-Here is a quick taste of how easy it is to go from raw data to a tabular summary and a stress-strain plot:
+Here is a quick taste of how easy it is to go from raw data to a gorgeous stress-strain plot:
 
 ```python
 from pymechtest import Tensile
@@ -29,15 +29,11 @@ from pymechtest import Tensile
 # header and id_row are related to the structure of your csv files
 tens = Tensile(folder = "path/to/raw/data", header = 8, id_row = 3)
 
-# Load all data in the folder into a pandas dataframe
-tens.load_all()
-
 # Plot a really nice stress-strain curve with Altair
 tens.plot_curves()
-
-# Show a summary table with modulus and strength for each sample
-tens.summarise()
 ```
+
+![plot_curves](img/plot_curves.png)
 
 You'll see more about these methods in the docs later...
 

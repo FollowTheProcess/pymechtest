@@ -8,7 +8,7 @@ Here we'll explain how to use these with an example.
 
 Let's use the `Tensile` class for a simple batch of tensile tests.
 
-*Don't forget, pymechtest also has `Compression` and `Flexure` classes we could easily have used, they all work exactly the same way!*
+*Don't forget, pymechtest also has `Compression`, `Shear` and `Flexure` classes we could easily have used, they all work exactly the same way!*
 
 pymechtest is designed to work directly from the raw data exported by the machine, so all you have to do is 'point it' at the folder where your batch of test data is and it will do the rest.
 

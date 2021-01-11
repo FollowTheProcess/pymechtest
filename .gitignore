@@ -1,6 +1,7 @@
 # Project specific
 *.ipynb
 test.csv
+TODO.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
