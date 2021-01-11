@@ -311,6 +311,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#stats" class="md-nav__link">
+    Stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#stress-strain-curves" class="md-nav__link">
     Stress-Strain Curves
   </a>
@@ -319,6 +326,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#column-autodetection" class="md-nav__link">
+    Column Autodetection
+  </a>
   
 </li>
       
@@ -518,6 +532,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#stats" class="md-nav__link">
+    Stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#stress-strain-curves" class="md-nav__link">
     Stress-Strain Curves
   </a>
@@ -526,6 +547,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#column-autodetection" class="md-nav__link">
+    Column Autodetection
+  </a>
   
 </li>
       
@@ -590,6 +618,15 @@
 </code></pre></div>
 <p>This will extract key values such as elastic modulus, tensile strength, yield strength (if <code>expect_yield = True</code> we'll talk about this later.) for each specimen in your sample.</p>
 <p><img alt="summarise" src="../img/summarise.png" /></p>
+<h3 id="stats">Stats<a class="headerlink" href="#stats" title="Permanent link">&para;</a></h3>
+<p>What if you just want a statistical summary of the data? Well you can do that too! Just use the <code>.stats()</code> method.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
+
+<span class="n">tens</span> <span class="o">=</span> <span class="n">Tensile</span><span class="p">(</span><span class="s2">&quot;path/to/raw/data&quot;</span><span class="p">)</span>
+
+<span class="n">tens</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="stats" src="../img/stats.png" /></p>
 <h3 id="stress-strain-curves">Stress-Strain Curves<a class="headerlink" href="#stress-strain-curves" title="Permanent link">&para;</a></h3>
 <p>Making nice looking stress strain curves has always been the bane of my life. With pymechtest, a gorgeous graph is only a method away..</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
@@ -600,6 +637,15 @@
 </code></pre></div>
 <p>If you're working in a jupyter notebook or an IDE that supports them you will see the plot appear. You can also save the generated plot but we'll talk about that later too.</p>
 <p><img alt="plot_curves" src="../img/plot_curves.png" /></p>
+<h2 id="column-autodetection">Column Autodetection<a class="headerlink" href="#column-autodetection" title="Permanent link">&para;</a></h2>
+<p>You may have noticed that in the examples above, we didn't specify which columns corresponded to stress or strain, and somehow we were still able to get yield strength and modulus etc.</p>
+<p>This is because when you load your data in pymechtest will try to autodetect which columns are which in the background.</p>
+<p>At the moment it does this quite naively by looking at your csv files, using the <code>header</code> argument and seeing which columns have the words "stress" or "strain" in them. If it can't find a match, you will see an error and it will ask you to specify which columns are which.</p>
+<p>You do this by passing the name of the stress and strain columns (exactly as they appear in the raw data) to the <code>stress_col</code> and <code>strain_col</code> arguments:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
+
+<span class="n">tens</span> <span class="o">=</span> <span class="n">Tensile</span><span class="p">(</span><span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/raw/data&quot;</span><span class="p">,</span> <span class="n">stress_col</span> <span class="o">=</span> <span class="s2">&quot;Tensile stress&quot;</span><span class="p">,</span> <span class="n">strain_col</span> <span class="o">=</span> <span class="s2">&quot;Tensile strain (Strain1)&quot;</span><span class="p">)</span>
+</code></pre></div>
                 
               
               

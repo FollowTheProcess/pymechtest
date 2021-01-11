@@ -405,6 +405,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pymechtest.base.BaseMechanicalTest.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pymechtest.base.BaseMechanicalTest.load_all" class="md-nav__link">
     load_all()
   </a>
@@ -476,6 +483,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pymechtest.base.BaseMechanicalTest.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pymechtest.base.BaseMechanicalTest.load_all" class="md-nav__link">
     load_all()
   </a>
@@ -525,7 +539,19 @@
 <h2 class="hidden-toc" id="pymechtest.base.BaseMechanicalTest" style="visibility: hidden; position: absolute;">
         <a class="headerlink" href="#pymechtest.base.BaseMechanicalTest" title="Permanent link">&para;</a></h2>
 <div class="doc doc-contents first">
-<p>Mechanical Test Base class.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="pymechtest.base.BaseMechanicalTest.__init__">
+
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">id_row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stress_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strain_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strain1</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">strain2</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">expect_yield</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      <a class="headerlink" href="#pymechtest.base.BaseMechanicalTest.__init__" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Base Mechanical test class.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -539,7 +565,7 @@
 <tbody>
 <tr>
 <td><code>folder</code></td>
-<td><code>Union[Path, str]</code></td>
+<td><code>Union[pathlib.Path, str]</code></td>
 <td>
 <p>String or Path-like folder containing
 test data.</p>
@@ -554,25 +580,25 @@ test data.</p>
 headed csv file with some metadata like date, test method name etc,
 specimen ID should be contained in this section. Defaults to 0.</p>
 </td>
-<td><em>required</em></td>
+<td><code>0</code></td>
 </tr>
 <tr>
 <td><code>stress_col</code></td>
-<td><code>str</code></td>
+<td><code>Optional[str]</code></td>
 <td>
 <p>Name of the column containing stress data.
 If not passed, pymechtest will try to autodetect it from your data.</p>
 </td>
-<td><em>required</em></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>strain_col</code></td>
-<td><code>str</code></td>
+<td><code>Optional[str]</code></td>
 <td>
 <p>Name of the column containing strain data.
 If not passed, pymechtest will try to autodetect it from your data.</p>
 </td>
-<td><em>required</em></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>header</code></td>
@@ -582,7 +608,7 @@ If not passed, pymechtest will try to autodetect it from your data.</p>
 (i.e. the row containing things like "Stress", "Strain", "Load" etc.).
 Defaults to 0.</p>
 </td>
-<td><em>required</em></td>
+<td><code>0</code></td>
 </tr>
 <tr>
 <td><code>strain1</code></td>
@@ -591,7 +617,7 @@ Defaults to 0.</p>
 <p>Lower strain bound for modulus calculation.
 Must be in %. Defaults to 0.05.</p>
 </td>
-<td><em>required</em></td>
+<td><code>0.05</code></td>
 </tr>
 <tr>
 <td><code>strain2</code></td>
@@ -600,7 +626,7 @@ Must be in %. Defaults to 0.05.</p>
 <p>Upper strain bound for modulus calculation.
 Must be in %. Defaults to 0.15.</p>
 </td>
-<td><em>required</em></td>
+<td><code>0.15</code></td>
 </tr>
 <tr>
 <td><code>expect_yield</code></td>
@@ -610,11 +636,68 @@ Must be in %. Defaults to 0.15.</p>
 elastic to failure (False) or they are expected to have a
 yield strength (True). Defaults to True.</p>
 </td>
-<td><em>required</em></td>
+<td><code>True</code></td>
 </tr>
 </tbody>
 </table>
-<div class="doc doc-children">
+<details class="quote">
+          <summary>Source code in <code>pymechtest/base.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">folder</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">id_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">stress_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">strain_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">header</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">strain1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">strain2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
+    <span class="n">expect_yield</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Base Mechanical test class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        folder (Union[Path, str]): String or Path-like folder containing</span>
+<span class="sd">            test data.</span>
+
+<span class="sd">        id_row (int): Row number of the specimen ID. Most test machines export a</span>
+<span class="sd">            headed csv file with some metadata like date, test method name etc,</span>
+<span class="sd">            specimen ID should be contained in this section. Defaults to 0.</span>
+
+<span class="sd">        stress_col (str, optional): Name of the column containing stress data.</span>
+<span class="sd">            If not passed, pymechtest will try to autodetect it from your data.</span>
+
+<span class="sd">        strain_col (str, optional): Name of the column containing strain data.</span>
+<span class="sd">            If not passed, pymechtest will try to autodetect it from your data.</span>
+
+<span class="sd">        header (int, optional): 0-indexed row number of the table header</span>
+<span class="sd">            (i.e. the row containing things like "Stress", "Strain", "Load" etc.).</span>
+<span class="sd">            Defaults to 0.</span>
+
+<span class="sd">        strain1 (float, optional): Lower strain bound for modulus calculation.</span>
+<span class="sd">            Must be in %. Defaults to 0.05.</span>
+
+<span class="sd">        strain2 (float, optional): Upper strain bound for modulus calculation.</span>
+<span class="sd">            Must be in %. Defaults to 0.15.</span>
+
+<span class="sd">        expect_yield (bool, optional): Whether the specimens are expected to be</span>
+<span class="sd">            elastic to failure (False) or they are expected to have a</span>
+<span class="sd">            yield strength (True). Defaults to True.</span>
+<span class="sd">    """</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">id_row</span> <span class="o">=</span> <span class="n">id_row</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stress_col</span> <span class="o">=</span> <span class="n">stress_col</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">strain_col</span> <span class="o">=</span> <span class="n">strain_col</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">header</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">strain1</span> <span class="o">=</span> <span class="n">strain1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">strain2</span> <span class="o">=</span> <span class="n">strain2</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">expect_yield</span> <span class="o">=</span> <span class="n">expect_yield</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
 <div class="doc doc-object doc-method">
 <h2 class="doc doc-heading" id="pymechtest.base.BaseMechanicalTest.load_all">
 
@@ -870,7 +953,6 @@ Defaults to 750.</p>
         <span class="n">save</span><span class="p">(</span>
             <span class="n">chart</span><span class="p">,</span>
             <span class="n">fp</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">fp</span><span class="p">),</span>
-            <span class="n">fmt</span><span class="o">=</span><span class="s2">"png"</span><span class="p">,</span>
             <span class="n">scale_factor</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">save_method</span><span class="p">,</span>
         <span class="p">)</span>

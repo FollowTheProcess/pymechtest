@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pymechtest" class="md-skip">
+        <a href="#what-is-it" class="md-skip">
           Skip to content
         </a>
       
@@ -210,8 +210,6 @@
     
     <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
         Home
@@ -225,8 +223,6 @@
       
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
-  
-    
   
   
     <label class="md-nav__title" for="__toc">
@@ -443,8 +439,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -490,8 +484,9 @@
                   </a>
                 
                 
+                  <h1>Home</h1>
+                
                 <p><img alt="logo" src="img/logo.png" /></p>
-<h1 id="pymechtest">pymechtest<a class="headerlink" href="#pymechtest" title="Permanent link">&para;</a></h1>
 <p><a href="https://github.com/FollowTheProcess/pymechtest"><img alt="License" src="https://img.shields.io/github/license/FollowTheProcess/pymechtest" /></a>
 <a href="https://pypi.python.org/pypi/pymechtest"><img alt="PyPI" src="https://img.shields.io/pypi/v/pymechtest.svg" /></a>
 <img alt="Code Style" src="https://img.shields.io/badge/code%20style-black-black" />
@@ -507,8 +502,13 @@
 </ul>
 <h2 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h2>
 <p><em><img alt="⚠" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/26a0.svg" title=":warning:" /> Project under pre-release development</em></p>
-<p>Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength? Only to then have to make another Excel file where you create a summary table? And then have to copy and paste that into a report or an email? And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional?</p>
-<p><strong>No more!</strong></p>
+<p>Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength?</p>
+<p>Only to then have to make another Excel file where you create a summary table...</p>
+<p>And then have to copy and paste that into a report or an email...</p>
+<p>And then you have to plot the data in Excel and spend half an hour tweaking the colours to get it to look at least halfway professional...</p>
+<p>And then you discover Excel has formatted your strain column as a date for literally no reason so now your plots have broken...</p>
+<p>And then next week you have to do all this again! <img alt="😠" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f620.svg" title=":angry:" /></p>
+<p><strong>No more!</strong> <img alt="💥" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f4a5.svg" title=":boom:" /></p>
 <p>pymechtest has a very simple goal: to reduce the amount of time engineers spend munging data after a batch of mechanical testing.</p>
 <p>Here is a quick taste of how easy it is to go from raw data to a gorgeous stress-strain plot:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
@@ -520,7 +520,6 @@
 <span class="n">tens</span><span class="o">.</span><span class="n">plot_curves</span><span class="p">()</span>
 </code></pre></div>
 <p><img alt="plot_curves" src="img/plot_curves.png" /></p>
-<p>You'll see more about these methods in the docs later...</p>
 <p>The key features are:</p>
 <ul>
 <li><strong>Intuitive</strong>: The API is very intuitive, with descriptive methods like <code>plot_curves</code> and <code>summarise</code></li>

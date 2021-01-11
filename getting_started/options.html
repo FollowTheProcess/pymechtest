@@ -595,6 +595,9 @@ E=\Delta\sigma / (strain2 - strain1)
 <h3 id="expect-yield">Expect Yield<a class="headerlink" href="#expect-yield" title="Permanent link">&para;</a></h3>
 <p>You've seen how the <code>.summarise</code> method returns a column for yield strength in our earlier example. How did it know how to do that?</p>
 <p>Well there's an argument for that: <code>expect_yield</code> which defaults to <code>True</code> (a sensible default).</p>
+<blockquote>
+<p>By the way, pymechtest uses the 0.2% offset yield strength. Currently this is the only option, but in the future I want to support alternative methods such a slope threshold etc.</p>
+</blockquote>
 <p>If you were testing a load of carbon fibre test pieces in the fibre direction, they are elastic to failure and the concept of yield strength becomes irrelevant.</p>
 <p>In that case, you would pass <code>expect_yield = False</code> when instantiating the <code>Tensile</code> class...</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymechtest</span> <span class="kn">import</span> <span class="n">Tensile</span>
