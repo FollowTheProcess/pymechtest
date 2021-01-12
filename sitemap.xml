@@ -24,7 +24,23 @@
      <lastmod>2021-01-12</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://followtheprocess.github.io/pymechtest/api/static.html</loc>
+     <loc>https://followtheprocess.github.io/pymechtest/roadmap.html</loc>
+     <lastmod>2021-01-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://followtheprocess.github.io/pymechtest/api/tensile.html</loc>
+     <lastmod>2021-01-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://followtheprocess.github.io/pymechtest/api/compression.html</loc>
+     <lastmod>2021-01-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://followtheprocess.github.io/pymechtest/api/flexure.html</loc>
+     <lastmod>2021-01-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://followtheprocess.github.io/pymechtest/api/shear.html</loc>
      <lastmod>2021-01-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
