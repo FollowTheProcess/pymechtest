@@ -735,12 +735,12 @@ Get-Command pip
 </code></pre></div>
 <p>If it shows this, it's worked! <img alt="🎉" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f389.svg" title=":tada:" /></p>
 <h3 id="step-4-install-the-dependencies">Step 4: Install the Dependencies<a class="headerlink" href="#step-4-install-the-dependencies" title="Permanent link">&para;</a></h3>
-<p>Now you need to install pymechtest locally including all it's dependencies.</p>
+<p>Now you need to install pymechtest locally (in editable format: <code>-e</code>) including all it's dependencies.</p>
 <p>That's as easy as:</p>
-<div class="highlight"><pre><span></span><code>pip install .<span class="o">[</span>dev<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 
 <span class="c1"># If you use zsh, you may have to escape the square brackets</span>
-pip install .<span class="se">\[</span>dev<span class="se">\]</span>
+pip install -e .<span class="se">\[</span>dev<span class="se">\]</span>
 </code></pre></div>
 <p>Side note: If you're on mac (uses zsh by default) and you have to escape the square brackets. Try setting this in your <code>~/.zshrc</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># in ~/.zshrc</span>
