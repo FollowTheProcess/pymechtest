@@ -112,15 +112,15 @@ If it shows this, it's worked! :tada:
 
 ### Step 4: Install the Dependencies
 
-Now you need to install pymechtest locally including all it's dependencies.
+Now you need to install pymechtest locally (in editable format: `-e`) including all it's dependencies.
 
 That's as easy as:
 
 ```shell
-pip install .[dev]
+pip install -e .[dev]
 
 # If you use zsh, you may have to escape the square brackets
-pip install .\[dev\]
+pip install -e .\[dev\]
 ```
 
 Side note: If you're on mac (uses zsh by default) and you have to escape the square brackets. Try setting this in your `~/.zshrc`:
