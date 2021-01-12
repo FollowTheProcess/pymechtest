@@ -22,7 +22,7 @@ class BaseMechanicalTest:
     def __init__(
         self,
         folder: Union[Path, str],
-        id_row: int = 0,
+        id_row: Optional[int] = None,
         stress_col: Optional[str] = None,
         strain_col: Optional[str] = None,
         header: int = 0,
@@ -37,9 +37,11 @@ class BaseMechanicalTest:
             folder (Union[Path, str]): String or Path-like folder containing
                 test data.
 
-            id_row (int): Row number of the specimen ID. Most test machines export a
-                headed csv file with some metadata like date, test method name etc,
-                specimen ID should be contained in this section. Defaults to 0.
+            id_row (int, optional): Row number of the specimen ID.
+                Most test machines export a headed csv file with some
+                metadata like date, test method name etc, specimen ID
+                should be contained in this section. If not passed, pymechtest
+                will use the filename as the specimen ID.
 
             stress_col (str, optional): Name of the column containing stress data.
                 If not passed, pymechtest will try to autodetect it from your data.
@@ -108,13 +110,15 @@ class BaseMechanicalTest:
             )
         return NotImplemented
 
-    def _get_specimen_id(self, fp: Union[Path, str]) -> str:
+    def _get_specimen_id(self, fp: Path) -> str:
         """
         Uses arg: self.id_row to grab the Specimen ID from a csv file.
         Only loads the row specified using itertools.islice for performance.
 
+        If no id_row passed, will just grab the filename.
+
         Args:
-            fp (Union[Path, str]): Individual specimen's data csv file.
+            fp (Path): Individual specimen's data csv file.
 
         Raises:
             ValueError: If specimen ID not found in row specified.
@@ -123,15 +127,22 @@ class BaseMechanicalTest:
             (str): Specimen ID.
         """
 
-        with open(fp, "r") as f:
-            spec_id = next(
-                itertools.islice(csv.reader(f), self.id_row, self.id_row + 1)
-            )
+        if self.id_row is not None:
+            # If user passes int for id_row
 
-        if spec_id is not None and len(spec_id) == 2:
-            return spec_id[1]
+            with open(fp, "r") as f:
+                spec_id = next(
+                    itertools.islice(csv.reader(f), self.id_row, self.id_row + 1)
+                )
+
+            if spec_id is not None and len(spec_id) == 2:
+                return spec_id[1]
+            else:
+                raise ValueError(f"Specimen ID in file: {str(fp)} not found!")
         else:
-            raise ValueError(f"Specimen ID in file: {str(fp)} not found!")
+            # Nothing passed for id_row
+            # Use filename instead
+            return fp.name
 
     def _get_stress_col(self, df: pd.DataFrame) -> Union[str, None]:
 

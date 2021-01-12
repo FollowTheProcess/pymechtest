@@ -35,6 +35,23 @@ def base_long():
 
 
 @pytest.fixture
+def base_long_no_id():
+    """
+    Same as base long but without specifying an ID row.
+    """
+
+    return BaseMechanicalTest(
+        folder=Path(__file__).parents[1].resolve().joinpath("tests/data/Tens_No_Yield"),
+        header=8,
+        stress_col="Tensile stress",
+        strain_col="Tensile strain (Strain 1)",
+        strain1=0.05,
+        strain2=0.15,
+        expect_yield=False,
+    )
+
+
+@pytest.fixture
 def base_trans():
     """
     Equivalent to calling BaseMechanicalTest pointing at the

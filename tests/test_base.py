@@ -143,6 +143,21 @@ paths_and_specimen_ids = [
     (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), "004"),
 ]
 
+paths_and_filenames = [
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), "Specimen_RawData_1.csv"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), "Specimen_RawData_2.csv"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), "Specimen_RawData_3.csv"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), "Specimen_RawData_4.csv"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), "Specimen_RawData_5.csv"),
+    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), "Specimen_RawData_6.csv"),
+    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), "Specimen_RawData_1.csv"),
+    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), "Specimen_RawData_2.csv"),
+    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), "Specimen_RawData_3.csv"),
+    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), "Specimen_RawData_4.csv"),
+    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), "Specimen_RawData_5.csv"),
+    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), "Specimen_RawData_6.csv"),
+]
+
 
 @pytest.mark.parametrize("filepath, specimen_id", paths_and_specimen_ids)
 def test_get_specimen_id(base_long, filepath, specimen_id):
@@ -150,6 +165,14 @@ def test_get_specimen_id(base_long, filepath, specimen_id):
     obj = base_long
 
     assert obj._get_specimen_id(filepath) == specimen_id
+
+
+@pytest.mark.parametrize("filepath, filename", paths_and_filenames)
+def test_get_specimen_id_default(base_long_no_id, filepath, filename):
+
+    obj = base_long_no_id
+
+    assert obj._get_specimen_id(filepath) == filename
 
 
 paths_and_moduli_long = [
