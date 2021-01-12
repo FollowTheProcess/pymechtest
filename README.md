@@ -1,4 +1,4 @@
-<img src="docs/img/logo.png" height = 125 align="right">
+<img src="docs/img/logo.png" align="center">
 
 # pymechtest
 
@@ -45,7 +45,7 @@ tens = Tensile(folder = "path/to/raw/data", header = 8, id_row = 3)
 tens.plot_curves()
 ```
 
-![plot_curves](img/plot_curves.png)
+![plot_curves](docs/img/plot_curves.png)
 
 The key features are:
 
