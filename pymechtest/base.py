@@ -39,7 +39,7 @@ class BaseMechanicalTest:
 
             id_row (int, optional): Row number of the specimen ID.
                 Most test machines export a headed csv file with some
-                metadata like date, test method name etc, specimen ID
+                metadata like date, test method name etc. Specimen ID
                 should be contained in this section. If not passed, pymechtest
                 will use the filename as the specimen ID.
 
@@ -145,6 +145,20 @@ class BaseMechanicalTest:
             return fp.name
 
     def _get_stress_col(self, df: pd.DataFrame) -> Union[str, None]:
+        """
+        Attempts to extract the stress column by performing a
+        string match on the column names from a dataframe.
+
+        Args:
+            df (pd.DataFrame): Dataframe to match column text on
+
+        Raises:
+            ValueError: If it can't find a column with the word "stress".
+
+        Returns:
+            Union[str, None]: Either the name of the stress column or None
+                if raised exception.
+        """
 
         # Dummy so mypy doesn't complain about unbound
         # Should never reach this bit of code
@@ -164,6 +178,20 @@ class BaseMechanicalTest:
             raise ValueError("Cannot detect name of stress column.")
 
     def _get_strain_col(self, df: pd.DataFrame) -> Union[str, None]:
+        """
+        Attempts to extract the strain column by performing a
+        string match on the column names from a dataframe.
+
+        Args:
+            df (pd.DataFrame): Dataframe to match column text on
+
+        Raises:
+            ValueError: If it can't find a column with the word "strain".
+
+        Returns:
+            Union[str, None]: Either the name of the strain column or None
+                if raised exception.
+        """
 
         # Dummy so mypy doesn't complain about unbound
         # Should never reach this bit of code
@@ -208,7 +236,7 @@ class BaseMechanicalTest:
         Calculates the slope and the intercept of the linear portion
         of the stress-strain curve.
 
-        Uses numpy to rapidly calculate the slope and intercept
+        Uses numpy to calculate the slope and intercept
         from a single specimen's data using strain1 and strain2
         as the upper and lower limits.
 
@@ -242,6 +270,8 @@ class BaseMechanicalTest:
     def _calc_modulus(self, df: pd.DataFrame) -> float:
         """
         Uses the calc slope method to get elastic modulus in GPa.
+
+        Note: stress must be in MPa and strain must be in % for this to work.
 
         Args:
             df (pd.DataFrame): Input df passed to _calc_slope.

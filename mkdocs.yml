@@ -13,8 +13,13 @@ nav:
   - Contributing:
       - Help: contributing/help.md
       - How to: contributing/guide.md
+  - Roadmap: roadmap.md
   - API:
-      - Static Test: api/static.md
+      - Static Tests:
+          - Tensile: api/tensile.md
+          - Compression: api/compression.md
+          - Flexure: api/flexure.md
+          - Shear: api/shear.md
 plugins:
   - mkdocstrings:
       watch:
