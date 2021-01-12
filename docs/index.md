@@ -13,7 +13,7 @@
 
 ## What is it?
 
-*:warning: Project under pre-release development*
+*:warning: This project should be considered in alpha and may change significantly without deprecation cycles.*
 
 Have you ever had to process a bunch of csv output from a mechanical test machine, copying and pasting data into a hacky Excel template to calculate things like elastic modulus and yield strength?
 

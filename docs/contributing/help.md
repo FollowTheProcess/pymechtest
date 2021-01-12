@@ -32,7 +32,10 @@ You can [contribute] to pymechtest by creating a [PR], for example:
 * Improve the testing and CI
 * Anything else!
 
+Look at the [roadmap] for examples of potential improvements to implement
+
 [issue]: https://github.com/issues
 [PR]: https://github.com/pulls
 [feature]: https://github.com/issues
 [contribute]: guide.md
+[roadmap]: ../roadmap.md
