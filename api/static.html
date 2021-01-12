@@ -543,7 +543,7 @@
 <div class="doc doc-object doc-method">
 <h2 class="doc doc-heading" id="pymechtest.base.BaseMechanicalTest.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">id_row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stress_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strain_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strain1</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">strain2</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">expect_yield</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">id_row</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stress_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strain_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strain1</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">strain2</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">expect_yield</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -574,13 +574,15 @@ test data.</p>
 </tr>
 <tr>
 <td><code>id_row</code></td>
-<td><code>int</code></td>
+<td><code>Optional[int]</code></td>
 <td>
-<p>Row number of the specimen ID. Most test machines export a
-headed csv file with some metadata like date, test method name etc,
-specimen ID should be contained in this section. Defaults to 0.</p>
+<p>Row number of the specimen ID.
+Most test machines export a headed csv file with some
+metadata like date, test method name etc, specimen ID
+should be contained in this section. If not passed, pymechtest
+will use the filename as the specimen ID.</p>
 </td>
-<td><code>0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>stress_col</code></td>
@@ -646,7 +648,7 @@ yield strength (True). Defaults to True.</p>
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">folder</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-    <span class="n">id_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">id_row</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stress_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">strain_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">header</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -661,9 +663,11 @@ yield strength (True). Defaults to True.</p>
 <span class="sd">        folder (Union[Path, str]): String or Path-like folder containing</span>
 <span class="sd">            test data.</span>
 
-<span class="sd">        id_row (int): Row number of the specimen ID. Most test machines export a</span>
-<span class="sd">            headed csv file with some metadata like date, test method name etc,</span>
-<span class="sd">            specimen ID should be contained in this section. Defaults to 0.</span>
+<span class="sd">        id_row (int, optional): Row number of the specimen ID.</span>
+<span class="sd">            Most test machines export a headed csv file with some</span>
+<span class="sd">            metadata like date, test method name etc, specimen ID</span>
+<span class="sd">            should be contained in this section. If not passed, pymechtest</span>
+<span class="sd">            will use the filename as the specimen ID.</span>
 
 <span class="sd">        stress_col (str, optional): Name of the column containing stress data.</span>
 <span class="sd">            If not passed, pymechtest will try to autodetect it from your data.</span>
