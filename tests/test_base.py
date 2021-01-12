@@ -19,6 +19,8 @@ from pymechtest.base import BaseMechanicalTest
 # Data for testing & development only
 TENS_NO_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_No_Yield")
 TENS_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_Yield")
+# Same as TENS_YIELD but with specimen ID removed to test exception handling
+NO_IDS = Path(__file__).parent.resolve().joinpath("data/No_IDs")
 
 
 def test_base_init():
@@ -158,6 +160,19 @@ paths_and_filenames = [
     (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), "Specimen_RawData_6.csv"),
 ]
 
+paths_for_no_id_test = [
+    (NO_IDS.joinpath("Specimen_RawData_1.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_2.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_3.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_4.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_5.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_6.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_7.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_8.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_9.csv")),
+    (NO_IDS.joinpath("Specimen_RawData_10.csv")),
+]
+
 
 @pytest.mark.parametrize("filepath, specimen_id", paths_and_specimen_ids)
 def test_get_specimen_id(base_long, filepath, specimen_id):
@@ -173,6 +188,50 @@ def test_get_specimen_id_default(base_long_no_id, filepath, filename):
     obj = base_long_no_id
 
     assert obj._get_specimen_id(filepath) == filename
+
+
+@pytest.mark.parametrize("filepath", paths_for_no_id_test)
+def test_get_specimen_id_raises_if_missing(base_long, filepath):
+
+    obj = base_long
+
+    with pytest.raises(ValueError):
+        obj._get_specimen_id(filepath)
+
+
+def test_get_stress_strain_cols(base_long_no_stress_strain_cols):
+
+    df = pd.DataFrame(
+        {
+            "Column 1": [1, 2, 3, 4, 5, 6],
+            "Column 2": [100, 200, 300, 400, 500, 600],
+            "Stress in this one": [10, 20, 30, 40, 50, 60],
+            "Strain in this one": [1000, 2000, 3000, 4000, 5000, 6000],
+        }
+    )
+
+    obj = base_long_no_stress_strain_cols
+
+    assert obj._get_stress_col(df) == "Stress in this one"
+    assert obj._get_strain_col(df) == "Strain in this one"
+
+
+def test_get_stress_strain_cols_raises_when_no_match(base_long_no_stress_strain_cols):
+
+    df = pd.DataFrame(
+        {
+            "Column 1": [1, 2, 3, 4, 5, 6],
+            "Column 2": [100, 200, 300, 400, 500, 600],
+            "Wrong name": [10, 20, 30, 40, 50, 60],
+            "Different wrong name": [1000, 2000, 3000, 4000, 5000, 6000],
+        }
+    )
+
+    obj = base_long_no_stress_strain_cols
+
+    with pytest.raises(ValueError):
+        obj._get_stress_col(df)
+        obj._get_strain_col(df)
 
 
 paths_and_moduli_long = [
