@@ -65,8 +65,8 @@ class BaseMechanicalTest:
         """
         self.folder = folder
         self.id_row = id_row
-        self.stress_col = stress_col
-        self.strain_col = strain_col
+        self._stress_col = stress_col
+        self._strain_col = strain_col
         self.header = header
         self.strain1 = strain1
         self.strain2 = strain2
@@ -77,8 +77,8 @@ class BaseMechanicalTest:
         return (
             self.__class__.__qualname__ + f"(folder={self.folder!r}, "
             f"id_row={self.id_row!r}, "
-            f"stress_col={self.stress_col!r}, "
-            f"strain_col={self.strain_col!r}, "
+            f"stress_col={self._stress_col!r}, "
+            f"strain_col={self._strain_col!r}, "
             f"header={self.header!r}, "
             f"strain1={self.strain1!r}, "
             f"strain2={self.strain2!r}, "
@@ -92,8 +92,8 @@ class BaseMechanicalTest:
             return (
                 self.folder,
                 self.id_row,
-                self.stress_col,
-                self.strain_col,
+                self._stress_col,
+                self._strain_col,
                 self.header,
                 self.strain1,
                 self.strain2,
@@ -109,6 +109,22 @@ class BaseMechanicalTest:
                 other.expect_yield,
             )
         return NotImplemented
+
+    @property
+    def stress_col(self) -> Union[str, None]:
+        return self._stress_col
+
+    @stress_col.setter
+    def stress_col(self, value: str) -> None:
+        self._stress_col = value
+
+    @property
+    def strain_col(self) -> Union[str, None]:
+        return self._strain_col
+
+    @strain_col.setter
+    def strain_col(self, value: str) -> None:
+        self._strain_col = value
 
     def _get_specimen_id(self, fp: Path) -> str:
         """
@@ -144,70 +160,40 @@ class BaseMechanicalTest:
             # Use filename instead
             return fp.name
 
-    def _get_stress_col(self, df: pd.DataFrame) -> Union[str, None]:
+    def _get_stress_strain_cols(self, df: pd.DataFrame) -> None:
         """
-        Attempts to extract the stress column by performing a
-        string match on the column names from a dataframe.
+        Attempts to auto-detect the names of the stress and strain columns
+        using a naive text match.
+
+        If one is passed and the other not, this should only auto-detect the other.
+
+        If none can be found, raises an exception and asks the user to specify.
 
         Args:
-            df (pd.DataFrame): Dataframe to match column text on
+            df (pd.DataFrame): DataFrame from which to detect the column names.
 
         Raises:
-            ValueError: If it can't find a column with the word "stress".
-
-        Returns:
-            Union[str, None]: Either the name of the stress column or None
-                if raised exception.
+            ValueError: If no match for "stress" or "strain" found.
         """
-
-        # Dummy so mypy doesn't complain about unbound
-        # Should never reach this bit of code
-        stress_col_name = None
 
         if not self.stress_col:
             for col in df.columns.tolist():
                 if "stress" in col.strip().lower():
-                    stress_col_name = col
-
-        else:
-            stress_col_name = self.stress_col
-
-        if stress_col_name:
-            return stress_col_name
-        else:
-            raise ValueError("Cannot detect name of stress column.")
-
-    def _get_strain_col(self, df: pd.DataFrame) -> Union[str, None]:
-        """
-        Attempts to extract the strain column by performing a
-        string match on the column names from a dataframe.
-
-        Args:
-            df (pd.DataFrame): Dataframe to match column text on
-
-        Raises:
-            ValueError: If it can't find a column with the word "strain".
-
-        Returns:
-            Union[str, None]: Either the name of the strain column or None
-                if raised exception.
-        """
-
-        # Dummy so mypy doesn't complain about unbound
-        # Should never reach this bit of code
-        strain_col_name = None
-
+                    self.stress_col = col
         if not self.strain_col:
             for col in df.columns.tolist():
                 if "strain" in col.strip().lower():
-                    strain_col_name = col
+                    self.strain_col = col
         else:
-            strain_col_name = self.strain_col
+            pass
 
-        if strain_col_name:
-            return strain_col_name
-        else:
-            raise ValueError("Cannot detect name of strain column.")
+        # Now that's been done, neither should be None
+        # If either are still None, it means detection failed
+
+        if self.stress_col is None:
+            raise ValueError("Could not detect stress_col.")
+        elif self.strain_col is None:
+            raise ValueError("Could not detect strain_col.")
 
     def _load(self, fp: Path) -> pd.DataFrame:
         """
@@ -229,6 +215,9 @@ class BaseMechanicalTest:
         )
         df["Specimen ID"] = self._get_specimen_id(fp)
 
+        # Attempt to detect stress/strain columns
+        self._get_stress_strain_cols(df)
+
         return df
 
     def _calc_slope(self, df: pd.DataFrame) -> Tuple[float, float]:
@@ -248,17 +237,15 @@ class BaseMechanicalTest:
         """
         # Grab stress and strain data between strain1 and strain2
         # Elastic portion of the stress-strain curve
+        mod_filt = (df[self.strain_col] >= self.strain1) & (
+            df[self.strain_col] <= self.strain2
+        )
 
-        stress_col = self._get_stress_col(df)
-        strain_col = self._get_strain_col(df)
-
-        mod_filt = (df[strain_col] >= self.strain1) & (df[strain_col] <= self.strain2)
-
-        mod_df = df[mod_filt][[strain_col, stress_col]]
+        mod_df = df[mod_filt][[self.strain_col, self.stress_col]]
 
         # A is here to convert x to a matrix so numpy can be used
-        x = np.array(mod_df[strain_col])
-        y = np.array(mod_df[stress_col])
+        x = np.array(mod_df[self.strain_col])
+        y = np.array(mod_df[self.stress_col])
 
         A = np.vstack([x, np.ones(len(x))]).T
 
@@ -307,22 +294,21 @@ class BaseMechanicalTest:
         # Avoids pandas view/copy warning
         offset_df = df.copy()
 
-        stress_col = self._get_stress_col(df)
-        strain_col = self._get_strain_col(df)
-
         # Apply the offset to determine offset stress at each row
         # Offset stress vs strain is straight line of gradient = modulus
         # Yield is where this line intersects the original curve
-        offset_df["offset_stress"] = slope * (df[strain_col] - offset) + intercept
+        offset_df["offset_stress"] = slope * (df[self.strain_col] - offset) + intercept
 
         # Diff between offset stress and actual
         # Intersect is where this is = 0
-        offset_df["offset_delta"] = offset_df["offset_stress"] - offset_df[stress_col]
+        offset_df["offset_delta"] = (
+            offset_df["offset_stress"] - offset_df[self.stress_col]
+        )
 
         # Find actual stress value of the intersect
         yield_index = offset_df["offset_delta"].abs().idxmin()
 
-        yield_strength = offset_df.iloc[yield_index][stress_col]
+        yield_strength = offset_df.iloc[yield_index][self.stress_col]
 
         return yield_strength
 
@@ -340,13 +326,11 @@ class BaseMechanicalTest:
             pd.Series: Series of key test values.
         """
 
-        stress_col = self._get_stress_col(df)
-
         cols = ["Specimen ID", "Strength", "Modulus"]
 
         # Only one specimen in df here so specimen ID is constant for each
         spec_id = df["Specimen ID"].iloc[0]
-        uts = df[stress_col].max()
+        uts = df[self.stress_col].max()
         modulus = self._calc_modulus(df)
 
         vals = [spec_id, uts, modulus]
@@ -492,15 +476,12 @@ class BaseMechanicalTest:
 
         df = self.load_all()
 
-        stress_col = self._get_stress_col(df)
-        strain_col = self._get_strain_col(df)
-
         chart = (
             alt.Chart(data=df)
             .mark_line(size=1)
             .encode(
-                x=alt.X(f"{strain_col}:Q", title=x_label),
-                y=alt.Y(f"{stress_col}:Q", title=y_label),
+                x=alt.X(f"{self.strain_col}:Q", title=x_label),
+                y=alt.Y(f"{self.stress_col}:Q", title=y_label),
                 color=alt.Color("Specimen ID:N", title="Specimen ID"),
             )
             .properties(title=title, height=height, width=width)

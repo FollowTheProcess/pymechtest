@@ -112,6 +112,20 @@ def test_base_eq():
     assert obj.__eq__(different_class) is NotImplemented
 
 
+def test_basic_default_get_stress_strain_cols(
+    base_long_no_stress_strain_cols, df_with_good_stress_and_strain_cols
+):
+
+    df = df_with_good_stress_and_strain_cols
+
+    obj = base_long_no_stress_strain_cols
+
+    obj._get_stress_strain_cols(df)
+
+    assert obj.stress_col == "This one has stress in it"
+    assert obj.strain_col == "This one has strain in it"
+
+
 def test_default_stress_strain_cols_long(base_long_no_stress_strain_cols):
 
     obj = base_long_no_stress_strain_cols
@@ -128,6 +142,42 @@ def test_default_stress_strain_cols_trans(base_trans_no_stress_strain_cols):
     # This method relies on knowing what the stress/strain cols are
     # It will raise a ValueError if it can't autodetect
     obj.summarise()
+
+
+def test_default_stress_strain_cols_raises_when_no_match_stress(
+    df_with_bad_stress_col, base_long_no_stress_strain_cols
+):
+
+    df = df_with_bad_stress_col
+
+    obj = base_long_no_stress_strain_cols
+
+    with pytest.raises(ValueError):
+        obj._get_stress_strain_cols(df)
+
+
+def test_default_stress_strain_cols_raises_when_no_match_strain(
+    df_with_bad_strain_col, base_long_no_stress_strain_cols
+):
+
+    df = df_with_bad_strain_col
+
+    obj = base_long_no_stress_strain_cols
+
+    with pytest.raises(ValueError):
+        obj._get_stress_strain_cols(df)
+
+
+def test_default_stress_strain_cols_raises_when_no_match_both(
+    df_with_bad_stress_and_strain_cols, base_long_no_stress_strain_cols
+):
+
+    df = df_with_bad_stress_and_strain_cols
+
+    obj = base_long_no_stress_strain_cols
+
+    with pytest.raises(ValueError):
+        obj._get_stress_strain_cols(df)
 
 
 paths_and_specimen_ids = [
@@ -197,41 +247,6 @@ def test_get_specimen_id_raises_if_missing(base_long, filepath):
 
     with pytest.raises(ValueError):
         obj._get_specimen_id(filepath)
-
-
-def test_get_stress_strain_cols(base_long_no_stress_strain_cols):
-
-    df = pd.DataFrame(
-        {
-            "Column 1": [1, 2, 3, 4, 5, 6],
-            "Column 2": [100, 200, 300, 400, 500, 600],
-            "Stress in this one": [10, 20, 30, 40, 50, 60],
-            "Strain in this one": [1000, 2000, 3000, 4000, 5000, 6000],
-        }
-    )
-
-    obj = base_long_no_stress_strain_cols
-
-    assert obj._get_stress_col(df) == "Stress in this one"
-    assert obj._get_strain_col(df) == "Strain in this one"
-
-
-def test_get_stress_strain_cols_raises_when_no_match(base_long_no_stress_strain_cols):
-
-    df = pd.DataFrame(
-        {
-            "Column 1": [1, 2, 3, 4, 5, 6],
-            "Column 2": [100, 200, 300, 400, 500, 600],
-            "Wrong name": [10, 20, 30, 40, 50, 60],
-            "Different wrong name": [1000, 2000, 3000, 4000, 5000, 6000],
-        }
-    )
-
-    obj = base_long_no_stress_strain_cols
-
-    with pytest.raises(ValueError):
-        obj._get_stress_col(df)
-        obj._get_strain_col(df)
 
 
 paths_and_moduli_long = [

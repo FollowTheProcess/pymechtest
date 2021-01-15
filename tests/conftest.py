@@ -7,6 +7,7 @@ Created: 31/12/2020
 
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 from pymechtest.base import BaseMechanicalTest
@@ -104,4 +105,51 @@ def base_trans_no_stress_strain_cols():
         strain1=0.005,
         strain2=0.015,
         expect_yield=True,
+    )
+
+
+@pytest.fixture
+def df_with_good_stress_and_strain_cols():
+    """
+    Simple dataframe with both a stress and a strain column.
+    """
+
+    return pd.DataFrame(
+        {
+            "This one has stress in it": [1, 2, 3, 4, 5, 6],
+            "This one has strain in it": [10, 20, 30, 40, 50, 60],
+        }
+    )
+
+
+@pytest.fixture
+def df_with_bad_stress_col():
+    """
+    Simple dataframe without a stress col.
+    """
+
+    return pd.DataFrame(
+        {"Column 1": [1, 2, 3, 4, 5, 6], "Strain": [10, 20, 30, 40, 50, 60]}
+    )
+
+
+@pytest.fixture
+def df_with_bad_strain_col():
+    """
+    As above but with no strain col.
+    """
+
+    return pd.DataFrame(
+        {"Stress": [1, 2, 3, 4, 5, 6], "Column 2": [10, 20, 30, 40, 50, 60]}
+    )
+
+
+@pytest.fixture
+def df_with_bad_stress_and_strain_cols():
+    """
+    Simple dataframe without either a stress or strain col.
+    """
+
+    return pd.DataFrame(
+        {"Column 1": [1, 2, 3, 4, 5, 6], "Column 2": [10, 20, 30, 40, 50, 60]}
     )
