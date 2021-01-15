@@ -4,6 +4,7 @@ site_url: https://followtheprocess.github.io/pymechtest/
 site_description: Python package to automate the boring bits of mechanical test data analysis!
 site_author: Tom Fleet
 use_directory_urls: false
+strict: true
 nav:
   - Home: index.md
   - Getting Started:
