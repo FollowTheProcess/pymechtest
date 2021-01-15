@@ -101,8 +101,8 @@ class BaseMechanicalTest:
             ) == (
                 other.folder,
                 other.id_row,
-                other.stress_col,
-                other.strain_col,
+                other._stress_col,
+                other._strain_col,
                 other.header,
                 other.strain1,
                 other.strain2,
