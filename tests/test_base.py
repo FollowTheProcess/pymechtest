@@ -6,6 +6,7 @@ Created: 28/11/2020
 """
 
 import collections
+import json
 from pathlib import Path
 
 import altair as alt
@@ -923,7 +924,6 @@ def test_base_plot_curves_long(base_long):
 
     plot = obj.plot_curves()
 
-    # Not sure what else to do for plots?
     assert isinstance(plot, alt.Chart)
 
 
@@ -934,3 +934,66 @@ def test_base_plot_curves_trans(base_trans):
     plot = obj.plot_curves()
 
     assert isinstance(plot, alt.Chart)
+
+
+def test_altair_schema_default_args(base_long_no_stress_strain_cols):
+
+    obj = base_long_no_stress_strain_cols
+
+    plot = obj.plot_curves()
+
+    plot_json = json.loads(plot.to_json())
+
+    truth_encoding = {
+        "color": {"field": "Specimen ID", "title": "Specimen ID", "type": "nominal"},
+        "x": {
+            "field": "Tensile strain (Strain 1)",
+            "title": "BaseMechanicalTest Strain (%)",
+            "type": "quantitative",
+        },
+        "y": {
+            "field": "Tensile stress",
+            "title": "BaseMechanicalTest Stress (MPa)",
+            "type": "quantitative",
+        },
+    }
+
+    assert plot_json["encoding"] == truth_encoding
+    assert plot_json["title"] == "BaseMechanicalTest Stress Strain Curves"
+
+
+def test_altair_schema_passed_args(base_long):
+
+    obj = base_long
+
+    plot = obj.plot_curves(
+        title="Totally Made Up Title", x_label="Silly x label", y_label="Silly y label"
+    )
+
+    plot_json = json.loads(plot.to_json())
+
+    truth_encoding = {
+        "color": {"field": "Specimen ID", "title": "Specimen ID", "type": "nominal"},
+        "x": {
+            "field": "Tensile strain (Strain 1)",
+            "title": "Silly x label",
+            "type": "quantitative",
+        },
+        "y": {
+            "field": "Tensile stress",
+            "title": "Silly y label",
+            "type": "quantitative",
+        },
+    }
+
+    assert plot_json["encoding"] == truth_encoding
+    assert plot_json["title"] == "Totally Made Up Title"
+
+
+def test_plot_curves_raises_on_invalid_save_method(base_long):
+
+    obj = base_long
+
+    with pytest.raises(ValueError):
+        # Attempt to save a graph with an invalid save method
+        obj.plot_curves(save_method="silly_method")
