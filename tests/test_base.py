@@ -6,6 +6,7 @@ Created: 28/11/2020
 """
 
 import collections
+import json
 from pathlib import Path
 
 import altair as alt
@@ -113,12 +114,12 @@ def test_base_eq():
 
 
 def test_basic_default_get_stress_strain_cols(
-    base_long_no_stress_strain_cols, df_with_good_stress_and_strain_cols
+    base_no_yield_no_stress_strain_cols, df_with_good_stress_and_strain_cols
 ):
 
     df = df_with_good_stress_and_strain_cols
 
-    obj = base_long_no_stress_strain_cols
+    obj = base_no_yield_no_stress_strain_cols
 
     obj._get_stress_strain_cols(df)
 
@@ -126,18 +127,18 @@ def test_basic_default_get_stress_strain_cols(
     assert obj.strain_col == "This one has strain in it"
 
 
-def test_default_stress_strain_cols_long(base_long_no_stress_strain_cols):
+def test_default_stress_strain_cols_no_yield(base_no_yield_no_stress_strain_cols):
 
-    obj = base_long_no_stress_strain_cols
+    obj = base_no_yield_no_stress_strain_cols
 
     # This method relies on knowing what the stress/strain cols are
     # It will raise a ValueError if it can't autodetect
     obj.summarise()
 
 
-def test_default_stress_strain_cols_trans(base_trans_no_stress_strain_cols):
+def test_default_stress_strain_cols_yield(base_yield_no_stress_strain_cols):
 
-    obj = base_trans_no_stress_strain_cols
+    obj = base_yield_no_stress_strain_cols
 
     # This method relies on knowing what the stress/strain cols are
     # It will raise a ValueError if it can't autodetect
@@ -145,36 +146,36 @@ def test_default_stress_strain_cols_trans(base_trans_no_stress_strain_cols):
 
 
 def test_default_stress_strain_cols_raises_when_no_match_stress(
-    df_with_bad_stress_col, base_long_no_stress_strain_cols
+    df_with_bad_stress_col, base_no_yield_no_stress_strain_cols
 ):
 
     df = df_with_bad_stress_col
 
-    obj = base_long_no_stress_strain_cols
+    obj = base_no_yield_no_stress_strain_cols
 
     with pytest.raises(ValueError):
         obj._get_stress_strain_cols(df)
 
 
 def test_default_stress_strain_cols_raises_when_no_match_strain(
-    df_with_bad_strain_col, base_long_no_stress_strain_cols
+    df_with_bad_strain_col, base_no_yield_no_stress_strain_cols
 ):
 
     df = df_with_bad_strain_col
 
-    obj = base_long_no_stress_strain_cols
+    obj = base_no_yield_no_stress_strain_cols
 
     with pytest.raises(ValueError):
         obj._get_stress_strain_cols(df)
 
 
 def test_default_stress_strain_cols_raises_when_no_match_both(
-    df_with_bad_stress_and_strain_cols, base_long_no_stress_strain_cols
+    df_with_bad_stress_and_strain_cols, base_no_yield_no_stress_strain_cols
 ):
 
     df = df_with_bad_stress_and_strain_cols
 
-    obj = base_long_no_stress_strain_cols
+    obj = base_no_yield_no_stress_strain_cols
 
     with pytest.raises(ValueError):
         obj._get_stress_strain_cols(df)
@@ -225,31 +226,31 @@ paths_for_no_id_test = [
 
 
 @pytest.mark.parametrize("filepath, specimen_id", paths_and_specimen_ids)
-def test_get_specimen_id(base_long, filepath, specimen_id):
+def test_get_specimen_id(base_no_yield, filepath, specimen_id):
 
-    obj = base_long
+    obj = base_no_yield
 
     assert obj._get_specimen_id(filepath) == specimen_id
 
 
 @pytest.mark.parametrize("filepath, filename", paths_and_filenames)
-def test_get_specimen_id_default(base_long_no_id, filepath, filename):
+def test_get_specimen_id_default(base_no_yield_no_id, filepath, filename):
 
-    obj = base_long_no_id
+    obj = base_no_yield_no_id
 
     assert obj._get_specimen_id(filepath) == filename
 
 
 @pytest.mark.parametrize("filepath", paths_for_no_id_test)
-def test_get_specimen_id_raises_if_missing(base_long, filepath):
+def test_get_specimen_id_raises_if_missing(base_no_yield, filepath):
 
-    obj = base_long
+    obj = base_no_yield
 
     with pytest.raises(ValueError):
         obj._get_specimen_id(filepath)
 
 
-paths_and_moduli_long = [
+paths_and_moduli_no_yield = [
     (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), 214.73703704359207),
     (TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"), 227.9269563135135),
     (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), 222.72607703734684),
@@ -262,7 +263,7 @@ paths_and_moduli_long = [
     (TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"), 222.34006012040436),
 ]
 
-paths_and_moduli_trans = [
+paths_and_moduli_yield = [
     (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), 171.04161005434793),
     (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), 177.04030085330862),
     (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), 190.00716803363935),
@@ -276,27 +277,27 @@ paths_and_moduli_trans = [
 ]
 
 
-@pytest.mark.parametrize("filepath, modulus", paths_and_moduli_long)
-def test_calc_modulus_long(base_long, filepath, modulus):
+@pytest.mark.parametrize("filepath, modulus", paths_and_moduli_no_yield)
+def test_calc_modulus_no_yield(base_no_yield, filepath, modulus):
 
-    long_obj = base_long
+    long_obj = base_no_yield
 
     assert_almost_equal(
         long_obj._calc_modulus(long_obj._load(filepath)), modulus, decimal=2
     )
 
 
-@pytest.mark.parametrize("filepath, modulus", paths_and_moduli_trans)
-def test_calc_modulus_trans(base_trans, filepath, modulus):
+@pytest.mark.parametrize("filepath, modulus", paths_and_moduli_yield)
+def test_calc_modulus_yield(base_yield, filepath, modulus):
 
-    trans_obj = base_trans
+    trans_obj = base_yield
 
     assert_almost_equal(
         trans_obj._calc_modulus(trans_obj._load(filepath)), modulus, decimal=2
     )
 
 
-paths_and_df_shapes_long = [
+paths_and_df_shapes_no_yield = [
     (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), (1467, 6)),
     (TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"), (1299, 6)),
     (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), (1066, 6)),
@@ -309,7 +310,7 @@ paths_and_df_shapes_long = [
     (TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"), (1237, 6)),
 ]
 
-paths_and_df_shapes_trans = [
+paths_and_df_shapes_yield = [
     (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), (279, 6)),
     (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), (319, 6)),
     (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), (309, 6)),
@@ -323,25 +324,25 @@ paths_and_df_shapes_trans = [
 ]
 
 
-@pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_long)
-def test_load_long(base_long, filepath, df_shape):
+@pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_no_yield)
+def test_load_no_yield(base_no_yield, filepath, df_shape):
 
-    long_obj = base_long
+    long_obj = base_no_yield
 
     assert long_obj._load(filepath).shape == df_shape
 
 
-@pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_trans)
-def test_load_trans(base_trans, filepath, df_shape):
+@pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_yield)
+def test_load_yield(base_yield, filepath, df_shape):
 
-    trans_obj = base_trans
+    trans_obj = base_yield
 
     assert trans_obj._load(filepath).shape == df_shape
 
 
-def test_load_all_long(base_long):
+def test_load_all_no_yield(base_no_yield):
 
-    obj = base_long
+    obj = base_no_yield
 
     df = obj.load_all()
 
@@ -356,9 +357,9 @@ def test_load_all_long(base_long):
     ]
 
 
-def test_load_all_trans(base_trans):
+def test_load_all_yield(base_yield):
 
-    obj = base_trans
+    obj = base_yield
 
     df = obj.load_all()
 
@@ -373,9 +374,9 @@ def test_load_all_trans(base_trans):
     ]
 
 
-def test_specimen_id_column_long(base_long):
+def test_specimen_id_column_no_yield(base_no_yield):
 
-    obj = base_long
+    obj = base_no_yield
 
     df = obj.load_all()
 
@@ -394,9 +395,9 @@ def test_specimen_id_column_long(base_long):
     ]
 
 
-def test_specimen_id_column_trans(base_trans):
+def test_specimen_id_column_yield(base_yield):
 
-    obj = base_trans
+    obj = base_yield
 
     df = obj.load_all()
 
@@ -430,9 +431,9 @@ paths_and_yield_strengths = [
 
 
 @pytest.mark.parametrize("filepath, yield_strength", paths_and_yield_strengths)
-def test_calc_yield_strength(base_trans, filepath, yield_strength):
+def test_calc_yield_strength(base_yield, filepath, yield_strength):
 
-    obj = base_trans
+    obj = base_yield
 
     assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength, decimal=2)
 
@@ -443,10 +444,10 @@ paths = [f for f in TENS_YIELD.rglob("*.csv")] + [
 
 
 @pytest.mark.parametrize("filepath", paths)
-def test_calc_yield_raises_attribute_error_if_yield_false(base_long, filepath):
+def test_calc_yield_raises_attribute_error_if_yield_false(base_no_yield, filepath):
 
-    # _test_long means expect_yield = False
-    obj = base_long
+    # _test_no_yield means expect_yield = False
+    obj = base_no_yield
 
     # Trans specimens data (no yield expected)
     df = obj._load(fp=filepath)
@@ -455,7 +456,7 @@ def test_calc_yield_raises_attribute_error_if_yield_false(base_long, filepath):
         obj._calc_yield(df)
 
 
-paths_and_extract_values_series_long = [
+paths_and_extract_values_series_no_yield = [
     (
         TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"),
         pd.Series(
@@ -558,7 +559,7 @@ paths_and_extract_values_series_long = [
     ),
 ]
 
-paths_and_extract_values_series_trans = [
+paths_and_extract_values_series_yield = [
     (
         TENS_YIELD.joinpath("Specimen_RawData_10.csv"),
         pd.Series(
@@ -673,11 +674,11 @@ paths_and_extract_values_series_trans = [
 
 
 @pytest.mark.parametrize(
-    "filepath, extracted_series", paths_and_extract_values_series_long
+    "filepath, extracted_series", paths_and_extract_values_series_no_yield
 )
-def test_extract_values_long(base_long, filepath, extracted_series):
+def test_extract_values_no_yield(base_no_yield, filepath, extracted_series):
 
-    obj = base_long
+    obj = base_no_yield
 
     assert_series_equal(
         obj._extract_values(obj._load(filepath)), extracted_series, atol=0.01
@@ -685,20 +686,20 @@ def test_extract_values_long(base_long, filepath, extracted_series):
 
 
 @pytest.mark.parametrize(
-    "filepath, extracted_series", paths_and_extract_values_series_trans
+    "filepath, extracted_series", paths_and_extract_values_series_yield
 )
-def test_extract_values_trans(base_trans, filepath, extracted_series):
+def test_extract_values_yield(base_yield, filepath, extracted_series):
 
-    obj = base_trans
+    obj = base_yield
 
     assert_series_equal(
         obj._extract_values(obj._load(filepath)), extracted_series, atol=0.01
     )
 
 
-def test_summarise_long(base_long):
+def test_summarise_no_yield(base_no_yield):
 
-    obj = base_long
+    obj = base_no_yield
 
     truth_dict = collections.OrderedDict(
         {
@@ -759,9 +760,9 @@ def test_summarise_long(base_long):
     assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
-def test_summarise_trans(base_trans):
+def test_summarise_yield(base_yield):
 
-    obj = base_trans
+    obj = base_yield
 
     truth_dict = collections.OrderedDict(
         {
@@ -834,9 +835,9 @@ def test_summarise_trans(base_trans):
     assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
-def test_stats_long(base_long):
+def test_stats_no_yield(base_no_yield):
 
-    obj = base_long
+    obj = base_no_yield
 
     truth_df = pd.DataFrame.from_dict(
         {
@@ -870,9 +871,9 @@ def test_stats_long(base_long):
     assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
-def test_stats_trans(base_trans):
+def test_stats_yield(base_yield):
 
-    obj = base_trans
+    obj = base_yield
 
     truth_df = pd.DataFrame.from_dict(
         {
@@ -917,20 +918,82 @@ def test_stats_trans(base_trans):
     assert_frame_equal(test_df, truth_df, atol=0.01)
 
 
-def test_base_plot_curves_long(base_long):
+def test_base_plot_curves_no_yield(base_no_yield):
 
-    obj = base_long
-
-    plot = obj.plot_curves()
-
-    # Not sure what else to do for plots?
-    assert isinstance(plot, alt.Chart)
-
-
-def test_base_plot_curves_trans(base_trans):
-
-    obj = base_trans
+    obj = base_no_yield
 
     plot = obj.plot_curves()
 
     assert isinstance(plot, alt.Chart)
+
+
+def test_base_plot_curves_yield(base_yield):
+
+    obj = base_yield
+
+    plot = obj.plot_curves()
+
+    assert isinstance(plot, alt.Chart)
+
+
+def test_altair_schema_default_args(base_no_yield_no_stress_strain_cols):
+
+    obj = base_no_yield_no_stress_strain_cols
+
+    plot = obj.plot_curves()
+
+    plot_json = json.loads(plot.to_json())
+
+    truth_encoding = {
+        "color": {"field": "Specimen ID", "title": "Specimen ID", "type": "nominal"},
+        "x": {
+            "field": "Tensile strain (Strain 1)",
+            "title": "BaseMechanicalTest Strain (%)",
+            "type": "quantitative",
+        },
+        "y": {
+            "field": "Tensile stress",
+            "title": "BaseMechanicalTest Stress (MPa)",
+            "type": "quantitative",
+        },
+    }
+
+    assert plot_json["encoding"] == truth_encoding
+    assert plot_json["title"] == "BaseMechanicalTest Stress Strain Curves"
+
+
+def test_altair_schema_passed_args(base_no_yield):
+
+    obj = base_no_yield
+
+    plot = obj.plot_curves(
+        title="Totally Made Up Title", x_label="Silly x label", y_label="Silly y label"
+    )
+
+    plot_json = json.loads(plot.to_json())
+
+    truth_encoding = {
+        "color": {"field": "Specimen ID", "title": "Specimen ID", "type": "nominal"},
+        "x": {
+            "field": "Tensile strain (Strain 1)",
+            "title": "Silly x label",
+            "type": "quantitative",
+        },
+        "y": {
+            "field": "Tensile stress",
+            "title": "Silly y label",
+            "type": "quantitative",
+        },
+    }
+
+    assert plot_json["encoding"] == truth_encoding
+    assert plot_json["title"] == "Totally Made Up Title"
+
+
+def test_plot_curves_raises_on_invalid_save_method(base_no_yield):
+
+    obj = base_no_yield
+
+    with pytest.raises(ValueError):
+        # Attempt to save a graph with an invalid save method
+        obj.plot_curves(save_method="silly_method")

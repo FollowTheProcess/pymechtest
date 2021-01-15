@@ -14,10 +14,10 @@ from pymechtest.base import BaseMechanicalTest
 
 
 @pytest.fixture
-def base_long():
+def base_no_yield():
     """
     Equivalent to calling BaseMechanicalTest pointing at the
-    longitudinal test data.
+    elastic to failure test data.
 
     Stress and strain col refer to Tensile because
     the data I'm using for testing is from a static tensile test.
@@ -36,7 +36,7 @@ def base_long():
 
 
 @pytest.fixture
-def base_long_no_id():
+def base_no_yield_no_id():
     """
     Same as base long but without specifying an ID row.
     """
@@ -53,10 +53,10 @@ def base_long_no_id():
 
 
 @pytest.fixture
-def base_trans():
+def base_yield():
     """
     Equivalent to calling BaseMechanicalTest pointing at the
-    transverse test data.
+    yield test data.
 
     Stress and strain col refer to Tensile because
     the data I'm using for testing is from a static tensile test.
@@ -75,7 +75,7 @@ def base_trans():
 
 
 @pytest.fixture
-def base_long_no_stress_strain_cols():
+def base_no_yield_no_stress_strain_cols():
     """
     Like above but not specifying stress and strain col
     names to test the auto-detection.
@@ -92,7 +92,7 @@ def base_long_no_stress_strain_cols():
 
 
 @pytest.fixture
-def base_trans_no_stress_strain_cols():
+def base_yield_no_stress_strain_cols():
     """
     Like above but not specifying stress and strain col
     names to test the auto-detection.

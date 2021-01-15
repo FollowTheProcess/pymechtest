@@ -2,8 +2,9 @@
 
 [![License](https://img.shields.io/github/license/FollowTheProcess/pymechtest)](https://github.com/FollowTheProcess/pymechtest)
 [![PyPI](https://img.shields.io/pypi/v/pymechtest.svg)](https://pypi.python.org/pypi/pymechtest)
-![Code Style](https://img.shields.io/badge/code%20style-black-black)
+[![Code Style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/FollowTheProcess/pymechtest)
 [![CI](https://github.com/FollowTheProcess/pymechtest/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ACI)
+[![Coverage](./img/coverage.svg)](https://github.com/FollowTheProcess/pymechtest)
 
 *pymechtest is a small, hopefully helpful python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as a materials engineer. I hope it can prove some use to you too!*
 

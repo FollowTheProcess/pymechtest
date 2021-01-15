@@ -55,10 +55,13 @@ def coverage(session):
     """
     Test coverage analysis.
     """
+    img_path = PROJECT_ROOT.joinpath("docs/img/coverage.svg")
+
     session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(".[cov]")
 
     session.run("coverage", "report", "--show-missing")
+    session.run("coverage-badge", "-fo", f"{str(img_path)}")
     session.run("coverage", "erase")
 
 
