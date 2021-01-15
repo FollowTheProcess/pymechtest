@@ -14,7 +14,7 @@ This will install pymechtest and its core dependencies.
 
 ## Getting Data In
 
-All you have to do to get data into pymechtest is instantiate the class specific to your test method (pymechtest currently supports `Tensile`, `Flexure`, and `Compression` static tests with some limited support for `Fatigue` (I'm working on it!))...
+All you have to do to get data into pymechtest is instantiate the class specific to your test method (pymechtest currently supports `Tensile`, `Flexure`, `Shear` and `Compression` static tests.
 
 ```python
 from pymechtest import Tensile

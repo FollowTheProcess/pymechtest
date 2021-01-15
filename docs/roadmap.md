@@ -8,10 +8,7 @@ If you think you can help make some of these things happen, thats great! See the
 
 Currently pymechtest naively searches for data columns with the words "stress" or "strain" in them and that's how it determines which column is which. This is currently implemented in a bit of a hacky way.
 
-There are a few potential improvements here:
-
-* Firstly, I'm sure there must be a more sophisticated method of determining which column is which than simply doing a string search
-* This implementation is called in every method that requires loading in data. This is fine for now but if the project grows, this will become a "code smell". I tried initially to get it to work using the `@property` decorator for `self.stress_col` and `self.strain_col` but I had no joy getting it to work reliably. Someone with more python experience might be able to solve this one easily!
+I'm sure there must be a more sophisticated method of determining which column is which than simply doing a string search
 
 ## Unit Conversion
 
@@ -24,6 +21,19 @@ However, in the future it would be good if the user could pass something like `s
 The default calculation for modulus and yield strength are currently "Elastic Modulus" and "0.2% offset yield" respectively. These are probably the most common calculations to perform and what 90% of people want.
 
 It would be good though to have a range of different calculations available like "chord modulus" or "slope threshold yield" etc. that the user could choose from in an argument like `yield_method = "slope threshold"` for example.
+
+## Support Dynamic Test Data
+
+Aside from static tests, it's common for engineers to perform 'dynamic' tests where the specimen is loaded cyclically (fatigue) or the load is held for a great deal of time (creep) and the strain of the specimen is monitored. It would be good to support this here!
+
+I have limited data on cyclic tests currently so if you're reading this and you have some you don't mind sharing please get in touch! See the [contributing] page for info.
+
+It would also be good to hear from engineers more experienced in these tests to get an idea of the kinds of analysis they do and what would be good candidates for automation using pymechtest!
+
+## CLI
+
+I'd like to add a CLI at some point so that pymechtest (or maybe just a subset of it's capabilities) can be invoked from the command line in a flash!
+Who knows, maybe even a GUI at some point!? :bar_chart:
 
 ## More
 
