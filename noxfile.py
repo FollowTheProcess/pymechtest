@@ -62,6 +62,7 @@ def coverage(session):
 
     session.run("coverage", "report", "--show-missing")
     session.run("coverage-badge", "-fo", f"{str(img_path)}")
+    session.run("coverage", "erase")
 
 
 @nox.session()
