@@ -1,11 +1,6 @@
 name: CI
 
-on:
-  push:
-  pull_request:
-  schedule:
-    # Runs at 10AM on the 1st of every month
-    - cron: "0 10 1 * *"
+on: [push, pull_request]
 
 jobs:
   build:
@@ -16,7 +11,8 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -41,7 +37,8 @@ jobs:
         python-version: [3.7, 3.8]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
       - name: Set up Conda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -69,7 +66,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -87,7 +85,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -101,27 +100,66 @@ jobs:
       - name: Build Docs
         run: nox --non-interactive --session "docs"
 
-  deploy:
-    needs: [build, conda-build, lint, docs]
+  publish-docs:
+    needs: docs
     runs-on: ubuntu-latest
 
+    # Only publish docs from main
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install .[docs]
+      - name: Deploy Docs to GitHub Pages
+        env:
+          # Use the built in CI GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote add gh-token "https://${GITHUB_TOKEN}@github.com/FollowTheProcess/pymechtest.git";
+          git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
+          mkdocs gh-deploy -v --clean --remote-name gh-token;
+
+  deploy:
+    needs: [build, conda-build, lint, docs, publish-docs]
+    runs-on: ubuntu-latest
+
+    # Only deploy on a new tag
+    # Maintainers must use bump2version
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
 
-      - name: Install setuptools and wheel
+      - name: Install Dependencies
         # Uses pypa build https://pypa-build.readthedocs.io/en/latest/
         # For full PEP517/518 compliance
         run: python3 -m pip install --upgrade pip setuptools wheel twine build
 
       - name: Build sdist and wheel
         run: python3 -m build
-      - name: Publish distribution PyPI
+      - name: Publish Distribution to PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
