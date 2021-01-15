@@ -393,6 +393,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#support-dynamic-test-data" class="md-nav__link">
+    Support Dynamic Test Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    CLI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     More
   </a>
@@ -562,6 +576,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#support-dynamic-test-data" class="md-nav__link">
+    Support Dynamic Test Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    CLI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     More
   </a>
@@ -590,17 +618,20 @@
 <p>If you think you can help make some of these things happen, thats great! See the <a href="contributing/help.html">contributing</a> guide on how to get involved!</p>
 <h2 id="improve-column-autodetection">Improve Column Autodetection<a class="headerlink" href="#improve-column-autodetection" title="Permanent link">&para;</a></h2>
 <p>Currently pymechtest naively searches for data columns with the words "stress" or "strain" in them and that's how it determines which column is which. This is currently implemented in a bit of a hacky way.</p>
-<p>There are a few potential improvements here:</p>
-<ul>
-<li>Firstly, I'm sure there must be a more sophisticated method of determining which column is which than simply doing a string search</li>
-<li>This implementation is called in every method that requires loading in data. This is fine for now but if the project grows, this will become a "code smell". I tried initially to get it to work using the <code>@property</code> decorator for <code>self.stress_col</code> and <code>self.strain_col</code> but I had no joy getting it to work reliably. Someone with more python experience might be able to solve this one easily!</li>
-</ul>
+<p>I'm sure there must be a more sophisticated method of determining which column is which than simply doing a string search</p>
 <h2 id="unit-conversion">Unit Conversion<a class="headerlink" href="#unit-conversion" title="Permanent link">&para;</a></h2>
 <p>Currently, pymechtest assumes SI units for everything. In 90% of cases this is likely to be true as test machines (especially modern ones) are fairly well standardised.</p>
 <p>However, in the future it would be good if the user could pass something like <code>stress_units = 'kPa'</code> for example. Or better yet, to autodetect what the units are! and all the conversion would be handled under the hood.</p>
 <h2 id="alternative-calculation-methods">Alternative Calculation Methods<a class="headerlink" href="#alternative-calculation-methods" title="Permanent link">&para;</a></h2>
 <p>The default calculation for modulus and yield strength are currently "Elastic Modulus" and "0.2% offset yield" respectively. These are probably the most common calculations to perform and what 90% of people want.</p>
 <p>It would be good though to have a range of different calculations available like "chord modulus" or "slope threshold yield" etc. that the user could choose from in an argument like <code>yield_method = "slope threshold"</code> for example.</p>
+<h2 id="support-dynamic-test-data">Support Dynamic Test Data<a class="headerlink" href="#support-dynamic-test-data" title="Permanent link">&para;</a></h2>
+<p>Aside from static tests, it's common for engineers to perform 'dynamic' tests where the specimen is loaded cyclically (fatigue) or the load is held for a great deal of time (creep) and the strain of the specimen is monitored. It would be good to support this here!</p>
+<p>I have limited data on cyclic tests currently so if you're reading this and you have some you don't mind sharing please get in touch! See the <a href="contributing/help.html">contributing</a> page for info.</p>
+<p>It would also be good to hear from engineers more experienced in these tests to get an idea of the kinds of analysis they do and what would be good candidates for automation using pymechtest!</p>
+<h2 id="cli">CLI<a class="headerlink" href="#cli" title="Permanent link">&para;</a></h2>
+<p>I'd like to add a CLI at some point so that pymechtest (or maybe just a subset of it's capabilities) can be invoked from the command line in a flash!
+Who knows, maybe even a GUI at some point!? <img alt="📊" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f4ca.svg" title=":bar_chart:" /></p>
 <h2 id="more">More<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
 <p>There's probably loads more improvements that could be made! Full disclosure: this is my first python package ever <img alt="👀" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f440.svg" title=":eyes:" /></p>
 <p>I'm sure there's lots of work to do!</p>
