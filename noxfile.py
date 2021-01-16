@@ -38,7 +38,6 @@ def test_conda(session):
     session.conda_install(
         "pandas",
         "numpy",
-        "openpyxl",
         "altair",
         "altair_data_server",
         "altair_saver",

@@ -17,11 +17,19 @@ from pandas.testing import assert_frame_equal, assert_series_equal
 
 from pymechtest.base import BaseMechanicalTest
 
-# Data for testing & development only
-TENS_NO_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_No_Yield")
-TENS_YIELD = Path(__file__).parent.resolve().joinpath("data/Tens_Yield")
-# Same as TENS_YIELD but with specimen ID removed to test exception handling
-NO_IDS = Path(__file__).parent.resolve().joinpath("data/No_IDs")
+from .test_utils import (
+    paths,
+    paths_and_df_shapes_no_yield,
+    paths_and_df_shapes_yield,
+    paths_and_extract_values_series_no_yield,
+    paths_and_extract_values_series_yield,
+    paths_and_filenames,
+    paths_and_moduli_no_yield,
+    paths_and_moduli_yield,
+    paths_and_specimen_ids,
+    paths_and_yield_strengths,
+    paths_for_no_id_test,
+)
 
 
 def test_base_init():
@@ -181,50 +189,6 @@ def test_default_stress_strain_cols_raises_when_no_match_both(
         obj._get_stress_strain_cols(df)
 
 
-paths_and_specimen_ids = [
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), "0038"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), "0031"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), "0040"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), "0032"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), "0033"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), "0034"),
-    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), "009"),
-    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), "008"),
-    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), "007"),
-    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), "006"),
-    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), "005"),
-    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), "004"),
-]
-
-paths_and_filenames = [
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), "Specimen_RawData_1.csv"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), "Specimen_RawData_2.csv"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), "Specimen_RawData_3.csv"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), "Specimen_RawData_4.csv"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), "Specimen_RawData_5.csv"),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), "Specimen_RawData_6.csv"),
-    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), "Specimen_RawData_1.csv"),
-    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), "Specimen_RawData_2.csv"),
-    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), "Specimen_RawData_3.csv"),
-    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), "Specimen_RawData_4.csv"),
-    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), "Specimen_RawData_5.csv"),
-    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), "Specimen_RawData_6.csv"),
-]
-
-paths_for_no_id_test = [
-    (NO_IDS.joinpath("Specimen_RawData_1.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_2.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_3.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_4.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_5.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_6.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_7.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_8.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_9.csv")),
-    (NO_IDS.joinpath("Specimen_RawData_10.csv")),
-]
-
-
 @pytest.mark.parametrize("filepath, specimen_id", paths_and_specimen_ids)
 def test_get_specimen_id(base_no_yield, filepath, specimen_id):
 
@@ -250,33 +214,6 @@ def test_get_specimen_id_raises_if_missing(base_no_yield, filepath):
         obj._get_specimen_id(filepath)
 
 
-paths_and_moduli_no_yield = [
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), 214.73703704359207),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"), 227.9269563135135),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), 222.72607703734684),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), 226.24042185043274),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), 227.20719368480655),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), 237.49691564169657),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), 229.99812783980767),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_7.csv"), 210.5774902227845),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_8.csv"), 201.59969738297002),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"), 222.34006012040436),
-]
-
-paths_and_moduli_yield = [
-    (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), 171.04161005434793),
-    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), 177.04030085330862),
-    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), 190.00716803363935),
-    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), 174.266659531658),
-    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), 154.94934554636575),
-    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), 178.20932823593682),
-    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), 152.57936457584347),
-    (TENS_YIELD.joinpath("Specimen_RawData_7.csv"), 145.24650168212222),
-    (TENS_YIELD.joinpath("Specimen_RawData_8.csv"), 186.87429547855731),
-    (TENS_YIELD.joinpath("Specimen_RawData_9.csv"), 182.94653227297943),
-]
-
-
 @pytest.mark.parametrize("filepath, modulus", paths_and_moduli_no_yield)
 def test_calc_modulus_no_yield(base_no_yield, filepath, modulus):
 
@@ -295,33 +232,6 @@ def test_calc_modulus_yield(base_yield, filepath, modulus):
     assert_almost_equal(
         trans_obj._calc_modulus(trans_obj._load(filepath)), modulus, decimal=2
     )
-
-
-paths_and_df_shapes_no_yield = [
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"), (1467, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"), (1299, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"), (1066, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"), (1177, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"), (1214, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"), (1228, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"), (1238, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_7.csv"), (1303, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_8.csv"), (1245, 6)),
-    (TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"), (1237, 6)),
-]
-
-paths_and_df_shapes_yield = [
-    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), (279, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), (319, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), (309, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), (185, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), (288, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), (269, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), (469, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_7.csv"), (331, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_8.csv"), (297, 6)),
-    (TENS_YIELD.joinpath("Specimen_RawData_9.csv"), (219, 6)),
-]
 
 
 @pytest.mark.parametrize("filepath, df_shape", paths_and_df_shapes_no_yield)
@@ -416,31 +326,12 @@ def test_specimen_id_column_yield(base_yield):
     ]
 
 
-paths_and_yield_strengths = [
-    (TENS_YIELD.joinpath("Specimen_RawData_10.csv"), 83.7694),
-    (TENS_YIELD.joinpath("Specimen_RawData_1.csv"), 90.1206),
-    (TENS_YIELD.joinpath("Specimen_RawData_2.csv"), 85.9652),
-    (TENS_YIELD.joinpath("Specimen_RawData_3.csv"), 89.1603),
-    (TENS_YIELD.joinpath("Specimen_RawData_4.csv"), 87.1522),
-    (TENS_YIELD.joinpath("Specimen_RawData_5.csv"), 90.5217),
-    (TENS_YIELD.joinpath("Specimen_RawData_6.csv"), 78.2747),
-    (TENS_YIELD.joinpath("Specimen_RawData_7.csv"), 87.7896),
-    (TENS_YIELD.joinpath("Specimen_RawData_8.csv"), 90.7741),
-    (TENS_YIELD.joinpath("Specimen_RawData_9.csv"), 90.9967),
-]
-
-
 @pytest.mark.parametrize("filepath, yield_strength", paths_and_yield_strengths)
 def test_calc_yield_strength(base_yield, filepath, yield_strength):
 
     obj = base_yield
 
     assert_almost_equal(obj._calc_yield(obj._load(filepath)), yield_strength, decimal=2)
-
-
-paths = [f for f in TENS_YIELD.rglob("*.csv")] + [
-    f for f in TENS_NO_YIELD.rglob("*.csv")
-]
 
 
 @pytest.mark.parametrize("filepath", paths)
@@ -454,223 +345,6 @@ def test_calc_yield_raises_attribute_error_if_yield_false(base_no_yield, filepat
 
     with pytest.raises(AttributeError):
         obj._calc_yield(df)
-
-
-paths_and_extract_values_series_no_yield = [
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_1.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0038",
-                "Strength": 739.3342,
-                "Modulus": 214.73703704359207,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_10.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0039",
-                "Strength": 805.4785,
-                "Modulus": 227.92695631351344,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_2.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0031",
-                "Strength": 720.6285,
-                "Modulus": 222.72607703734684,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_3.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0040",
-                "Strength": 806.6938,
-                "Modulus": 226.24042185043274,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_4.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0032",
-                "Strength": 782.9673,
-                "Modulus": 227.20719368480655,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_5.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0033",
-                "Strength": 764.4656,
-                "Modulus": 237.49691564169657,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_6.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0034",
-                "Strength": 784.4911,
-                "Modulus": 229.99812783980784,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_7.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0036",
-                "Strength": 784.1665,
-                "Modulus": 210.5774902227845,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_8.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0035",
-                "Strength": 809.7581,
-                "Modulus": 201.59969738297002,
-            }
-        ),
-    ),
-    (
-        TENS_NO_YIELD.joinpath("Specimen_RawData_9.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "0037",
-                "Strength": 778.8885,
-                "Modulus": 222.34006012040436,
-            }
-        ),
-    ),
-]
-
-paths_and_extract_values_series_yield = [
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_10.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "010",
-                "Strength": 180.2974,
-                "Modulus": 171.04161005434793,
-                "Yield Strength": 83.7694,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_1.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "009",
-                "Strength": 188.4382,
-                "Modulus": 177.04030085330862,
-                "Yield Strength": 90.1206,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_2.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "008",
-                "Strength": 183.7281,
-                "Modulus": 190.00716803363935,
-                "Yield Strength": 85.9652,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_3.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "007",
-                "Strength": 151.3554,
-                "Modulus": 174.266659531658,
-                "Yield Strength": 89.1603,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_4.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "006",
-                "Strength": 180.8582,
-                "Modulus": 154.94934554636595,
-                "Yield Strength": 87.1522,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_5.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "005",
-                "Strength": 184.7623,
-                "Modulus": 178.20932823593682,
-                "Yield Strength": 90.5217,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_6.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "004",
-                "Strength": 190.4115,
-                "Modulus": 152.57936457584347,
-                "Yield Strength": 78.2747,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_7.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "003",
-                "Strength": 194.3136,
-                "Modulus": 145.2465016821223,
-                "Yield Strength": 87.7896,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_8.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "002",
-                "Strength": 191.4301,
-                "Modulus": 186.87429547855706,
-                "Yield Strength": 90.7741,
-            }
-        ),
-    ),
-    (
-        TENS_YIELD.joinpath("Specimen_RawData_9.csv"),
-        pd.Series(
-            data={
-                "Specimen ID": "001",
-                "Strength": 168.0556,
-                "Modulus": 182.94653227297943,
-                "Yield Strength": 90.9967,
-            }
-        ),
-    ),
-]
 
 
 @pytest.mark.parametrize(
