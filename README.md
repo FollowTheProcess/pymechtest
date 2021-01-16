@@ -4,6 +4,7 @@
 
 [![License](https://img.shields.io/github/license/FollowTheProcess/pymechtest)](https://github.com/FollowTheProcess/pymechtest)
 [![PyPI](https://img.shields.io/pypi/v/pymechtest.svg)](https://pypi.python.org/pypi/pymechtest)
+[![GitHub](https://img.shields.io/github/v/release/FollowTheProcess/pymechtest?logo=github&sort=semver)](https://github.com/FollowTheProcess/pymechtest)
 [![Code Style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/FollowTheProcess/pymechtest)
 [![CI](https://github.com/FollowTheProcess/pymechtest/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ACI)
 [![Coverage](docs/img/coverage.svg)](https://github.com/FollowTheProcess/pymechtest)
