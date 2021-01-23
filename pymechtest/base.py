@@ -85,30 +85,30 @@ class BaseMechanicalTest:
             f"expect_yield={self.expect_yield!r})"
         )
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: object) -> bool:
 
-        if other.__class__ is self.__class__:
+        if not isinstance(other, BaseMechanicalTest):
+            return NotImplemented
 
-            return (
-                self.folder,
-                self.id_row,
-                self._stress_col,
-                self._strain_col,
-                self.header,
-                self.strain1,
-                self.strain2,
-                self.expect_yield,
-            ) == (
-                other.folder,
-                other.id_row,
-                other._stress_col,
-                other._strain_col,
-                other.header,
-                other.strain1,
-                other.strain2,
-                other.expect_yield,
-            )
-        return NotImplemented
+        return (
+            self.folder,
+            self.id_row,
+            self._stress_col,
+            self._strain_col,
+            self.header,
+            self.strain1,
+            self.strain2,
+            self.expect_yield,
+        ) == (
+            other.folder,
+            other.id_row,
+            other._stress_col,
+            other._strain_col,
+            other.header,
+            other.strain1,
+            other.strain2,
+            other.expect_yield,
+        )
 
     @property
     def stress_col(self) -> Union[str, None]:
@@ -310,7 +310,7 @@ class BaseMechanicalTest:
 
         yield_strength = offset_df.iloc[yield_index][self.stress_col]
 
-        return yield_strength
+        return float(yield_strength)
 
     def _extract_values(self, df: pd.DataFrame) -> pd.Series:
         """
