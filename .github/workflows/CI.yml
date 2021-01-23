@@ -21,7 +21,6 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install nox
-          python3 -m pip install .[test]
 
       - name: Run Tests
         run: nox --non-interactive --session "test-${{ matrix.python-version }}"
@@ -76,7 +75,6 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install nox
-          python3 -m pip install .[lint]
 
       - name: Lint
         run: nox --non-interactive --session "lint"
@@ -95,7 +93,6 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install nox
-          python3 -m pip install .[docs]
 
       - name: Build Docs
         run: nox --non-interactive --session "docs"

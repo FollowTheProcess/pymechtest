@@ -56,6 +56,10 @@ def coverage(session):
     """
     img_path = PROJECT_ROOT.joinpath("docs/img/coverage.svg")
 
+    if not img_path.exists():
+        img_path.parent.mkdir(parents=True)
+        img_path.touch()
+
     session.install("--upgrade", "pip", "setuptools", "wheel")
     session.install(".[cov]")
 
