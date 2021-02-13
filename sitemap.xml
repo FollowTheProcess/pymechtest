@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://followtheprocess.github.io/pymechtest/index.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/getting_started/usage.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/getting_started/options.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/getting_started/plot.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/contributing/help.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/contributing/guide.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/roadmap.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/api/tensile.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/api/compression.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/api/flexure.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://followtheprocess.github.io/pymechtest/api/shear.html</loc>
-     <lastmod>2021-01-23</lastmod>
+     <lastmod>2021-02-13</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
