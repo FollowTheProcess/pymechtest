@@ -5,7 +5,6 @@ Author: Tom Fleet
 Created: 01/01/2021
 """
 
-from pathlib import Path
 
 from pymechtest import Compression
 
@@ -54,46 +53,3 @@ def test_compression_repr():
         "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
-
-
-def test_compression_eq():
-
-    obj = Compression(
-        folder="made/up/directory",
-        header=8,
-        stress_col="Compression stress",
-        strain_col="Compression strain (Strain 1)",
-        id_row=3,
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
-
-    same = Compression(
-        folder="made/up/directory",
-        header=8,
-        stress_col="Compression stress",
-        strain_col="Compression strain (Strain 1)",
-        id_row=3,
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
-
-    diff = Compression(
-        folder="different/made/up/directory",
-        header=8,
-        stress_col="Different stress col",
-        strain_col="This doesn't match either",
-        id_row=6,
-        strain1=0.025,
-        strain2=0.3,
-        expect_yield=True,
-    )
-
-    # Random different class, in this case a pathlib.Path
-    different_class = Path(__file__)
-
-    assert obj.__eq__(same) is True
-    assert obj.__eq__(diff) is False
-    assert obj.__eq__(different_class) is NotImplemented
