@@ -7,7 +7,6 @@ Created: 28/11/2020
 
 import collections
 import json
-from pathlib import Path
 
 import altair as alt
 import pandas as pd
@@ -76,49 +75,6 @@ def test_base_repr():
         "header=8, "
         "strain1=0.05, strain2=0.15, expect_yield=False)"
     )
-
-
-def test_base_eq():
-
-    obj = BaseMechanicalTest(
-        folder="made/up/directory",
-        stress_col="BaseMechanicalTest stress",
-        strain_col="BaseMechanicalTest strain (Strain 1)",
-        id_row=3,
-        header=8,
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
-
-    same = BaseMechanicalTest(
-        folder="made/up/directory",
-        stress_col="BaseMechanicalTest stress",
-        strain_col="BaseMechanicalTest strain (Strain 1)",
-        id_row=3,
-        header=8,
-        strain1=0.05,
-        strain2=0.15,
-        expect_yield=False,
-    )
-
-    diff = BaseMechanicalTest(
-        folder="different/made/up/directory",
-        stress_col="Different stress col",
-        strain_col="This doesn't match either",
-        id_row=6,
-        header=8,
-        strain1=0.025,
-        strain2=0.3,
-        expect_yield=True,
-    )
-
-    # Random different class, in this case a pathlib.Path
-    different_class = Path(__file__)
-
-    assert obj.__eq__(same) is True
-    assert obj.__eq__(diff) is False
-    assert obj.__eq__(different_class) is NotImplemented
 
 
 def test_basic_default_get_stress_strain_cols(
