@@ -15,6 +15,7 @@ nav:
       - Help: contributing/help.md
       - How to: contributing/guide.md
   - Roadmap: roadmap.md
+  - Changelog: changelog.md
   - API:
       - Static Tests:
           - Tensile: api/tensile.md
@@ -38,6 +39,8 @@ theme:
     accent: blue
 markdown_extensions:
   - codehilite
+  - markdown_include.include:
+      base_path: docs
   - pymdownx.highlight:
       use_pygments: true
   - pymdownx.inlinehilite
