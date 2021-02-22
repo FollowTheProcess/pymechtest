@@ -121,6 +121,9 @@ pip install -e .[dev]
 
 # If you use zsh, you may have to escape the square brackets
 pip install -e .\[dev\]
+
+# Or you can use the makefile
+make dev
 ```
 
 Side note: If you're on mac (uses zsh by default) and you have to escape the square brackets. Try setting this in your `~/.zshrc`:
@@ -211,8 +214,14 @@ Because pymechtest uses [nox], things like building and serving the documentatio
 # Builds the docs
 nox -s docs
 
+# Or again, the makefile
+make docs
+
 # Builds and serves to localhost
 nox -s docs -- serve
+
+# makefile equivalent
+make autodocs
 ```
 
 *If you installed with `.[dev]` earlier, you could also just run `mkdocs build --clean` and `mkdocs serve` if you wanted*
