@@ -756,6 +756,9 @@ Get-Command pip
 
 <span class="c1"># If you use zsh, you may have to escape the square brackets</span>
 pip install -e .<span class="se">\[</span>dev<span class="se">\]</span>
+
+<span class="c1"># Or you can use the makefile</span>
+make dev
 </code></pre></div>
 <p>Side note: If you're on mac (uses zsh by default) and you have to escape the square brackets. Try setting this in your <code>~/.zshrc</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># in ~/.zshrc</span>
@@ -807,8 +810,14 @@ git status
 <div class="highlight"><pre><span></span><code><span class="c1"># Builds the docs</span>
 nox -s docs
 
+<span class="c1"># Or again, the makefile</span>
+make docs
+
 <span class="c1"># Builds and serves to localhost</span>
 nox -s docs -- serve
+
+<span class="c1"># makefile equivalent</span>
+make autodocs
 </code></pre></div>
 <p><em>If you installed with <code>.[dev]</code> earlier, you could also just run <code>mkdocs build --clean</code> and <code>mkdocs serve</code> if you wanted</em></p>
 <p>If you use the <code>serve</code> option, you can navigate to the localhost IP address it gives you and as you make changes to the source files, it will automatically reload your browser! Automation is power! <img alt="🤖" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f916.svg" title=":robot:" /></p>
