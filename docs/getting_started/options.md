@@ -8,7 +8,9 @@ Here we'll explain how to use these with an example.
 
 Let's use the `Tensile` class for a simple batch of tensile tests.
 
-*Don't forget, pymechtest also has `Compression`, `Shear` and `Flexure` classes we could easily have used, they all work exactly the same way!*
+!!! note
+
+    Don't forget, pymechtest also has `Compression`, `Shear` and `Flexure` classes we could easily have used, they all work exactly the same way!
 
 pymechtest is designed to work directly from the raw data exported by the machine, so all you have to do is 'point it' at the folder where your batch of test data is and it will do the rest.
 
@@ -66,9 +68,13 @@ And now it works perfectly!
 
 ![header](../img/header.png)
 
-Note: In our example, the csv file had the units in brackets below the table headers. If this is true for your data too, or infact if your data has any non-numerics below your table headers, don't worry! pymechtest (well actually [pandas]) is smart enough to remove these for you.
+!!! note
 
-> Currently pymechtest doesn't support unit conversion. It assumes SI units: Stress = MPa, Modulus = GPa, Strain = %. This is something I want to support in the future and is on the roadmap.
+    In our example, the csv file had the units in brackets below the table headers. If this is true for your data too, or infact if your data has any non-numerics below your table headers, don't worry! pymechtest (well actually [pandas]) is smart enough to remove these for you.
+
+!!! info
+
+    Currently pymechtest doesn't support unit conversion. It assumes SI units: Stress = MPa, Modulus = GPa, Strain = %. This is something I want to support in the future and is on the roadmap.
 
 ### Strain1 & Strain2
 
@@ -98,7 +104,9 @@ $$
 
 Obviously, if you define your own ranges, it's now up to you that those ranges are valid and you are still capturing the elastic portion of the stress strain curve, so you might want to check it out with `.plot_curves()` first!
 
-> Currently, only Young's modulus is supported. In the future I want to provide the option for different types of modulus i.e. secant, chord etc. This is on the roadmap!
+!!! info
+    
+    Currently, only Young's modulus is supported. In the future I want to provide the option for different types of modulus i.e. secant, chord etc. This is on the roadmap!
 
 ### Expect Yield
 
@@ -106,7 +114,9 @@ You've seen how the `.summarise` method returns a column for yield strength in o
 
 Well there's an argument for that: `expect_yield` which defaults to `True` (a sensible default).
 
-> By the way, pymechtest uses the 0.2% offset yield strength. Currently this is the only option, but in the future I want to support alternative methods such a slope threshold etc.
+!!! info
+
+    By the way, pymechtest uses the 0.2% offset yield strength. Currently this is the only option, but in the future I want to support alternative methods such a slope threshold etc.
 
 If you were testing a load of carbon fibre test pieces in the fibre direction, they are elastic to failure and the concept of yield strength becomes irrelevant.
 
