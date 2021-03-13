@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        # Uses pypa build https://pypa-build.readthedocs.io/en/latest/
+        # For full PEP517/518 compliance
+        run: python3 -m pip install --upgrade pip setuptools wheel twine build
+
+      - name: Build sdist and wheel
+        run: python3 -m build
+      - name: Publish Distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
