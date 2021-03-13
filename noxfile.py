@@ -4,6 +4,7 @@ Nox configuration file for the project.
 
 import os
 from pathlib import Path
+from typing import List
 
 import nox
 
@@ -16,9 +17,27 @@ ON_CI = os.getenv("CI")
 if not ON_CI:
     nox.options.sessions = ["test", "coverage", "lint", "docs"]
 
+DEFAULT_PYTHON: str = "3.9"
 
-@nox.session(python=["3.7", "3.8", "3.9"])
-def test(session):
+PYTHON_VERSIONS: List[str] = [
+    "3.7",
+    "3.8",
+    "3.9",
+]
+
+CONDA_REQUIREMENTS: List[str] = [
+    "pandas",
+    "numpy",
+    "altair",
+    "altair_data_server",
+    "altair_saver",
+    "pytest",
+    "pytest-cov",
+]
+
+
+@nox.session(python=PYTHON_VERSIONS)
+def test(session: nox.Session) -> None:
     """
     Runs the test suite against all supported python versions.
     """
@@ -27,30 +46,22 @@ def test(session):
     # Posargs allows passing of tests directly
     tests = session.posargs or ["tests/"]
     session.run("pytest", "--cov=pymechtest", *tests)
+    session.notify("coverage")
 
 
-# Conda with python 3.9 doesn't quite work yet
-@nox.session(python=["3.7", "3.8"], venv_backend="conda")
-def test_conda(session):
+@nox.session(python=PYTHON_VERSIONS, venv_backend="conda")
+def test_conda(session: nox.Session) -> None:
     """
     Runs the test suite against all support python version in a conda env.
     """
-    session.conda_install(
-        "pandas",
-        "numpy",
-        "altair",
-        "altair_data_server",
-        "altair_saver",
-        "pytest",
-        "pytest-cov",
-    )
+    session.conda_install(*CONDA_REQUIREMENTS)
     session.install(".", "--no-deps")
     tests = session.posargs or ["tests/"]
     session.run("pytest", "--cov=pymechtest", *tests)
 
 
-@nox.session()
-def coverage(session):
+@nox.session(python=DEFAULT_PYTHON)
+def coverage(session: nox.Session) -> None:
     """
     Test coverage analysis.
     """
@@ -65,11 +76,10 @@ def coverage(session):
 
     session.run("coverage", "report", "--show-missing")
     session.run("coverage-badge", "-fo", f"{str(img_path)}")
-    session.run("coverage", "erase")
 
 
-@nox.session()
-def lint(session):
+@nox.session(python=DEFAULT_PYTHON)
+def lint(session: nox.Session) -> None:
     """
     Formats project with black and isort, then runs flake8 and mypy linting.
     """
@@ -81,8 +91,8 @@ def lint(session):
     session.run("mypy", ".")
 
 
-@nox.session()
-def docs(session):
+@nox.session(python=DEFAULT_PYTHON)
+def docs(session: nox.Session) -> None:
     """
     Builds the project documentation.
 

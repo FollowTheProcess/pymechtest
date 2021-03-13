@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,10 +22,10 @@ jobs:
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install nox
 
-      - name: Run Tests
+      - name: Run Tests and Coverage
         run: nox --non-interactive --session "test-${{ matrix.python-version }}"
 
-  conda-build:
+  conda-tests:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -33,7 +33,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
       - name: Checkout Code
@@ -44,13 +44,13 @@ jobs:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
           activate-environment: test
-      - name: Conda info
+      - name: Conda Info
         run: conda info
-      - name: Configure channels
+      - name: Configure Channels
         run: |
           conda config --append channels conda-forge
           conda config --set channel_priority strict
-      - name: Conda list
+      - name: Conda List
         run: conda list
       - name: Install Dependencies
         run: |
@@ -122,41 +122,3 @@ jobs:
           git remote add gh-token "https://${GITHUB_TOKEN}@github.com/FollowTheProcess/pymechtest.git";
           git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
           mkdocs gh-deploy -v --clean --remote-name gh-token;
-
-  deploy:
-    needs: [build, conda-build, lint, docs, publish-docs]
-    runs-on: ubuntu-latest
-
-    # Only deploy on a new tag
-    # Maintainers must use bump2version
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install Dependencies
-        # Uses pypa build https://pypa-build.readthedocs.io/en/latest/
-        # For full PEP517/518 compliance
-        run: python3 -m pip install --upgrade pip setuptools wheel twine build
-
-      - name: Build sdist and wheel
-        run: python3 -m build
-      - name: Publish Distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
