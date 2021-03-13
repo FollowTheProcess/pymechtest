@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://followtheprocess.github.io/pymechtest/getting_started/plot.html">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.1">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.5">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.1655a90d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.77f3fd56.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
@@ -45,6 +45,8 @@
       
     
     
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
     
       
@@ -242,7 +244,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-          
             
   
   
@@ -408,7 +409,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-          
             
   
   
@@ -493,7 +493,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-          
             
   
   
@@ -514,7 +513,6 @@
           Static Tests
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -691,146 +689,133 @@
 <p>The pymechtest plot style is very opinionated, the plots will come out looking the same every time and the API exposes very little in the way of customisation. If you want full control over how you want the plots to look, you might want to just do it manually by loading the data in with <code>.load_all()</code> and then using whatever plotting tool you like.</p>
 <p>Every static test method currently supported in pymechtest has a <code>.plot_curves()</code> method. Lets take a look at it...</p>
 <h2 id="plot_curves"><code>plot_curves</code><a class="headerlink" href="#plot_curves" title="Permanent link">&para;</a></h2>
-<div class="doc doc-object doc-method">
-<h2 class="hidden-toc" id="pymechtest.base.BaseMechanicalTest.plot_curves" style="visibility: hidden; position: absolute;">
-        <a class="headerlink" href="#pymechtest.base.BaseMechanicalTest.plot_curves" title="Permanent link">&para;</a></h2>
-<div class="doc doc-contents first">
-<p>Creates a nice looking stress strain plot of all the specimens using altair.</p>
+
+
+  <div class="doc doc-object doc-method">
+
+<a id="pymechtest.base.BaseMechanicalTest.plot_curves"></a>
+    <div class="doc doc-contents first">
+
+      <p>Creates a nice looking stress strain plot of all the specimens using altair.</p>
 <p>Will use the class name to fill in axis labels if not passed, e.g
 'Tensile' Strain</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>title</code></td>
-<td><code>Optional[str]</code></td>
-<td>
-<p>Title for the plot.
-Defaults to "{class_name} Stress-Strain Curves".</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td><code>Union[str, pathlib.Path]</code></td>
-<td>
-<p>str or Pathlike path to save
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>Title for the plot.
+Defaults to "{class_name} Stress-Strain Curves".</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>save_path</code></td>
+        <td><code>Union[str, pathlib.Path]</code></td>
+        <td><p>str or Pathlike path to save
 a png of the plot. Requires chrome and selenium. If not passed, plot
-is simply returned and not saved.</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_method</code></td>
-<td><code>Optional[str]</code></td>
-<td>
-<p>One of 2 altair save methods:
+is simply returned and not saved.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>save_method</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>One of 2 altair save methods:
 'selenium' or 'node'.
 if 'selenium' requires a configured geckodriver or chromedriver on PATH.
-if 'node' requires nodejs installation. Defaults to 'selenium'</p>
-</td>
-<td><code>'selenium'</code></td>
-</tr>
-<tr>
-<td><code>x_label</code></td>
-<td><code>Optional[str]</code></td>
-<td>
-<p>Label for x-axis.
-Defaults to "{class name}Strain (%)".</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>y_label</code></td>
-<td><code>Optional[str]</code></td>
-<td>
-<p>Label for y-axis.
-Defaults to "{class name}Stress (MPa)".</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>height</code></td>
-<td><code>int</code></td>
-<td>
-<p>Height of the plot.
-Defaults to 500.</p>
-</td>
-<td><code>500</code></td>
-</tr>
-<tr>
-<td><code>width</code></td>
-<td><code>int</code></td>
-<td>
-<p>Width of the plot.
-Defaults to 750.</p>
-</td>
-<td><code>750</code></td>
-</tr>
-</tbody>
+if 'node' requires nodejs installation. Defaults to 'selenium'</p></td>
+        <td><code>&#39;selenium&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>x_label</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>Label for x-axis.
+Defaults to "{class name}Strain (%)".</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>y_label</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>Label for y-axis.
+Defaults to "{class name}Stress (MPa)".</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>height</code></td>
+        <td><code>int</code></td>
+        <td><p>Height of the plot.
+Defaults to 500.</p></td>
+        <td><code>500</code></td>
+      </tr>
+      <tr>
+        <td><code>width</code></td>
+        <td><code>int</code></td>
+        <td><p>Width of the plot.
+Defaults to 750.</p></td>
+        <td><code>750</code></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Chart</code></td>
-<td>
-<p>alt.Chart: Stress strain plot.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Chart</code></td>
+      <td><p>alt.Chart: Stress strain plot.</p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pymechtest/base.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">plot_curves</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_curves</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">save_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">save_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"selenium"</span><span class="p">,</span>
+    <span class="n">save_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;selenium&quot;</span><span class="p">,</span>
     <span class="n">x_label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">y_label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">750</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a nice looking stress strain plot of all the specimens using altair.</span>
 
 <span class="sd">    Will use the class name to fill in axis labels if not passed, e.g</span>
-<span class="sd">    'Tensile' Strain</span>
+<span class="sd">    &#39;Tensile&#39; Strain</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        title (str, optional): Title for the plot.</span>
-<span class="sd">            Defaults to "{class_name} Stress-Strain Curves".</span>
+<span class="sd">            Defaults to &quot;{class_name} Stress-Strain Curves&quot;.</span>
 
 <span class="sd">        save_path (Union[str, Path], optional): str or Pathlike path to save</span>
 <span class="sd">            a png of the plot. Requires chrome and selenium. If not passed, plot</span>
 <span class="sd">            is simply returned and not saved.</span>
 
 <span class="sd">        save_method (str, optional): One of 2 altair save methods:</span>
-<span class="sd">            'selenium' or 'node'.</span>
-<span class="sd">            if 'selenium' requires a configured geckodriver or chromedriver on PATH.</span>
-<span class="sd">            if 'node' requires nodejs installation. Defaults to 'selenium'</span>
+<span class="sd">            &#39;selenium&#39; or &#39;node&#39;.</span>
+<span class="sd">            if &#39;selenium&#39; requires a configured geckodriver or chromedriver on PATH.</span>
+<span class="sd">            if &#39;node&#39; requires nodejs installation. Defaults to &#39;selenium&#39;</span>
 
 <span class="sd">        x_label (str, optional): Label for x-axis.</span>
-<span class="sd">            Defaults to "{class name}Strain (%)".</span>
+<span class="sd">            Defaults to &quot;{class name}Strain (%)&quot;.</span>
 
 <span class="sd">        y_label (str, optional): Label for y-axis.</span>
-<span class="sd">            Defaults to "{class name}Stress (MPa)".</span>
+<span class="sd">            Defaults to &quot;{class name}Stress (MPa)&quot;.</span>
 
 <span class="sd">        height (int, optional): Height of the plot.</span>
 <span class="sd">            Defaults to 500.</span>
@@ -840,19 +825,19 @@ Defaults to 750.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        alt.Chart: Stress strain plot.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Altair will warn if over 5,000 rows in a notebook. This is cleanest solution.</span>
-    <span class="n">alt</span><span class="o">.</span><span class="n">data_transformers</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="s2">"data_server"</span><span class="p">)</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">data_transformers</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="s2">&quot;data_server&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">x_label</span><span class="p">:</span>
-        <span class="n">x_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> Strain (%)"</span>
+        <span class="n">x_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> Strain (%)&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">y_label</span><span class="p">:</span>
-        <span class="n">y_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> Stress (MPa)"</span>
+        <span class="n">y_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> Stress (MPa)&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> Stress Strain Curves"</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> Stress Strain Curves&quot;</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_all</span><span class="p">()</span>
 
@@ -860,16 +845,16 @@ Defaults to 750.</p>
         <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
         <span class="o">.</span><span class="n">mark_line</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_col</span><span class="si">}</span><span class="s2">:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">x_label</span><span class="p">),</span>
-            <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_col</span><span class="si">}</span><span class="s2">:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">y_label</span><span class="p">),</span>
-            <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"Specimen ID:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Specimen ID"</span><span class="p">),</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_col</span><span class="si">}</span><span class="s2">:Q&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">x_label</span><span class="p">),</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_col</span><span class="si">}</span><span class="s2">:Q&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">y_label</span><span class="p">),</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;Specimen ID:N&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Specimen ID&quot;</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">save_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="s2">"selenium"</span><span class="p">,</span> <span class="s2">"node"</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">save_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;selenium&quot;</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"Save method must be one of 'selenium' or 'node'. Got: </span><span class="si">{</span><span class="n">save_method</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">&quot;Save method must be one of &#39;selenium&#39; or &#39;node&#39;. Got: </span><span class="si">{</span><span class="n">save_method</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">save_path</span><span class="p">:</span>
@@ -882,11 +867,12 @@ Defaults to 750.</p>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">chart</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
 <h2 id="making-your-plot">Making your plot<a class="headerlink" href="#making-your-plot" title="Permanent link">&para;</a></h2>
 <p>In 90% of the cases, you will probably just need to call <code>plot_curves()</code> with no arguments. Again, following the principle of <strong>sensible defaults</strong>, pymechtest will fill out a lot of the information for you.</p>
 <p>For instance, if you're calling <code>plot_curves()</code> from an instance of the <code>Tensile</code> class, the title will be "Tensile Stress Strain Curves" and the axes titles will be "Tensile Stress" and "Tensile Strain".</p>
@@ -1004,6 +990,7 @@ conda install -c conda-forge nodejs
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs
         </a>
+        
       </div>
       
     </div>
@@ -1014,10 +1001,10 @@ conda install -c conda-forge nodejs
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.f5903571.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.4e3fea51.min.js"></script>
+      <script src="../assets/javascripts/bundle.5cf3e710.min.js"></script>
       
         <script src="../javascripts/config.js"></script>
       
