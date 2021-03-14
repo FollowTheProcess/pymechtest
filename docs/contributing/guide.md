@@ -76,6 +76,28 @@ This will (in order):
 
 Before you do anything, you'll want to set up your virtual environment...
 
+I've recently added a makefile that can do all of this for you so all you need to do is run
+
+```shell
+make dev
+```
+
+Wait for it to do it's thing and then simply activate the environment normally
+
+=== "macOS & Linux"
+
+    ```shell
+    source .venv/bin/activate
+    ```
+
+=== "Windows"
+
+    ```shell
+    .\.venv.\Scripts.\Activate.ps1
+    ```
+
+Or if you want to do this all yourself, here's how...
+
 ```shell
 python3 -m venv .venv
 ```
@@ -84,23 +106,31 @@ This creates a virtual environment (called .venv)
 
 Now, activate your environment...
 
-```shell
-# macOS and Linux
-source .venv/bin/activate
+=== "macOS & Linux"
 
-# Windows
-.\.venv.\Scripts.\Activate.ps1
-```
+    ```shell
+    source .venv/bin/activate
+    ```
+
+=== "Windows"
+
+    ```shell
+    .\.venv.\Scripts.\Activate.ps1
+    ```
 
 To check it worked, use:
 
-```shell
-# macOS and Linux
-which pip
+=== "macOS & Linux"
 
-# Windows
-Get-Command pip
-```
+    ```shell
+    which pip
+    ```
+
+=== "Windows"
+
+    ```shell
+    Get-Command pip
+    ```
 
 It should say...
 
