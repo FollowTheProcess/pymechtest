@@ -729,23 +729,43 @@ git push origin main
 <p><em>Good practice is to do this before you start doing anything every time you start work, then the chances of you getting conflicting commits later on is much lower!</em></p>
 <h3 id="step-3-create-the-environment">Step 3: Create the Environment<a class="headerlink" href="#step-3-create-the-environment" title="Permanent link">&para;</a></h3>
 <p>Before you do anything, you'll want to set up your virtual environment...</p>
+<p>I've recently added a makefile that can do all of this for you so all you need to do is run</p>
+<div class="highlight"><pre><span></span><code>make dev
+</code></pre></div>
+<p>Wait for it to do it's thing and then simply activate the environment normally</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">macOS &amp; Linux</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> .venv/bin/activate
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Windows</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>.<span class="se">\.</span>venv.<span class="se">\S</span>cripts.<span class="se">\A</span>ctivate.ps1
+</code></pre></div>
+</div>
+</div>
+<p>Or if you want to do this all yourself, here's how...</p>
 <div class="highlight"><pre><span></span><code>python3 -m venv .venv
 </code></pre></div>
 <p>This creates a virtual environment (called .venv)</p>
 <p>Now, activate your environment...</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># macOS and Linux</span>
-<span class="nb">source</span> .venv/bin/activate
-
-<span class="c1"># Windows</span>
-.<span class="se">\.</span>venv.<span class="se">\S</span>cripts.<span class="se">\A</span>ctivate.ps1
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">macOS &amp; Linux</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> .venv/bin/activate
 </code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Windows</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>.<span class="se">\.</span>venv.<span class="se">\S</span>cripts.<span class="se">\A</span>ctivate.ps1
+</code></pre></div>
+</div>
+</div>
 <p>To check it worked, use:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># macOS and Linux</span>
-which pip
-
-<span class="c1"># Windows</span>
-Get-Command pip
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">macOS &amp; Linux</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>which pip
 </code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Windows</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>Get-Command pip
+</code></pre></div>
+</div>
+</div>
 <p>It should say...</p>
 <div class="highlight"><pre><span></span><code>some/directory/pymechtest/.venv/bin/pip
 </code></pre></div>
