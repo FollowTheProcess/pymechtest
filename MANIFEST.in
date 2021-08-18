@@ -1,7 +1,0 @@
-recursive-include pymechtest *.py
-include pymechtest/py.typed
-include LICENSE
-include README.md
-include setup.py
-include pyproject.toml
-include setup.cfg

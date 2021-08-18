@@ -8,5 +8,22 @@ profile = "black"
 multi_line_output = 3
 
 [tool.coverage.run]
-omit = [""]
+omit = [
+    "__init__.py",
+]
 branch = true
+
+[tool.mypy]
+files = [
+    "pymechtest/**/*.py",
+    "noxfile.py",
+]
+
+ignore_missing_imports = true
+strict = true
+disallow_untyped_decorators = false
+pretty = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true

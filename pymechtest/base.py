@@ -118,22 +118,21 @@ class BaseMechanicalTest:
             (str): Specimen ID.
         """
 
-        if self.id_row is not None:
-            # If user passes int for id_row
-
-            with open(fp, "r") as f:
-                spec_id = next(
-                    itertools.islice(csv.reader(f), self.id_row, self.id_row + 1)
-                )
-
-            if spec_id is not None and len(spec_id) == 2:
-                return spec_id[1]
-            else:
-                raise ValueError(f"Specimen ID in file: {str(fp)} not found!")
-        else:
+        if self.id_row is None:
             # Nothing passed for id_row
             # Use filename instead
             return fp.name
+
+        # If user passes int for id_row
+        with open(fp, "r") as f:
+            spec_id = next(
+                itertools.islice(csv.reader(f), self.id_row, self.id_row + 1)
+            )
+
+        if spec_id is not None and len(spec_id) == 2:
+            return spec_id[1]
+        else:
+            raise ValueError(f"Specimen ID in file: {str(fp)} not found!")
 
     def _get_stress_strain_cols(self, df: pd.DataFrame) -> None:
         """
@@ -159,8 +158,6 @@ class BaseMechanicalTest:
             for col in df.columns.tolist():
                 if "strain" in col.strip().lower():
                     self.strain_col = col
-        else:
-            pass
 
         # Now that's been done, neither should be None
         # If either are still None, it means detection failed
