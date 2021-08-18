@@ -2,8 +2,6 @@
 
 I've tried to structure pymechtest to make it nice and easy for people to contribute. Here's how to go about doing it! :smiley:
 
-First, see the [help] section for some general info on how you can help pymechtest.
-
 ## Developing
 
 If you want to fix a bug, improve the docs, add tests, add a feature or any other type of direct contribution to pymechtest: here's how you do it!
@@ -54,7 +52,7 @@ Now add the original pymechtest repo as an upstream in your forked project:
 git remote add upstream https://github.com/FollowTheProcess/pymechtest.git
 ```
 
-This makes the original version of pymechtest 'upstream' but not 'origin'. Basically, this means that if your working on it for a while and the original project has changed in the meantime, you can do:
+This makes the original version of pymechtest `upstream` but not `origin`. Basically, this means that if your working on it for a while and the original project has changed in the meantime, you can do:
 
 ```shell
 git checkout main
@@ -70,114 +68,50 @@ This will (in order):
 * Merge those changes in with what you have
 * Push those changes up to your fork so your fork stays up to date with the original.
 
-*Good practice is to do this before you start doing anything every time you start work, then the chances of you getting conflicting commits later on is much lower!*
+!!! note
+
+    Good practice is to do this before you start doing anything every time you start work, then the chances of you getting conflicting commits later on is much lower!
 
 ### Step 3: Create the Environment
 
-Before you do anything, you'll want to set up your virtual environment...
+Before you do anything, you'll want to set up your development environment...
 
-I've recently added a makefile that can do all of this for you so all you need to do is run
+pymechtest uses [nox] for automation superpowers. So to work on it you'll need to install it too!
 
-```shell
-make dev
-```
+I recommend using [pipx] for python command line tools like these, it installs each tool in it's own isolated environment but exposes the command to your terminal as if you installed it globally.
 
-Wait for it to do it's thing and then simply activate the environment normally
-
-=== "macOS & Linux"
-
-    ```shell
-    source .venv/bin/activate
-    ```
-
-=== "Windows"
-
-    ```shell
-    .\.venv.\Scripts.\Activate.ps1
-    ```
-
-Or if you want to do this all yourself, here's how...
+We've automated the crap out of the development process for pymechtest, to get started all you need to do is run:
 
 ```shell
-python3 -m venv .venv
+nox
 ```
 
-This creates a virtual environment (called .venv)
+!!! note
 
-Now, activate your environment...
+    If you've never used nox before, go check it out. It's great!
 
-=== "macOS & Linux"
+    It's an amazing project automation toolkit, you can do just about anything with it but it's especially good at things like this!
 
-    ```shell
-    source .venv/bin/activate
-    ```
+When you run this, nox will:
 
-=== "Windows"
+* Create a fresh python virtual environment in the project for you (.venv)
+* Install pymechtest for you along with all of it's development dependencies
+* Make sure VSCode is set up to use this environment (if you use it)
 
-    ```shell
-    .\.venv.\Scripts.\Activate.ps1
-    ```
+Not bad for a single command! Doing it this way means that before you start working on pymechtest you know its all been installed and works correctly.
 
-To check it worked, use:
+Wait for it to do it's thing and then you can get started.
 
-=== "macOS & Linux"
+!!! note
 
-    ```shell
-    which pip
-    ```
+    The next time you run `nox`, it won't do this step again. It will run all the project tests, lint and format the source code, analyse test coverage and build the docs :robot:
 
-=== "Windows"
-
-    ```shell
-    Get-Command pip
-    ```
-
-It should say...
-
-```shell
-some/directory/pymechtest/.venv/bin/pip
-```
-
-If it shows this, it's worked! :tada:
-
-### Step 4: Install the Dependencies
-
-Now you need to install pymechtest locally (in editable format: `-e`) including all it's dependencies.
-
-That's as easy as:
-
-```shell
-pip install -e .[dev]
-
-# If you use zsh, you may have to escape the square brackets
-pip install -e .\[dev\]
-
-# Or you can use the makefile
-make dev
-```
-
-Side note: If you're on mac (uses zsh by default) and you have to escape the square brackets. Try setting this in your `~/.zshrc`:
-
-```shell
-# in ~/.zshrc
-# Means you don't have to escape square brackets
-unsetopt nomatch
-```
-
-I mention that here because it took me **AGES** to find that! :unamused:
-
-### Step 5: Do your thing
+### Step 4: Do your thing
 
 **Always checkout a new branch before changing anything**
 
 ```shell
 git checkout -b <name-of-your-bugfix-or-feature>
-```
-
-So if I was going to fix a bug with the yield strength calculation I would do something like:
-
-```shell
-git checkout -b yield-strength-bugfix
 ```
 
 Now you're ready to start working!
@@ -192,7 +126,7 @@ nox
 
 And it will tell you if something's wrong!
 
-### Step 6: Commit your changes
+### Step 5: Commit your changes
 
 Once you're happy with what you've done, add the files you've changed:
 
@@ -226,13 +160,15 @@ Now push your changes to your fork:
 git push origin <your-branch-name>
 ```
 
-### Step 7: Create a Pull Request
+### Step 6: Create a Pull Request
 
 Now go to the original pymechtest [repo] and create a Pull Request. Make sure to choose upstream repo "main" as the destination branch and your forked repo "your-branch-name" as the source.
 
 Thats it! Your code will be tested automatically by pymechtest's CI suite and if everything passes and your PR is approved and merged then it will become part of pymechtest!
 
-*Note: There is a good guide to open source contribution workflow [here] and also [here too]*
+!!! note
+
+    There is a good guide to open source contribution workflow [here] and also [here too]
 
 ## Contributing to Docs
 
@@ -244,23 +180,14 @@ Because pymechtest uses [nox], things like building and serving the documentatio
 # Builds the docs
 nox -s docs
 
-# Or again, the makefile
-make docs
-
-# Builds and serves to localhost
+# Builds and serves
 nox -s docs -- serve
-
-# makefile equivalent
-make autodocs
 ```
-
-*If you installed with `.[dev]` earlier, you could also just run `mkdocs build --clean` and `mkdocs serve` if you wanted*
 
 If you use the `serve` option, you can navigate to the localhost IP address it gives you and as you make changes to the source files, it will automatically reload your browser! Automation is power! :robot:
 
 If you add pages to the docs, make sure they are placed in the nav tree in the `mkdocs.yml` file and you're good to go!
 
-[help]: help.md
 [GH CLI]: https://cli.github.com
 [nox]: https://nox.thea.codes/en/stable/
 [repo]: https://github.com/FollowTheProcess/pymechtest
@@ -268,3 +195,4 @@ If you add pages to the docs, make sure they are placed in the nav tree in the `
 [here too]: https://github.com/asmeurer/git-workflow
 [mkdocs]: https://www.mkdocs.org
 [mkdocs-material]: https://squidfunk.github.io/mkdocs-material/
+[pipx]: https://pypa.github.io/pipx/installation/

@@ -1,13 +1,10 @@
-<img src="docs/img/logo.png" align="center">
-
-# pymechtest
-
+![logo](https://github.com/FollowTheProcess/pymechtest/raw/main/docs/img/logo.png)
 [![License](https://img.shields.io/github/license/FollowTheProcess/pymechtest)](https://github.com/FollowTheProcess/pymechtest)
 [![PyPI](https://img.shields.io/pypi/v/pymechtest.svg)](https://pypi.python.org/pypi/pymechtest)
 [![GitHub](https://img.shields.io/github/v/release/FollowTheProcess/pymechtest?logo=github&sort=semver)](https://github.com/FollowTheProcess/pymechtest)
 [![Code Style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/FollowTheProcess/pymechtest)
 [![CI](https://github.com/FollowTheProcess/pymechtest/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/pymechtest/actions?query=workflow%3ACI)
-[![Coverage](docs/img/coverage.svg)](https://github.com/FollowTheProcess/pymechtest)
+[![Coverage](https://github.com/FollowTheProcess/pymechtest/raw/main/docs/img/coverage.svg)](https://github.com/FollowTheProcess/pymechtest)
 
 *pymechtest is a small, hopefully helpful python package to help engineers collate, process, analyse, and report on mechanical test data. I built pymechtest to help automate the things I did on a near-daily basis as a materials engineer. I hope it can prove some use to you too!*
 
@@ -47,7 +44,7 @@ tens = Tensile(folder = "path/to/raw/data", header = 8, id_row = 3)
 tens.plot_curves()
 ```
 
-![plot_curves](docs/img/plot_curves.png)
+![plot_curves](https://github.com/FollowTheProcess/pymechtest/raw/main/docs/img/plot_curves.png)
 
 The key features are:
 

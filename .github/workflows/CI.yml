@@ -3,20 +3,24 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
@@ -25,52 +29,19 @@ jobs:
       - name: Run Tests and Coverage
         run: nox --non-interactive --session "test-${{ matrix.python-version }}"
 
-  conda-tests:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-      - name: Set up Conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          python-version: ${{ matrix.python-version }}
-          activate-environment: test
-      - name: Conda Info
-        run: conda info
-      - name: Configure Channels
-        run: |
-          conda config --append channels conda-forge
-          conda config --set channel_priority strict
-      - name: Conda List
-        run: conda list
-      - name: Install Dependencies
-        run: |
-          conda activate test
-          conda install pip setuptools wheel
-          conda install nox
-
-      - name: Run Tests
-        run: nox --non-interactive --session "test_conda-${{ matrix.python-version }}"
-
   lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
@@ -80,15 +51,18 @@ jobs:
         run: nox --non-interactive --session "lint"
 
   docs:
+    name: Docs
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
@@ -98,22 +72,28 @@ jobs:
         run: nox --non-interactive --session "docs"
 
   publish-docs:
-    needs: docs
+    name: Publish Docs
     runs-on: ubuntu-latest
 
-    # Only publish docs from main
-    if: github.ref == 'refs/heads/main'
+    needs: docs
+
+    # Only publish docs automatically on new release
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install .[docs]
+
       - name: Deploy Docs to GitHub Pages
         env:
           # Use the built in CI GITHUB_TOKEN
@@ -122,3 +102,46 @@ jobs:
           git remote add gh-token "https://${GITHUB_TOKEN}@github.com/FollowTheProcess/pymechtest.git";
           git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
           mkdocs gh-deploy -v --clean --remote-name gh-token;
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    needs: [test, lint, docs, publish-docs]
+
+    # Only release on new tag
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        # Uses pypa build https://pypa-build.readthedocs.io/en/latest/
+        # For full PEP517/518 compliance
+        run: python3 -m pip install --upgrade pip setuptools wheel build
+
+      - name: Build sdist and wheel
+        run: python3 -m build --sdist --wheel
+
+      - name: Publish Distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        with:
+          draft: false
+          prerelease: false
+          files: |
+            dist/*

@@ -15,7 +15,6 @@ nav:
       - Help: contributing/help.md
       - How to: contributing/guide.md
   - Roadmap: roadmap.md
-  - Changelog: changelog.md
   - API:
       - Static Tests:
           - Tensile: api/tensile.md
