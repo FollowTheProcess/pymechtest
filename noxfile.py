@@ -328,7 +328,7 @@ def build(session: nox.Session) -> None:
     session.install(".")
     session.install("build")
 
-    session.run("build", "--sdist", "--wheel")
+    session.run("pyproject-build", "--sdist", "--wheel")
 
 
 @nox.session(python=DEFAULT_PYTHON)
